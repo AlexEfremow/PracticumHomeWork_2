@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/SETTINGS_SCREEN"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        style="@style/SETTINGS_SCREEN"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:icon="@drawable/vector4"
+            app:iconGravity="textStart"
+            style="@style/ICON_BUTTON"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/settings"
+            android:textAllCaps="false"
+            style="@style/TEXT"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textStyle="normal|bold"/>
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/switcher"
+        android:layout_width="370dp"
+        android:layout_height="48dp"
+        style="@style/BUTTON"
+        android:text="@string/night_theme"
+        android:textDirection="locale"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_app"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        style="@style/BUTTON"
+        android:textSize="17sp"
+        app:icon="@drawable/vector5"
+        app:iconGravity="end"
+        app:iconPadding="10dp"
+        app:iconTint="#939393"
+        app:iconTintMode="src_in" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/BUTTON"
+        android:text="@string/write"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:icon="@drawable/vector6"
+        app:iconGravity="end"
+        app:iconPadding="10dp"
+        app:iconTint="#939393"
+        app:iconTintMode="src_in" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_agreement"
+        android:textAlignment="textStart"
+        style="@style/BUTTON"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        app:icon="@drawable/vector7"
+        app:iconGravity="end"
+        app:iconPadding="10dp"
+        app:iconTint="#939393"
+        app:iconTintMode="src_in" />
+</LinearLayout>

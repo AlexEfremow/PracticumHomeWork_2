@@ -14,6 +14,7 @@
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
             android:backgroundTint="#FFFFFF"
             app:icon="@drawable/vector4"
             app:iconGravity="textStart"

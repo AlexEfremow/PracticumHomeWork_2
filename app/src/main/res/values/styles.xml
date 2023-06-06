@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MainScreenButtonTheme">
+    <style name="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="textAllCaps">false</item>
+        <item name="android:stateListAnimator">@null</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
         <item name="iconGravity">textStart</item>
@@ -15,10 +16,11 @@
         <item name="android:maxLength">10</item>
         <item name="android:maxLines">1</item>
         <item name="android:inputType">text</item>
+        <item name="android:stateListAnimator">@null</item>
         <item name="android:textSize">20sp</item>
         <item name="android:drawablePadding">10dp</item>
-        <item name="android:backgroundTint">#D1D1D1</item>
-        <item name="android:textColorHint">#727272</item>
-        <item name="iconTint">#727272</item>
+        <item name="android:backgroundTint">@color/gray</item>
+        <item name="android:textColorHint">@color/gray_2</item>
+        <item name="iconTint">@color/gray_2</item>
     </style>
 </resources>

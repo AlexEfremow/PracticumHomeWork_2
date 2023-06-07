@@ -3,44 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:orientation="vertical"
     android:paddingLeft="16dp"
+    android:paddingTop="10dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/back_button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/borderlessButtonStyle"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             app:icon="@drawable/vector4"
             app:iconGravity="textStart"
-            app:iconTint="#000000" />
+            app:iconTint="@color/black" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/media"
             android:textAllCaps="false"
-            android:gravity="center_vertical"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="normal|bold"/>
+            android:textStyle="normal|bold" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="370dp"
         android:layout_height="212dp"
+        android:paddingTop="20dp"
         android:text="@string/empty"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:paddingTop="20dp"/>
+        android:textStyle="bold" />
 
 </LinearLayout>

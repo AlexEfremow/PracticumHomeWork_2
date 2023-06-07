@@ -10,4 +10,5 @@
     <string name="write">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="search_2">Поиск</string>
+    <string name="hint_search">Поиск</string>
 </resources>

@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Settings_Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/Settings_Screen"
     android:paddingLeft="16dp"
+    android:paddingTop="10dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="16dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
         style="@style/Settings_Screen"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/back_button"
+            style="@style/Icon_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:stateListAnimator="@null"
 
+            android:stateListAnimator="@null"
             app:icon="@drawable/vector4"
-            app:iconGravity="textStart"
-            style="@style/Icon_Button"
-            />
+            app:iconGravity="textStart" />
+
         <TextView
+            style="@style/HeadWord"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/settings"
-            style="@style/HeadWord" />
+            android:text="@string/settings" />
     </LinearLayout>
 
     <Switch
         android:id="@+id/switcher"
+        style="@style/Switch_theme"
         android:layout_width="370dp"
         android:layout_height="48dp"
-        style="@style/Switch_theme"
         android:text="@string/night_theme" />
 
     <Button
         android:id="@+id/button"
+        style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
         android:text="@string/share_app"
-        style="@style/Icon_theme"
         app:icon="@drawable/vector5" />
 
     <Button
         android:id="@+id/button3"
+        style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
-        style="@style/Icon_theme"
         android:text="@string/write"
         app:icon="@drawable/vector6" />
 
     <Button
         android:id="@+id/button5"
+        style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
         android:text="@string/user_agreement"
-        style="@style/Icon_theme"
         app:icon="@drawable/vector7" />
 </LinearLayout>

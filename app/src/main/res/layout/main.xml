@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/Screen"
     android:orientation="vertical"
     android:paddingLeft="16dp"
+    android:paddingTop="10dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/textViewTitle"
+        style="@style/Text_Style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/playlist_maker"
-        style="@style/Text_Style" />
+        android:text="@string/playlist_maker" />
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_search"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:text="@string/search"
-        app:icon="@drawable/vector1"
-        />
+        app:icon="@drawable/vector1" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_media"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/media"
-        app:icon="@drawable/vector2"
         android:layout_weight="1"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            />
+        android:text="@string/media"
+        app:icon="@drawable/vector2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_settings"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
-        app:icon="@drawable/vector3"
         android:layout_weight="1"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-        />
+        android:text="@string/settings"
+        app:icon="@drawable/vector3" />
 
 </LinearLayout>

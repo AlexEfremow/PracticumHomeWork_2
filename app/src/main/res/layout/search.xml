@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingTop="10dp"
+    style="@style/Settings_Screen"
     android:paddingRight="16dp"
     android:paddingBottom="16dp">
 
@@ -17,23 +17,20 @@
 
         <Button
             android:id="@+id/back_button"
-            style="?android:attr/borderlessButtonStyle"
+            style="@style/Icon_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
+
+            android:stateListAnimator="@null"
             app:icon="@drawable/vector4"
-            app:iconGravity="textStart"
-            app:iconTint="#000000" />
+            app:iconGravity="textStart" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="@string/search"
-            android:textAllCaps="false"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="normal|bold" />
+            style="@style/HeadWord" />
 
     </LinearLayout>
 

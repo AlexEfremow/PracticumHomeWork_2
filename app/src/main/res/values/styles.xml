@@ -12,16 +12,4 @@
         <item name="cornerRadius">20dp</item>
         <item name="iconTint">@color/black</item>
     </style>
-    <style name="Input">
-        <item name="android:maxLength">10</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:paddingStart">20dp</item>
-        <item name="android:inputType">text</item>
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:drawablePadding">10dp</item>
-        <item name="android:backgroundTint">@color/gray_3</item>
-        <item name="android:textColorHint">@color/gray_2</item>
-        <item name="iconTint">@color/gray_2</item>
-    </style>
 </resources>

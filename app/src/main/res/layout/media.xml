@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    style="@style/Settings_Screen"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingTop="10dp"
@@ -16,23 +16,20 @@
 
         <Button
             android:id="@+id/back_button"
-            style="?android:attr/borderlessButtonStyle"
+            style="@style/Icon_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+
+            android:stateListAnimator="@null"
             app:icon="@drawable/vector4"
-            app:iconGravity="textStart"
-            app:iconTint="@color/black" />
+            app:iconGravity="textStart" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="@string/media"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="normal|bold" />
+            style="@style/HeadWord"/>
     </LinearLayout>
 
     <TextView
@@ -40,6 +37,7 @@
         android:layout_width="370dp"
         android:layout_height="212dp"
         android:paddingTop="20dp"
+        style="@style/Media_text"
         android:text="@string/empty"
         android:textAlignment="center"
         android:textSize="20sp"

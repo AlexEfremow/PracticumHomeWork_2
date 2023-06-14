@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="10dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp">
+    android:paddingHorizontal="20dp">
 
     <LinearLayout
         style="@style/Settings_Screen"
@@ -16,13 +13,13 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/back_button"
+            android:id="@+id/return_button"
             style="@style/Icon_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:stateListAnimator="@null"
-            app:icon="@drawable/vector4"
+            app:icon="@drawable/return_icon"
             app:iconGravity="textStart" />
 
         <TextView
@@ -32,37 +29,37 @@
             android:text="@string/settings" />
     </LinearLayout>
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switcher"
         style="@style/Switch_theme"
-        android:layout_width="370dp"
-        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/night_theme" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/share_button"
         style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
         android:text="@string/share_app"
-        app:icon="@drawable/vector5" />
+        app:icon="@drawable/share_icon" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/support_button"
         style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
         android:text="@string/write"
-        app:icon="@drawable/vector6" />
+        app:icon="@drawable/support_icon" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/agreement_button"
         style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
         android:text="@string/user_agreement"
-        app:icon="@drawable/vector7" />
+        app:icon="@drawable/next_icon" />
 </LinearLayout>

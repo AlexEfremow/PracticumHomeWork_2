@@ -9,7 +9,7 @@ class MediaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.media)
 
-        findViewById<Button>(R.id.back_button).setOnClickListener{
+        findViewById<Button>(R.id.return_button).setOnClickListener{
             onBackPressedDispatcher.onBackPressed()
         }
     }

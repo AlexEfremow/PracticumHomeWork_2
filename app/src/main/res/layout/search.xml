@@ -1,66 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Settings_Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="10dp"
-    style="@style/Settings_Screen"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp">
+    android:paddingHorizontal="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/back_button"
+            android:id="@+id/return_button"
             style="@style/Icon_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:stateListAnimator="@null"
-            app:icon="@drawable/vector4"
+            app:icon="@drawable/return_icon"
             app:iconGravity="textStart" />
 
         <TextView
+            style="@style/HeadWord"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/search"
-            style="@style/HeadWord" />
+            android:text="@string/search" />
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Layout_EditText"
+        style="@style/input_layout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-
-
-        tools:context=".MainActivity">
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputEditText"
-            style="@style/Input"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rounded_edittext" />
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_search"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/loupe">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/EditText"
-            style="@style/Input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/vector"
-            android:hint="@string/hint_search"
-            tools:ignore="MissingConstraints" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:maxLength="10"
+            android:maxLines="1"
+            android:textColor="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

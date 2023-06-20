@@ -11,4 +11,10 @@
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="search_2">Поиск</string>
     <string name="hint_search">Поиск</string>
+    <string name="message">Яндекс Практикум</string>
+    <string name="email">yourEmail@ya.ru</string>
+    <string name="mailto">mailto:</string>
+    <string name="agreement_site_email">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="share_email">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="text_pattern">text/plain</string>
 </resources>

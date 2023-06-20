@@ -5,61 +5,99 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="20dp">
+    android:paddingHorizontal="16dp">
 
     <LinearLayout
         style="@style/Settings_Screen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
-        <Button
+        <ImageView
             android:id="@+id/return_button"
             style="@style/Icon_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:stateListAnimator="@null"
-            app:icon="@drawable/return_icon"
-            app:iconGravity="textStart" />
+            android:paddingVertical="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/return_icon" />
 
         <TextView
             style="@style/HeadWord"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/settings" />
     </LinearLayout>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switcher"
-        style="@style/Switch_theme"
+        style="@style/settings_item_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/night_theme" />
 
-    <Button
+    <LinearLayout
         android:id="@+id/share_button"
-        style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stateListAnimator="@null"
-        android:text="@string/share_app"
-        app:icon="@drawable/share_icon" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <Button
+        <TextView
+            style="@style/settings_item_theme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/share_app" />
+
+        <ImageView
+            style="@style/icon_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/share_icon" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/support_button"
-        style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stateListAnimator="@null"
-        android:text="@string/write"
-        app:icon="@drawable/support_icon" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <Button
+        <TextView
+            style="@style/settings_item_theme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/write" />
+
+        <ImageView
+            style="@style/icon_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/support_icon" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/agreement_button"
-        style="@style/Icon_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stateListAnimator="@null"
-        android:text="@string/user_agreement"
-        app:icon="@drawable/next_icon" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/settings_item_theme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/user_agreement" />
+
+        <ImageView
+            style="@style/icon_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/next_icon" />
+    </LinearLayout>
+
 </LinearLayout>

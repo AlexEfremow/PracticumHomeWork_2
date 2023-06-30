@@ -1,20 +1,3 @@
 <resources>
-    <string name="app_name">PracticumHomeWork</string>
-    <string name="playlist_maker">Playlist Maker</string>
-    <string name="search">Поиск</string>
-    <string name="media">Медиатека</string>
-    <string name="settings">Настройки</string>
-    <string name="empty">Пустой экран</string>
-    <string name="night_theme">Темная тема</string>
-    <string name="share_app">Поделиться приложением</string>
-    <string name="write">Написать в поддержку</string>
-    <string name="user_agreement">Пользовательское соглашение</string>
-    <string name="search_2">Поиск</string>
-    <string name="hint_search">Поиск</string>
-    <string name="message">Яндекс Практикум</string>
-    <string name="email">yourEmail@ya.ru</string>
-    <string name="mailto">mailto:</string>
-    <string name="agreement_site_email">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="share_email">https://practicum.yandex.ru/profile/android-developer/</string>
-    <string name="text_pattern">text/plain</string>
+    <string name="app_name">PracticumHomeWork_2</string>
 </resources>

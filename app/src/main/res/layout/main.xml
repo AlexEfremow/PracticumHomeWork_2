@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="16dp">
+    <TextView
+        android:id="@+id/textViewTitle"
+        style="@style/Text_Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/playlist_maker" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_search"
+        style="@style/Button_Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/search"
+        app:icon="@drawable/loupe_2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_media"
+        style="@style/Button_Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/media"
+        app:icon="@drawable/media_icon" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_settings"
+        style="@style/Button_Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/settings"
+        app:icon="@drawable/settings_icon" />
+
+</LinearLayout>

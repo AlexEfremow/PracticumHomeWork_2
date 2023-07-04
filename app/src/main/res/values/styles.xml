@@ -48,9 +48,9 @@
         <item name="android:textStyle">normal|bold</item>
     </style>
     <style name="input_layout" parent="ThemeOverlay.Material3.TextInputEditText.OutlinedBox">
-        <item name="android:backgroundTint">@color/gray_3</item>
-        <item name="android:drawableTint">@color/gray</item>
-        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:backgroundTint">#E6E8EB</item>
+        <item name="android:drawableTint">#AEAFB4</item>
+        <item name="android:textColorHint">#AEAFB4</item>
         <item name="android:minHeight">36dp</item>
         <item name="android:maxLength">25</item>
         <item name="android:maxLines">1</item>
@@ -63,12 +63,20 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
     <style name="track_name_style">
-        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">15sp</item>
     </style>
     <style name="track_info_style">
         <item name="android:textColor">@color/gray</item>
         <item name="drawableTint">@color/gray</item>
+    </style>
+    <style name="search_next_button">
+        <item name="android:tint">#AEAFB4</item>
+    </style>
+    <style name="search_point_style">
+        <item name="android:tint">#AEAFB4</item>
+    </style>
+    <style name="delete_button_style">
+        <item name="android:tint">#AEAFB4</item>
     </style>
 </resources>

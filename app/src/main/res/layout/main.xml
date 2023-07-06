@@ -9,13 +9,15 @@
     android:paddingBottom="16dp">
     <TextView
         android:id="@+id/textViewTitle"
-        style="@style/Text_Style"
+        style="@style/main_screen_header"
         android:layout_width="match_parent"
+        android:fontFamily="@font/ys_text_medium"
         android:layout_height="wrap_content"
         android:text="@string/playlist_maker" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_search"
-        style="@style/Button_Style"
+        style="@style/main_screen_button"
+        android:fontFamily="@font/ys_text_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -24,7 +26,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_media"
-        style="@style/Button_Style"
+        style="@style/main_screen_button"
+        android:fontFamily="@font/ys_text_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -33,8 +36,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_settings"
-        style="@style/Button_Style"
+        style="@style/main_screen_button"
         android:layout_width="match_parent"
+        android:fontFamily="@font/ys_text_medium"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/settings"

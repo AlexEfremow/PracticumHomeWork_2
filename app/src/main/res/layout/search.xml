@@ -4,8 +4,7 @@
     style="@style/Settings_Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="15dp">
+    android:orientation="vertical">
 
     <LinearLayout
         style="@style/Settings_Screen"
@@ -15,23 +14,25 @@
 
         <ImageView
             android:id="@+id/return_button"
-            style="@style/Icon_Button"
+            style="@style/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:paddingRight="16dp"
+            android:padding="16dp"
             android:src="@drawable/return_icon" />
 
         <TextView
-            style="@style/HeadWord"
+            style="@style/toolbar_text_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/ys_text_medium"
             android:text="@string/search" />
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -40,6 +41,7 @@
             android:drawableStart="@drawable/loupe"
             style="@style/input_layout"
             android:drawablePadding="10dp"
+            android:fontFamily="@font/ys_text_regular"
             android:layout_height="wrap_content"
             android:background="@drawable/round_background"
             android:hint="@string/hint_search"
@@ -49,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            style="@style/delete_button_style"
+            style="@style/clear_button_style"
             android:src="@drawable/delete_icon"
             android:layout_marginEnd="10dp"
             android:layout_gravity="end"/>
@@ -58,7 +60,7 @@
         android:id="@+id/recycler_view"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
-        android:paddingTop="20dp"
+        android:paddingTop="16dp"
         android:layout_weight="1"
         android:layout_height="0dp"/>
 

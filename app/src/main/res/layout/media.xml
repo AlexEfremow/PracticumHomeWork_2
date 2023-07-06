@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/Settings_Screen"
-    android:orientation="vertical"
-    android:paddingHorizontal="20dp">
+    android:orientation="vertical">
 
     <LinearLayout
         style="@style/Settings_Screen"
@@ -15,30 +14,19 @@
 
         <ImageView
             android:id="@+id/return_button"
-            style="@style/Icon_Button"
+            style="@style/back_button"
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:paddingRight="16dp"
             android:src="@drawable/return_icon" />
 
         <TextView
-            style="@style/HeadWord"
+            style="@style/toolbar_text_style"
             android:layout_width="0dp"
+            android:fontFamily="@font/ys_text_medium"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/media" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="370dp"
-        android:layout_height="212dp"
-        android:paddingTop="20dp"
-        style="@style/Media_text"
-        android:text="@string/empty"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
 
 </LinearLayout>

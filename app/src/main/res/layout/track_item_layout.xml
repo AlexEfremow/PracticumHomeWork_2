@@ -3,27 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/gray"
     android:orientation="horizontal"
     android:layout_marginVertical="8dp">
 
     <ImageView
         android:id="@+id/image_url"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_gravity="top" />
+        android:layout_height="45dp"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="2"
-        android:paddingHorizontal="8dp">
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/track_name"
             style="@style/track_name_style"
-            android:fontFamily="@font/yandexregular"
+            android:fontFamily="@font/ys_text_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical" />
@@ -37,7 +36,7 @@
                 android:id="@+id/artist_name"
                 style="@style/track_info_style"
                 android:layout_width="wrap_content"
-                android:fontFamily="@font/yandexregular"
+                android:fontFamily="@font/ys_text_regular"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical" />
 
@@ -45,14 +44,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:drawableStartCompat="@drawable/point"
-                style="@style/search_point_style"
+                style="@style/search_next_button"
                 android:layout_marginHorizontal="5dp"/>
 
             <TextView
                 android:id="@+id/track_time"
                 style="@style/track_info_style"
                 android:layout_width="wrap_content"
-                android:fontFamily="@font/yandexregular"
+                android:fontFamily="@font/ys_text_regular"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
 
@@ -64,8 +63,6 @@
         android:layout_height="match_parent"
         style="@style/search_next_button"
         android:layout_gravity="end"
-        android:paddingEnd="10dp"
-        android:layout_weight="1"
+        android:paddingHorizontal="12dp"
         app:drawableEndCompat="@drawable/next_icon" />
-
 </LinearLayout>

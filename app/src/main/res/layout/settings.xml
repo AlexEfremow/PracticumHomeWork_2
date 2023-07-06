@@ -4,8 +4,7 @@
     style="@style/Settings_Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="16dp">
+    android:orientation="vertical">
 
     <LinearLayout
         style="@style/Settings_Screen"
@@ -15,88 +14,100 @@
 
         <ImageView
             android:id="@+id/return_button"
-            style="@style/Icon_Button"
+            style="@style/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:paddingRight="16dp"
+            android:padding="16dp"
             android:src="@drawable/return_icon" />
 
         <TextView
-            style="@style/HeadWord"
+            style="@style/toolbar_text_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_medium"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="@string/settings" />
     </LinearLayout>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switcher"
-        style="@style/settings_item_theme"
+        android:layout_marginHorizontal="16dp"
+        style="@style/settings_button_style"
         android:layout_width="match_parent"
+        android:fontFamily="@font/ys_text_regular"
         android:layout_height="wrap_content"
         android:text="@string/night_theme" />
 
     <LinearLayout
         android:id="@+id/share_button"
+        android:layout_marginHorizontal="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            style="@style/settings_item_theme"
+            style="@style/settings_button_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_regular"
             android:layout_weight="1"
             android:text="@string/share_app" />
 
         <ImageView
-            style="@style/icon_style"
+            style="@style/settings_item_icon_style"
+            android:paddingHorizontal="8dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/share_icon" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/support_button"
         android:layout_width="match_parent"
+        android:layout_marginHorizontal="16dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            style="@style/settings_item_theme"
+            style="@style/settings_button_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/ys_text_regular"
             android:text="@string/write" />
 
         <ImageView
-            style="@style/icon_style"
+            style="@style/settings_item_icon_style"
+            android:paddingHorizontal="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/support_icon" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/agreement_button"
         android:layout_width="match_parent"
+        android:layout_marginHorizontal="16dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            style="@style/settings_item_theme"
+            style="@style/settings_button_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_regular"
             android:layout_weight="1"
             android:text="@string/user_agreement" />
 
         <ImageView
-            style="@style/icon_style"
+            android:paddingHorizontal="12dp"
+            style="@style/settings_item_icon_style"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/next_icon" />
     </LinearLayout>
 

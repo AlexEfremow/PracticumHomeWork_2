@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -33,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
         val trackAdapter = TrackAdapter().also { it.updateTrackList(trackList) }
         recyclerView.adapter = trackAdapter
 
-        findViewById<ImageView>(R.id.return_button).setOnClickListener {
+        findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
         val clearButton = findViewById<ImageView>(R.id.clear_button)

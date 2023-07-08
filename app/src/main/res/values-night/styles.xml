@@ -63,11 +63,13 @@
     <style name="track_info_style">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">11sp</item>
-        <item name="drawableTint">@color/white</item>
     </style>
 
-    <style name="search_next_button">
-        <item name="drawableTint">@color/white</item>
+    <style name="track_details_button">
+        <item name="android:tint">@color/white</item>
+    </style>
+    <style name="track_info_point">
+        <item name="android:tint">@color/white</item>
     </style>
 
     <style name="clear_button_style">

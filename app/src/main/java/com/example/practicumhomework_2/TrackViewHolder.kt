@@ -18,8 +18,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         trackTimeTextView.text = track.trackTime
         Glide.with(itemView.context)
             .load(track.artworkUrl)
-            .transform(CenterInside(), RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_cover_corner_radius)))// Не очень понял как использовать GetDimensionPixelSize, поэтому просто изменил значение на 2
-            .error(R.drawable.error)
+            .transform(CenterInside(), RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_cover_corner_radius)))
             .placeholder(R.drawable.placeholder)
             .into(itemView.findViewById(R.id.image_url))
     }

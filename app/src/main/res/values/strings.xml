@@ -7,7 +7,7 @@
     <string name="empty">Пустой экран</string>
     <string name="night_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
-    <string name="write">Написать в поддержку</string>
+    <string name="support_request">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="search_2">Поиск</string>
     <string name="hint_search">Поиск</string>
@@ -17,4 +17,9 @@
     <string name="agreement_site_email">https://yandex.ru/legal/practicum_offer/</string>
     <string name="share_email">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="text_pattern">text/plain</string>
+    <string name="track_details_button">Track details button</string>
+    <string name="divider">divider</string>
+    <string name="back_button">Back button</string>
+    <string name="track_cover">track cover</string>
+    <string name="clear_search_request">clear search request</string>
 </resources>

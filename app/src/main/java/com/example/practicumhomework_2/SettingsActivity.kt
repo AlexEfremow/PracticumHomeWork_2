@@ -1,12 +1,10 @@
 package com.example.practicumhomework_2
 
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +19,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
 
-        findViewById<ImageView>(R.id.return_button).setOnClickListener {
+        findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
         findViewById<SwitchCompat>(R.id.switcher).isChecked = resources.configuration.isNightModeActive

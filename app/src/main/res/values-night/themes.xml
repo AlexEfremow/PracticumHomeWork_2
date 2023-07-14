@@ -15,10 +15,10 @@
     </style>
 
     <style name="Screen">
-        <item name="android:background">#000000</item>
+        <item name="android:background">@color/black_2</item>
     </style>
 
     <style name="Settings_Screen">
-        <item name="android:background">#000000</item>
+        <item name="android:background">@color/black_2</item>
     </style>
 </resources>

@@ -4,65 +4,76 @@
     style="@style/Settings_Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="20dp">
+    android:orientation="vertical">
 
     <LinearLayout
         style="@style/Settings_Screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:gravity="center_vertical">
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/return_button"
-            style="@style/Icon_Button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:paddingRight="16dp"
-            android:src="@drawable/return_icon" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                style="@style/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/back_button"
+                android:padding="4dp"
+                android:src="@drawable/ic_baseline_arrow_back_16" />
+
+        </FrameLayout>
 
         <TextView
-            style="@style/HeadWord"
+            style="@style/toolbar_text_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
+            android:fontFamily="@font/ys_text_medium"
             android:text="@string/search" />
     </LinearLayout>
 
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-    <!--        android:id="@+id/Layout_EditText"-->
-    <!--        style="@style/input_layout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:hintEnabled="false"-->
-    <!--        app:endIconMode="clear_text"-->
-    <!--        app:startIconDrawable="@drawable/loupe">-->
-
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/EditText"
-            android:layout_width="match_parent"
-            android:drawableStart="@drawable/loupe"
             style="@style/input_layout"
-            android:drawablePadding="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/round_background"
-            android:hint="@string/hint_search"
-            />
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/ys_text_regular"
+            android:hint="@string/hint_search" />
+
         <ImageView
             android:id="@+id/clear_button"
+            style="@style/clear_button_style"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:src="@drawable/delete_icon"
+            android:contentDescription="@string/clear_search_request"
+            android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:layout_gravity="end"/>
+            android:src="@drawable/delete_icon"
+            android:visibility="invisible" />
     </FrameLayout>
 
-    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

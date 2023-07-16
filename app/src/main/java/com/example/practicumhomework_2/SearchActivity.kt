@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -11,11 +12,15 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.practicumhomework_2.remote.TrackSearchResponse
+import com.example.practicumhomework_2.remote.TracksSearchApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
 
     private val editText by lazy { findViewById<EditText>(R.id.EditText) }
-    private val trackRepository = TracksRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +28,25 @@ class SearchActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         val clearButton = findViewById<ImageView>(R.id.clear_button)
-        val trackList = trackRepository.getTracks()
+        val trackAdapter = TrackAdapter()
 
-        val trackAdapter = TrackAdapter().also { it.updateTrackList(trackList) }
+        val searchTrackCallBack = object:Callback<TrackSearchResponse> {
+            override fun onResponse(
+                call: Call<TrackSearchResponse>,
+                response: Response<TrackSearchResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val trackList = response.body()?.results
+                    if (trackList != null) {
+                        trackAdapter.updateTrackList(trackList)
+                        Log.d("AAA", trackList.toString())
+                    }
+                }
+            }
+            override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        }
         recyclerView.adapter = trackAdapter
 
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
@@ -40,8 +61,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.isVisible = p0?.length != 0
                 if (p0 != null) {
-                    val updatedList = trackList.filter { it.trackName.contains(p0) || it.artistName.contains(p0) }
-                    trackAdapter.updateTrackList(updatedList)
+                    TracksSearchApi.retrofit.searchTracks(p0.toString()).enqueue(searchTrackCallBack)
                 }
             }
 

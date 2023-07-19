@@ -4,11 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -28,23 +26,42 @@ class SearchActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         val clearButton = findViewById<ImageView>(R.id.clear_button)
+        val noResultsStub = findViewById<LinearLayout>(R.id.no_results_stub)
+        val lostConnectionStub = findViewById<LinearLayout>(R.id.lost_connection_stub)
+        val refreshButton = findViewById<Button>(R.id.refresh_button)
+
         val trackAdapter = TrackAdapter()
 
-        val searchTrackCallBack = object:Callback<TrackSearchResponse> {
+        fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
+            TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
+        }
+
+        val searchTrackCallBack = object : Callback<TrackSearchResponse> {
             override fun onResponse(
                 call: Call<TrackSearchResponse>,
                 response: Response<TrackSearchResponse>
             ) {
                 if (response.isSuccessful) {
+                    lostConnectionStub.visibility = View.GONE
                     val trackList = response.body()?.results
-                    if (trackList != null) {
+                    if (trackList.isNullOrEmpty()) {
+                        noResultsStub.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                    } else {
+                        noResultsStub.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
                         trackAdapter.updateTrackList(trackList)
-                        Log.d("AAA", trackList.toString())
                     }
                 }
             }
+
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                Log.d("tag", t.message.toString())
+                recyclerView.visibility = View.GONE
+                noResultsStub.visibility = View.GONE
+                lostConnectionStub.visibility = View.VISIBLE
+                refreshButton.setOnClickListener {
+                    searchTracks(editText.text.toString(), this)
+                }
             }
         }
         recyclerView.adapter = trackAdapter
@@ -55,18 +72,16 @@ class SearchActivity : AppCompatActivity() {
         val inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.isVisible = p0?.length != 0
                 if (p0 != null) {
-                    TracksSearchApi.retrofit.searchTracks(p0.toString()).enqueue(searchTrackCallBack)
+                    searchTracks(p0.toString(), searchTrackCallBack)
                 }
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-            }
+            override fun afterTextChanged(p0: Editable?) {}
         }
         editText.addTextChangedListener(textWatcher)
         clearButton.setOnClickListener {

@@ -64,4 +64,16 @@
     <style name="clear_button_style">
         <item name="android:tint">@color/gray</item>
     </style>
+    <style name="no_results_stub_style">
+        <item name="android:src">@drawable/no_results_stub</item>
+    </style>
+    <style name="no_connection_stub_style">
+        <item name="android:src">@drawable/lost_connection_stub</item>
+    </style>
+    <style name="stubs_text_style">
+        <item name="android:textColor">@color/black_2</item>
+    </style>
+    <style name="refresh_button_style">
+        <item name="android:backgroundTint">@color/black_2</item>
+    </style>
 </resources>

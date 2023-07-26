@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.example.practicumhomework_2.remote.TracksSearchApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class SearchActivity : AppCompatActivity() {
 
@@ -76,8 +78,16 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.isVisible = p0?.length != 0
-                if (p0 != null) {
-                    searchTracks(p0.toString(), searchTrackCallBack)
+                editText.setOnEditorActionListener { v, actionId, event ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        if (p0 != null) {
+                            searchTracks(p0.toString(), searchTrackCallBack)
+                            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+                        } else {
+                            noResultsStub.visibility = View.GONE
+                        }
+                        true
+                    } else false
                 }
             }
 

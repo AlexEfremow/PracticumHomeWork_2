@@ -37,6 +37,7 @@
         android:text="@string/refresh"
         android:textAllCaps="false"
         android:textSize="14sp"
+        android:layout_marginBottom="100dp"
         app:cornerRadius="54dp" />
 
 </LinearLayout>

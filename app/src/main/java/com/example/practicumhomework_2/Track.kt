@@ -1,9 +1,12 @@
 package com.example.practicumhomework_2
 
+import com.google.gson.annotations.SerializedName
+import java.util.*
+
 data class Track(
     val trackName: String,
     val artistName: String,
-    val trackTime: String,
-    val artworkUrl: String
+    @SerializedName("trackTimeMillis") val trackTime: Long,
+    @SerializedName("artworkUrl100") val artworkUrl: String
 )
 

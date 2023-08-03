@@ -54,16 +54,18 @@
             android:drawableStart="@drawable/ic_baseline_search_24"
             android:drawablePadding="10dp"
             android:fontFamily="@font/ys_text_regular"
-            android:hint="@string/hint_search" />
+            android:hint="@string/hint_search"
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/clear_button"
             style="@style/clear_button_style"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:contentDescription="@string/clear_search_request"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
+            android:contentDescription="@string/clear_search_request"
             android:src="@drawable/delete_icon"
             android:visibility="invisible" />
     </FrameLayout>
@@ -75,5 +77,21 @@
         android:layout_weight="1"
         android:paddingTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <include
+        android:id="@+id/no_results_stub"
+        layout="@layout/no_results_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/lost_connection_stub"
+        layout="@layout/lost_connection_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

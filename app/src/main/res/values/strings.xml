@@ -22,4 +22,7 @@
     <string name="back_button">Back button</string>
     <string name="track_cover">track cover</string>
     <string name="clear_search_request">clear search request</string>
+    <string name="found_null">Ничего не нашлось</string>
+    <string name="lost_connection_text">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="refresh">Обновить</string>
 </resources>

@@ -4,18 +4,23 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.practicumhomework_2.remote.TrackSearchResponse
+import com.example.practicumhomework_2.remote.TracksSearchApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class SearchActivity : AppCompatActivity() {
 
     private val editText by lazy { findViewById<EditText>(R.id.EditText) }
-    private val trackRepository = TracksRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +28,44 @@ class SearchActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         val clearButton = findViewById<ImageView>(R.id.clear_button)
-        val trackList = trackRepository.getTracks()
+        val noResultsStub = findViewById<LinearLayout>(R.id.no_results_stub)
+        val lostConnectionStub = findViewById<LinearLayout>(R.id.lost_connection_stub)
+        val refreshButton = findViewById<Button>(R.id.refresh_button)
 
-        val trackAdapter = TrackAdapter().also { it.updateTrackList(trackList) }
+        val trackAdapter = TrackAdapter()
+
+        fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
+            TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
+        }
+
+        val searchTrackCallBack = object : Callback<TrackSearchResponse> {
+            override fun onResponse(
+                call: Call<TrackSearchResponse>,
+                response: Response<TrackSearchResponse>
+            ) {
+                if (response.isSuccessful) {
+                    lostConnectionStub.visibility = View.GONE
+                    val trackList = response.body()?.results
+                    if (trackList.isNullOrEmpty()) {
+                        noResultsStub.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                    } else {
+                        noResultsStub.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        trackAdapter.updateTrackList(trackList)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
+                recyclerView.visibility = View.GONE
+                noResultsStub.visibility = View.GONE
+                lostConnectionStub.visibility = View.VISIBLE
+                refreshButton.setOnClickListener {
+                    searchTracks(editText.text.toString(), this)
+                }
+            }
+        }
         recyclerView.adapter = trackAdapter
 
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
@@ -34,19 +74,24 @@ class SearchActivity : AppCompatActivity() {
         val inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.isVisible = p0?.length != 0
-                if (p0 != null) {
-                    val updatedList = trackList.filter { it.trackName.contains(p0) || it.artistName.contains(p0) }
-                    trackAdapter.updateTrackList(updatedList)
+                editText.setOnEditorActionListener { v, actionId, event ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        if (p0 != null) {
+                            searchTracks(p0.toString(), searchTrackCallBack)
+                            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+                        } else {
+                            noResultsStub.visibility = View.GONE
+                        }
+                        true
+                    } else false
                 }
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-            }
+            override fun afterTextChanged(p0: Editable?) {}
         }
         editText.addTextChangedListener(textWatcher)
         clearButton.setOnClickListener {

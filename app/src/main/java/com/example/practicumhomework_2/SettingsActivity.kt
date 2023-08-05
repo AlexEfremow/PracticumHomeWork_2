@@ -6,10 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -22,14 +24,9 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        findViewById<SwitchCompat>(R.id.switcher).isChecked = resources.configuration.isNightModeActive
-        findViewById<SwitchCompat>(R.id.switcher).setOnCheckedChangeListener { _, isChecked ->
-            AppCompatDelegate.setDefaultNightMode(
-                if (isChecked) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                }else{
-                    AppCompatDelegate.MODE_NIGHT_NO
-                })
+        findViewById<SwitchMaterial>(R.id.switcher).isChecked = resources.configuration.isNightModeActive
+        findViewById<SwitchMaterial>(R.id.switcher).setOnCheckedChangeListener { _, isChecked ->
+            (applicationContext as App).switchTheme(isChecked)
         }
         findViewById<LinearLayout>(R.id.share_button).setOnClickListener {
             val sendIntent: Intent = Intent().apply {

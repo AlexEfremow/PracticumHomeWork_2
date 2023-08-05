@@ -33,8 +33,11 @@ class SearchActivity : AppCompatActivity() {
         val clearHistoryButton = findViewById<Button>(R.id.clear_history_button)
 
         val preferences = Preferences((application as App).sharedPreferences)
-        val trackAdapter = TrackAdapter { preferences.save(it) }
         val historyAdapter = TrackAdapter {  }
+        val trackAdapter = TrackAdapter {
+            preferences.save(it)
+            historyAdapter.updateTrackList(preferences.getTrackList())
+        }
 
 
         val textWatcher = TextWatcher {
@@ -43,12 +46,14 @@ class SearchActivity : AppCompatActivity() {
             if (editText.hasFocus() && editText.text.isEmpty()) {
                 searchHistory.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
+                lostConnectionStub.visibility = View.GONE
+                noResultsStub.visibility = View.GONE
             } else {
                 searchHistory.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
             }
         }
-        val tracksHistoryList = preferences.getTrackList() ?: emptyList()
+        val tracksHistoryList = preferences.getTrackList()
 
         historyRecyclerView.adapter = historyAdapter
 
@@ -86,11 +91,14 @@ class SearchActivity : AppCompatActivity() {
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                 recyclerView.visibility = View.GONE
                 noResultsStub.visibility = View.GONE
+                searchHistory.visibility = View.GONE
+
                 lostConnectionStub.visibility = View.VISIBLE
-                refreshButton.setOnClickListener {
-                    searchTracks(editText.text.toString(), this)
-                }
             }
+
+        }
+        refreshButton.setOnClickListener {
+            searchTracks(editText.text.toString(), searchTrackCallBack)
         }
         recyclerView.adapter = trackAdapter
 
@@ -107,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
                     inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 } else {
                     noResultsStub.visibility = View.GONE
+                    lostConnectionStub.visibility = View.GONE
                 }
                 true
             } else false
@@ -117,7 +126,7 @@ class SearchActivity : AppCompatActivity() {
         }
         clearHistoryButton.setOnClickListener {
             preferences.clearHistory()
-            historyAdapter.updateTrackList(tracksHistoryList)
+            historyAdapter.updateTrackList(emptyList())
         }
     }
 

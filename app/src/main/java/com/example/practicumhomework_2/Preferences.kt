@@ -23,9 +23,9 @@ class Preferences(private val preferences: SharedPreferences, private val gson: 
         preferences.edit().putString(KEY, saveTrackList).apply()
     }
 
-    fun getTrackList(): List<Track>? {
+    fun getTrackList(): List<Track> {
         val trackListJson = preferences.getString(KEY, "")
-        return gson.fromJson(trackListJson, typeToken)
+        return gson.fromJson(trackListJson, typeToken) ?: emptyList()
     }
     fun clearHistory() {
         preferences.edit().clear().apply()

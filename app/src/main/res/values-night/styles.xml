@@ -87,4 +87,7 @@
     <style name="refresh_button_style">
         <item name="android:backgroundTint">@color/white</item>
     </style>
+    <style name="history_textView">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

@@ -2,6 +2,7 @@ package com.example.practicumhomework_2
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -30,9 +31,16 @@ class Preferences(private val preferences: SharedPreferences, private val gson: 
     fun clearHistory() {
         preferences.edit().clear().apply()
     }
+    fun getCurrentTheme(): Boolean {
+        return preferences.getBoolean(THEME_KEY, false)
+    }
+    fun saveTheme(isDarkTheme: Boolean) {
+        preferences.edit().putBoolean(THEME_KEY, isDarkTheme).apply()
+    }
 
 
     companion object {
         const val KEY ="tracks_key"
+        const val THEME_KEY ="isDarkMode"
     }
 }

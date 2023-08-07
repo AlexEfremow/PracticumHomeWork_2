@@ -7,6 +7,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.remote.TrackSearchResponse
@@ -32,19 +34,24 @@ class SearchActivity : AppCompatActivity() {
         val historyRecyclerView = findViewById<RecyclerView>(R.id.history_track_list)
         val clearHistoryButton = findViewById<Button>(R.id.clear_history_button)
 
-        val preferences = Preferences((application as App).sharedPreferences)
-        val historyAdapter = TrackAdapter {  }
+        val preferences = (application as App).preferences
+        val historyAdapter = TrackAdapter { }
         val trackAdapter = TrackAdapter {
             preferences.save(it)
-            historyAdapter.updateTrackList(preferences.getTrackList())
+            historyAdapter.updateTrackList(preferences.getTrackList().reversed())
         }
-
+        val tracksHistoryList = preferences.getTrackList()
 
         val textWatcher = TextWatcher {
             clearButton.isVisible = editText.text.isNotEmpty()
             noResultsStub.visibility = View.GONE
+
             if (editText.hasFocus() && editText.text.isEmpty()) {
-                searchHistory.visibility = View.VISIBLE
+                if(preferences.getTrackList().isEmpty()) {
+                    searchHistory.visibility = View.GONE
+                } else {
+                    searchHistory.visibility = View.VISIBLE
+                }
                 recyclerView.visibility = View.GONE
                 lostConnectionStub.visibility = View.GONE
                 noResultsStub.visibility = View.GONE
@@ -53,12 +60,15 @@ class SearchActivity : AppCompatActivity() {
                 recyclerView.visibility = View.VISIBLE
             }
         }
-        val tracksHistoryList = preferences.getTrackList()
 
         historyRecyclerView.adapter = historyAdapter
 
         historyAdapter.updateTrackList(tracksHistoryList.reversed())
-
+        if(tracksHistoryList.isEmpty()) {
+            searchHistory.visibility = View.GONE
+        } else {
+            searchHistory.visibility = View.VISIBLE
+        }
         editText.requestFocus()
         editText.addTextChangedListener(textWatcher)
         editText.onFocusChangeListener = FocusListener()
@@ -123,10 +133,16 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             editText.text.clear()
             inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+//            if(tracksHistoryList.isNullOrEmpty()) {
+//                searchHistory.visibility = View.GONE
+//            } else {
+//                searchHistory.visibility = View.VISIBLE
+//            }
         }
         clearHistoryButton.setOnClickListener {
             preferences.clearHistory()
             historyAdapter.updateTrackList(emptyList())
+            searchHistory.visibility = View.GONE
         }
     }
 

@@ -12,21 +12,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
-
 class SettingsActivity : AppCompatActivity() {
 
 
     @RequiresApi(Build.VERSION_CODES.R)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
+        val preferences = (application as App).preferences
 
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        findViewById<SwitchMaterial>(R.id.switcher).isChecked = resources.configuration.isNightModeActive
+        findViewById<SwitchMaterial>(R.id.switcher).isChecked = preferences.getCurrentTheme()
         findViewById<SwitchMaterial>(R.id.switcher).setOnCheckedChangeListener { _, isChecked ->
             (applicationContext as App).switchTheme(isChecked)
+            preferences.saveTheme(isChecked)
         }
         findViewById<LinearLayout>(R.id.share_button).setOnClickListener {
             val sendIntent: Intent = Intent().apply {

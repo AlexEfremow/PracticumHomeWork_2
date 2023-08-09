@@ -55,7 +55,7 @@
             android:drawablePadding="10dp"
             android:fontFamily="@font/ys_text_regular"
             android:hint="@string/hint_search"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSearch"
             android:singleLine="true" />
 
         <ImageView
@@ -76,22 +76,32 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="16dp"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <include
         android:id="@+id/no_results_stub"
         layout="@layout/no_results_stub"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="94dp"
+        android:layout_gravity="top"
         android:visibility="gone" />
 
     <include
         android:id="@+id/lost_connection_stub"
         layout="@layout/lost_connection_stub"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="94dp"
         android:visibility="gone" />
+    <include
+        android:id="@+id/search_history"
+        layout="@layout/focus_hint"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"/>
 
 </LinearLayout>

@@ -2,13 +2,13 @@ package com.example.practicumhomework_2
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.remote.TrackSearchResponse
@@ -16,7 +16,6 @@ import com.example.practicumhomework_2.remote.TracksSearchApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class SearchActivity : AppCompatActivity() {
 
@@ -31,8 +30,48 @@ class SearchActivity : AppCompatActivity() {
         val noResultsStub = findViewById<LinearLayout>(R.id.no_results_stub)
         val lostConnectionStub = findViewById<LinearLayout>(R.id.lost_connection_stub)
         val refreshButton = findViewById<Button>(R.id.refresh_button)
+        val searchHistory = findViewById<ScrollView>(R.id.search_history)
+        val historyRecyclerView = findViewById<RecyclerView>(R.id.history_track_list)
+        val clearHistoryButton = findViewById<Button>(R.id.clear_history_button)
 
-        val trackAdapter = TrackAdapter()
+        val preferences = (application as App).preferences
+        val historyAdapter = TrackAdapter { }
+        val trackAdapter = TrackAdapter {
+            preferences.save(it)
+            historyAdapter.updateTrackList(preferences.getTrackList().reversed())
+        }
+        val tracksHistoryList = preferences.getTrackList()
+
+        val textWatcher = TextWatcher {
+            clearButton.isVisible = editText.text.isNotEmpty()
+            noResultsStub.visibility = View.GONE
+
+            if (editText.hasFocus() && editText.text.isEmpty()) {
+                if(preferences.getTrackList().isEmpty()) {
+                    searchHistory.visibility = View.GONE
+                } else {
+                    searchHistory.visibility = View.VISIBLE
+                }
+                recyclerView.visibility = View.GONE
+                lostConnectionStub.visibility = View.GONE
+                noResultsStub.visibility = View.GONE
+            } else {
+                searchHistory.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
+        }
+
+        historyRecyclerView.adapter = historyAdapter
+
+        historyAdapter.updateTrackList(tracksHistoryList.reversed())
+        if(tracksHistoryList.isEmpty()) {
+            searchHistory.visibility = View.GONE
+        } else {
+            searchHistory.visibility = View.VISIBLE
+        }
+        editText.requestFocus()
+        editText.addTextChangedListener(textWatcher)
+        editText.onFocusChangeListener = FocusListener()
 
         fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
             TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
@@ -49,6 +88,7 @@ class SearchActivity : AppCompatActivity() {
                     if (trackList.isNullOrEmpty()) {
                         noResultsStub.visibility = View.VISIBLE
                         recyclerView.visibility = View.GONE
+                        searchHistory.visibility = View.GONE
                     } else {
                         noResultsStub.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
@@ -57,14 +97,18 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
 
+
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                 recyclerView.visibility = View.GONE
                 noResultsStub.visibility = View.GONE
+                searchHistory.visibility = View.GONE
+
                 lostConnectionStub.visibility = View.VISIBLE
-                refreshButton.setOnClickListener {
-                    searchTracks(editText.text.toString(), this)
-                }
             }
+
+        }
+        refreshButton.setOnClickListener {
+            searchTracks(editText.text.toString(), searchTrackCallBack)
         }
         recyclerView.adapter = trackAdapter
 
@@ -73,30 +117,32 @@ class SearchActivity : AppCompatActivity() {
         }
         val inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                clearButton.isVisible = p0?.length != 0
-                editText.setOnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        if (p0 != null) {
-                            searchTracks(p0.toString(), searchTrackCallBack)
-                            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-                        } else {
-                            noResultsStub.visibility = View.GONE
-                        }
-                        true
-                    } else false
+        editText.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (v.text != null) {
+                    searchTracks(v.text.toString(), searchTrackCallBack)
+                    inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+                } else {
+                    noResultsStub.visibility = View.GONE
+                    lostConnectionStub.visibility = View.GONE
                 }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
+                true
+            } else false
         }
-        editText.addTextChangedListener(textWatcher)
         clearButton.setOnClickListener {
             editText.text.clear()
             inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+//            if(tracksHistoryList.isNullOrEmpty()) {
+//                searchHistory.visibility = View.GONE
+//            } else {
+//                searchHistory.visibility = View.VISIBLE
+//            }
+        }
+        clearHistoryButton.setOnClickListener {
+            preferences.clearHistory()
+            historyAdapter.updateTrackList(emptyList())
+            searchHistory.visibility = View.GONE
         }
     }
 

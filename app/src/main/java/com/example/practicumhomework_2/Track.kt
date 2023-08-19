@@ -10,12 +10,3 @@ data class Track(
     @SerializedName("artworkUrl100") val artworkUrl: String,
     val trackId: Int
 )
-
-/**
- *
- * {
- * "trackName":"Smells likeTeen Spirit",
- * "artistName":"Nirvana",
- *
- *
- */

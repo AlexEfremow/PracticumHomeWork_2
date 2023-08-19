@@ -133,11 +133,6 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             editText.text.clear()
             inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-//            if(tracksHistoryList.isNullOrEmpty()) {
-//                searchHistory.visibility = View.GONE
-//            } else {
-//                searchHistory.visibility = View.VISIBLE
-//            }
         }
         clearHistoryButton.setOnClickListener {
             preferences.clearHistory()

@@ -17,8 +17,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         trackNameTextView.text = track.trackName
         musicianNameTextView.text = track.artistName
-        trackTimeTextView.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
+        trackTimeTextView.text = track.timeFormat()
         Glide.with(itemView.context)
             .load(track.artworkUrl)
             .transform(

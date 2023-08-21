@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    style="@style/Screen_Theme"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
@@ -32,24 +33,43 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="24dp" />
 
-    <ImageView
-        style="@style/back_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/back_button"
-        android:src="@drawable/ic_baseline_arrow_back_16"
+        android:layout_margin="4dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/return_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                style="@style/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/back_button"
+                android:padding="4dp"
+                android:src="@drawable/ic_baseline_arrow_back_16" />
+
+        </FrameLayout>
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/track_poster"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="26dp"
+        android:contentDescription="@string/track_poster"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_24"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_24"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/track_poster" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/track_name"
@@ -59,8 +79,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/ys_text_medium"
         android:maxLines="1"
-        android:text="Yesterday (Remastered 2009)"
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_24"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_24"
@@ -74,8 +93,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/ys_text_medium"
         android:maxLines="1"
-        android:text="The Beatles "
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_24"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_24"
@@ -116,7 +134,8 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/ys_text_medium"
         android:maxLines="1"
-        android:text="0:30"
+        android:text="00:00"
+        style="@style/track_name_style_player"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/play_button"
         app:layout_constraintStart_toStartOf="@id/play_button"
@@ -129,7 +148,7 @@
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
         android:maxLines="1"
-        android:text="Длительность"
+        android:text="@string/track_duration"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/track_duration_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
@@ -141,7 +160,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
-        android:text="Альбом"
+        android:text="@string/album"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/album_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
@@ -153,7 +172,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
-        android:text="Год"
+        android:text="@string/track_year"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/track_release_year_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
@@ -165,7 +184,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
-        android:text="Жанр"
+        android:text="@string/track_genre"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/track_genre_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
@@ -178,7 +197,7 @@
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
-        android:text="Страна"
+        android:text="@string/country"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/track_country_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
@@ -191,8 +210,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        android:text="Длительность"
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_duration"
@@ -204,8 +222,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        android:text="Альбом"
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/album"
@@ -217,8 +234,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        android:text="Год"
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_release_year"
@@ -230,8 +246,7 @@
         android:layout_height="32dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        android:text="Жанр"
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_genre"
@@ -244,8 +259,7 @@
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        android:text="Страна"
-        android:textColor="@color/black_2"
+        style="@style/track_name_style_player"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_country"

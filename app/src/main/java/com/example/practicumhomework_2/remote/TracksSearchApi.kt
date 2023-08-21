@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface TracksSearchApi {
 
     @GET("search?entity=song")
-    fun searchTracks(@Query("term") trackName: String): Call<TrackSearchResponse>
+    fun searchTracks(@Query("term") value: String): Call<TrackSearchResponse>
 
     companion object {
         val retrofit = Retrofit.Builder()

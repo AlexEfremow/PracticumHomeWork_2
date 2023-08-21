@@ -1,6 +1,7 @@
 package com.example.practicumhomework_2
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -35,10 +36,12 @@ class SearchActivity : AppCompatActivity() {
         val clearHistoryButton = findViewById<Button>(R.id.clear_history_button)
 
         val preferences = (application as App).preferences
-        val historyAdapter = TrackAdapter { }
+        val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
+
         val trackAdapter = TrackAdapter {
             preferences.save(it)
             historyAdapter.updateTrackList(preferences.getTrackList().reversed())
+            openPlayer(it.trackId)
         }
         val tracksHistoryList = preferences.getTrackList()
 
@@ -139,6 +142,10 @@ class SearchActivity : AppCompatActivity() {
             historyAdapter.updateTrackList(emptyList())
             searchHistory.visibility = View.GONE
         }
+    }
+    fun openPlayer(trackId: String) {
+        val playerIntent = Intent(this, PlayerActivity::class.java).putExtra("track_id", trackId)
+        startActivity(playerIntent)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

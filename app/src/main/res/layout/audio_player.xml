@@ -52,7 +52,6 @@
                 style="@style/back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
                 android:contentDescription="@string/back_button"
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_arrow_back_16" />
@@ -62,9 +61,8 @@
 
     <ImageView
         android:id="@+id/track_poster"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="26dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:contentDescription="@string/track_poster"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_24"
@@ -103,7 +101,7 @@
         android:id="@+id/play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:src="@drawable/ic_baseline_play_circle_24"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_24"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_24"
@@ -144,7 +142,7 @@
     <TextView
         android:id="@+id/track_duration"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
         android:maxLines="1"
@@ -152,40 +150,44 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/track_duration_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
-        app:layout_constraintTop_toBottomOf="@+id/track_time" />
+        app:layout_constraintTop_toBottomOf="@+id/track_time"
+        app:layout_constraintBottom_toTopOf="@id/album"/>
 
     <TextView
         android:id="@+id/album"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
         android:text="@string/album"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/album_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
-        app:layout_constraintTop_toBottomOf="@+id/track_duration" />
+        app:layout_constraintTop_toBottomOf="@+id/track_duration"
+        app:layout_constraintBottom_toTopOf="@id/track_release_year"/>
 
     <TextView
         android:id="@+id/track_release_year"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
         android:text="@string/track_year"
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/track_release_year_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
-        app:layout_constraintTop_toBottomOf="@+id/album" />
+        app:layout_constraintTop_toBottomOf="@+id/album"
+        app:layout_constraintBottom_toTopOf="@+id/track_genre"/>
 
     <TextView
         android:id="@+id/track_genre"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
         android:text="@string/track_genre"
         android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/track_country"
         app:layout_constraintEnd_toStartOf="@id/track_genre_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
         app:layout_constraintTop_toBottomOf="@+id/track_release_year" />
@@ -193,12 +195,13 @@
     <TextView
         android:id="@+id/track_country"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center"
         android:text="@string/country"
         android:textSize="13sp"
+        android:layout_marginBottom="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/track_country_value"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
         app:layout_constraintTop_toBottomOf="@+id/track_genre" />
@@ -206,61 +209,66 @@
 
     <TextView
         android:id="@+id/track_duration_value"
+        style="@style/track_name_style_player"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        style="@style/track_name_style_player"
         android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/album_value"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_duration"
         app:layout_constraintTop_toBottomOf="@+id/track_time" />
 
     <TextView
         android:id="@+id/album_value"
+        style="@style/track_name_style_player"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        style="@style/track_name_style_player"
         android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/track_release_year_value"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/album"
         app:layout_constraintTop_toBottomOf="@+id/track_duration" />
 
     <TextView
         android:id="@+id/track_release_year_value"
+        style="@style/track_name_style_player"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        style="@style/track_name_style_player"
         android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/track_genre_value"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_release_year"
         app:layout_constraintTop_toBottomOf="@+id/album" />
 
     <TextView
         android:id="@+id/track_genre_value"
+        style="@style/track_name_style_player"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        style="@style/track_name_style_player"
         android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/track_country_value"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_genre"
         app:layout_constraintTop_toBottomOf="@+id/track_release_year" />
 
     <TextView
         android:id="@+id/track_country_value"
+        style="@style/track_name_style_player"
         android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="20dp"
         android:fontFamily="@font/ys_text_regular"
         android:gravity="center|end"
-        style="@style/track_name_style_player"
         android:textSize="13sp"
+        android:layout_marginBottom="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_16"
         app:layout_constraintStart_toEndOf="@id/track_country"
         app:layout_constraintTop_toBottomOf="@+id/track_genre" />

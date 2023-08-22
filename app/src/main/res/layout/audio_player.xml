@@ -61,12 +61,13 @@
 
     <ImageView
         android:id="@+id/track_poster"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:contentDescription="@string/track_poster"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/right_guideLine_24"
         app:layout_constraintStart_toStartOf="@id/left_guideLine_24"
+        app:layout_constraintBottom_toBottomOf="@id/track_name"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView

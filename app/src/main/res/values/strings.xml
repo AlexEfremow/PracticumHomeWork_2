@@ -27,4 +27,10 @@
     <string name="refresh">Обновить</string>
     <string name="you_searched_up">Вы искали</string>
     <string name="delete_history">Очистить историю</string>
+    <string name="track_poster">track poster</string>
+    <string name="track_duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="track_year">Год</string>
+    <string name="track_genre">Жанр</string>
+    <string name="country">Страна</string>
 </resources>

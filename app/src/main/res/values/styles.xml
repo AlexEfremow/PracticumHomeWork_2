@@ -79,4 +79,7 @@
     <style name="history_textView">
         <item name="android:textColor">@color/black_2</item>
     </style>
+    <style name="track_name_style_player">
+        <item name="android:textColor">@color/black_2</item>
+    </style>
 </resources>

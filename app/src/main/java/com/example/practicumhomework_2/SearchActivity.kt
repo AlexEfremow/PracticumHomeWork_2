@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
@@ -36,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
     private val searchHistory by lazy { findViewById<ScrollView>(R.id.search_history) }
     private val historyRecyclerView by lazy { findViewById<RecyclerView>(R.id.history_track_list) }
     private val clearHistoryButton by lazy { findViewById<Button>(R.id.clear_history_button) }
+    private val progressBar by lazy { findViewById<FrameLayout>(R.id.progress_bar_layout) }
+
 
     private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
     private val trackAdapter = TrackAdapter {
@@ -50,6 +53,7 @@ class SearchActivity : AppCompatActivity() {
         ) {
             if (response.isSuccessful) {
                 lostConnectionStub.visibility = View.GONE
+                progressBar.visibility = View.GONE
                 val trackList = response.body()?.results
                 if (trackList.isNullOrEmpty()) {
                     noResultsStub.visibility = View.VISIBLE
@@ -67,6 +71,7 @@ class SearchActivity : AppCompatActivity() {
         override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
             recyclerView.visibility = View.GONE
             noResultsStub.visibility = View.GONE
+            progressBar.visibility = View.GONE
             searchHistory.visibility = View.GONE
 
             lostConnectionStub.visibility = View.VISIBLE
@@ -149,6 +154,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private val runnable = Runnable {
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
         searchTracks(editText.text.toString(), searchTrackCallBack)
     }
 

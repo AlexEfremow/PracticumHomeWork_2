@@ -5,20 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isEmpty
-import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.remote.TrackSearchResponse
 import com.example.practicumhomework_2.remote.TracksSearchApi
-import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Runnable
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +33,12 @@ class SearchActivity : AppCompatActivity() {
     private val historyRecyclerView by lazy { findViewById<RecyclerView>(R.id.history_track_list) }
     private val clearHistoryButton by lazy { findViewById<Button>(R.id.clear_history_button) }
     private val progressBar by lazy { findViewById<FrameLayout>(R.id.progress_bar_layout) }
+    private var isClickAllowed = true
+    private val runnable = Runnable {
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        searchTracks(editText.text.toString(), searchTrackCallBack)
+    }
 
 
     private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
@@ -153,11 +154,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private val runnable = Runnable {
-        progressBar.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
-        searchTracks(editText.text.toString(), searchTrackCallBack)
-    }
 
     private fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
         TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
@@ -165,13 +161,24 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchDebounce() {
         mainHandler.removeCallbacks(runnable)
-        mainHandler.postDelayed(runnable, DELAY)
+        mainHandler.postDelayed(runnable, SEARCH_DELAY)
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            mainHandler.postDelayed({ isClickAllowed = true }, TRACK_CLICK_DELAY)
+        }
+        return current
     }
 
 
     private fun openPlayer(trackId: String) {
         val playerIntent = Intent(this, PlayerActivity::class.java).putExtra("track_id", trackId)
-        startActivity(playerIntent)
+        if (clickDebounce()) {
+            startActivity(playerIntent)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -186,7 +193,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val DELAY = 2000L
+        private const val SEARCH_DELAY = 2000L
+        private const val TRACK_CLICK_DELAY = 1000L
     }
 }
 

@@ -133,7 +133,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/ys_text_medium"
         android:maxLines="1"
-        android:text="00:30"
+        android:text="00:00"
         style="@style/track_name_style_player"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/play_button"

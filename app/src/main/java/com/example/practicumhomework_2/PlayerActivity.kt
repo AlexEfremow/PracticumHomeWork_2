@@ -35,14 +35,14 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var track: Track
     private lateinit var playButton: ImageView
     private var mainThreadHandler: Handler = Handler(Looper.getMainLooper())
-    private var counter = 30000L
+    private var counter = 0
     private val runnable = object : Runnable {
         override fun run() {
 //            if (playerState == STATE_PLAYING) {
                 secondsLeftTextView.text =
                     SimpleDateFormat("mm:ss", Locale.getDefault()).format(counter)
                 mainThreadHandler.postDelayed(this, DELAY)
-                counter -= 1000
+                counter += 1000
 //            }
         }
     }
@@ -121,7 +121,7 @@ class PlayerActivity : AppCompatActivity() {
             playButton.setImageResource(R.drawable.ic_baseline_play_circle_24)
             playerState = STATE_PREPARED
             mainThreadHandler.removeCallbacks(runnable)
-            counter = 30000L
+            counter = 0
             secondsLeftTextView.text =
                 SimpleDateFormat("mm:ss", Locale.getDefault()).format(counter)
         }

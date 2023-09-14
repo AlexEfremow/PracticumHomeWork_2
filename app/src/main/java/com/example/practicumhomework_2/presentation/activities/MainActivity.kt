@@ -1,9 +1,10 @@
-package com.example.practicumhomework_2
+package com.example.practicumhomework_2.presentation.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.example.practicumhomework_2.R
 
 class MainActivity : AppCompatActivity() {
 

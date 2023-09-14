@@ -1,9 +1,11 @@
-package com.example.practicumhomework_2
+package com.example.practicumhomework_2.presentation
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.practicumhomework_2.R
+import com.example.practicumhomework_2.entity.Track
 
 class TrackAdapter(private val onClick: (Track) -> Unit) : RecyclerView.Adapter<TrackViewHolder>() {
 

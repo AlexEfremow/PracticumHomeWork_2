@@ -1,16 +1,16 @@
-package com.example.practicumhomework_2
+package com.example.practicumhomework_2.data.local
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate
+import com.example.practicumhomework_2.domain.LocalStorage
+import com.example.practicumhomework_2.entity.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class Preferences(private val preferences: SharedPreferences, private val gson: Gson = Gson()) {
+class Preferences(private val preferences: SharedPreferences, private val gson: Gson = Gson()): LocalStorage {
 
     val typeToken = object : TypeToken<ArrayList<Track>>() {}.type
 
-    fun save(track: Track){
+    override fun save(track: Track){
         val trackListJson = preferences.getString(KEY, "")
         val trackList = gson.fromJson<ArrayList<Track>>(trackListJson, typeToken) ?: arrayListOf()
         if (trackList.contains(track)) {
@@ -24,17 +24,17 @@ class Preferences(private val preferences: SharedPreferences, private val gson: 
         preferences.edit().putString(KEY, saveTrackList).apply()
     }
 
-    fun getTrackList(): List<Track> {
+    override fun getTrackList(): List<Track> {
         val trackListJson = preferences.getString(KEY, "")
         return gson.fromJson(trackListJson, typeToken) ?: emptyList()
     }
-    fun clearHistory() {
+    override fun clearHistory() {
         preferences.edit().clear().apply()
     }
-    fun getCurrentTheme(): Boolean {
+    override fun getCurrentTheme(): Boolean {
         return preferences.getBoolean(THEME_KEY, false)
     }
-    fun saveTheme(isDarkTheme: Boolean) {
+    override fun saveTheme(isDarkTheme: Boolean) {
         preferences.edit().putBoolean(THEME_KEY, isDarkTheme).apply()
     }
 

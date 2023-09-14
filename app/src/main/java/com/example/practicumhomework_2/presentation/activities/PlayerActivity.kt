@@ -1,18 +1,18 @@
-package com.example.practicumhomework_2
+package com.example.practicumhomework_2.presentation.activities
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.practicumhomework_2.remote.TrackSearchResponse
-import com.example.practicumhomework_2.remote.TracksSearchApi
-import com.google.android.material.button.MaterialButton
+import com.example.practicumhomework_2.R
+import com.example.practicumhomework_2.entity.Track
+import com.example.practicumhomework_2.data.network.TrackSearchResponse
+import com.example.practicumhomework_2.data.network.TracksSearchApi
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat

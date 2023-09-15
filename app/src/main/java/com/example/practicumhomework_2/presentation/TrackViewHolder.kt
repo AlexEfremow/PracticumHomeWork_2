@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.entity.Track
+import com.example.practicumhomework_2.domain.entity.Track
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackNameTextView = itemView.findViewById<TextView>(R.id.track_name)

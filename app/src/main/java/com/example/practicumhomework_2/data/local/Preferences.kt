@@ -2,7 +2,7 @@ package com.example.practicumhomework_2.data.local
 
 import android.content.SharedPreferences
 import com.example.practicumhomework_2.domain.LocalStorage
-import com.example.practicumhomework_2.entity.Track
+import com.example.practicumhomework_2.domain.entity.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

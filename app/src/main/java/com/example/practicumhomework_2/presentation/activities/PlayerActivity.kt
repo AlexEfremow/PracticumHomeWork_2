@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.entity.Track
+import com.example.practicumhomework_2.domain.entity.Track
 import com.example.practicumhomework_2.data.network.TrackSearchResponse
 import com.example.practicumhomework_2.data.network.TracksSearchApi
 import retrofit2.Call

@@ -1,6 +1,6 @@
 package com.example.practicumhomework_2.domain
 
-import com.example.practicumhomework_2.entity.Track
+import com.example.practicumhomework_2.domain.entity.Track
 
 interface LocalStorage {
     fun save(track: Track)

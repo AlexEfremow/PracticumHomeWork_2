@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.remote
+package com.example.practicumhomework_2.data.network
 
 import retrofit2.Call
 import retrofit2.Retrofit

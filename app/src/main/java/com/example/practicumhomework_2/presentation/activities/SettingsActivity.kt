@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2
+package com.example.practicumhomework_2.presentation.activities
 
 import android.content.Intent
 import android.net.Uri
@@ -6,11 +6,10 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
+import com.example.practicumhomework_2.App
+import com.example.practicumhomework_2.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 class SettingsActivity : AppCompatActivity() {
 

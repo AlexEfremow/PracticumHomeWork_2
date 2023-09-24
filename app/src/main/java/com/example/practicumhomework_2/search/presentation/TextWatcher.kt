@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.presentation
+package com.example.practicumhomework_2.search.presentation
 
 import android.text.Editable
 import android.text.TextWatcher

@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.presentation.activities
+package com.example.practicumhomework_2.search.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -13,19 +13,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.App
-import com.example.practicumhomework_2.presentation.FocusListener
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.data.network.TrackSearchResponse
-import com.example.practicumhomework_2.data.network.TracksSearchApi
+import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
+import com.example.practicumhomework_2.search.data.network.TracksSearchApi
+import com.example.practicumhomework_2.player.presentation.PlayerActivity
 import kotlinx.coroutines.Runnable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.practicumhomework_2.presentation.TextWatcher
-import com.example.practicumhomework_2.presentation.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
-    private val preferences by lazy { (application as App).preferences }
+    private val preferences by lazy { (application as App).searchPreferences }
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private val editText by lazy { findViewById<EditText>(R.id.EditText) }

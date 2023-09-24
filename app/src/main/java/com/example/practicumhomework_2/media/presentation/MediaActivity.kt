@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.presentation.activities
+package com.example.practicumhomework_2.media.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

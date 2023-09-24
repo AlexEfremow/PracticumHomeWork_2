@@ -1,12 +1,12 @@
-package com.example.practicumhomework_2.data.local
+package com.example.practicumhomework_2.search.data.local
 
 import android.content.SharedPreferences
-import com.example.practicumhomework_2.domain.LocalStorage
-import com.example.practicumhomework_2.domain.entity.Track
+import com.example.practicumhomework_2.player.domain.entity.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class Preferences(private val preferences: SharedPreferences, private val gson: Gson = Gson()): LocalStorage {
+class SearchPreferencesImpl(private val preferences: SharedPreferences, private val gson: Gson = Gson()):
+    SearchPreferences {
 
     val typeToken = object : TypeToken<ArrayList<Track>>() {}.type
 
@@ -31,16 +31,9 @@ class Preferences(private val preferences: SharedPreferences, private val gson: 
     override fun clearHistory() {
         preferences.edit().clear().apply()
     }
-    override fun getCurrentTheme(): Boolean {
-        return preferences.getBoolean(THEME_KEY, false)
-    }
-    override fun saveTheme(isDarkTheme: Boolean) {
-        preferences.edit().putBoolean(THEME_KEY, isDarkTheme).apply()
-    }
 
 
     companion object {
         const val KEY ="tracks_key"
-        const val THEME_KEY ="isDarkMode"
     }
 }

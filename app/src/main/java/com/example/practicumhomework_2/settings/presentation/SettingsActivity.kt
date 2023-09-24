@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.presentation.activities
+package com.example.practicumhomework_2.settings.presentation
 
 import android.content.Intent
 import android.net.Uri
@@ -19,7 +19,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
-        val preferences = (application as App).preferences
+        val preferences = (application as App).settingsPreferences
 
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()

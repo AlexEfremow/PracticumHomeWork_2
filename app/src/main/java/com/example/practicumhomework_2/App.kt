@@ -2,18 +2,22 @@ package com.example.practicumhomework_2
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.practicumhomework_2.data.local.Preferences
-import com.example.practicumhomework_2.domain.LocalStorage
+import com.example.practicumhomework_2.search.data.local.SearchPreferencesImpl
+import com.example.practicumhomework_2.search.data.local.SearchPreferences
+import com.example.practicumhomework_2.settings.data.SettingsPreferences
+import com.example.practicumhomework_2.settings.data.SettingsPreferencesImpl
 
 class App : Application() {
 
-    lateinit var preferences: LocalStorage
+    lateinit var searchPreferences: SearchPreferences
+    lateinit var settingsPreferences: SettingsPreferences
 
     override fun onCreate() {
         super.onCreate()
         val sharedPreferences = this.getSharedPreferences("my_prefs", MODE_PRIVATE)
-        preferences = Preferences(sharedPreferences)
-        val isDarkTheme = preferences.getCurrentTheme()
+        searchPreferences = SearchPreferencesImpl(sharedPreferences)
+        settingsPreferences = SettingsPreferencesImpl(sharedPreferences)
+        val isDarkTheme = settingsPreferences.getCurrentTheme()
         switchTheme(isDarkTheme)
     }
     fun switchTheme(darkThemeEnabled: Boolean) {

@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.presentation.activities
+package com.example.practicumhomework_2.player.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -10,9 +10,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.domain.entity.Track
-import com.example.practicumhomework_2.data.network.TrackSearchResponse
-import com.example.practicumhomework_2.data.network.TracksSearchApi
+import com.example.practicumhomework_2.player.domain.entity.Track
+import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
+import com.example.practicumhomework_2.search.data.network.TracksSearchApi
 import retrofit2.Call
 import retrofit2.Response
 import java.text.SimpleDateFormat

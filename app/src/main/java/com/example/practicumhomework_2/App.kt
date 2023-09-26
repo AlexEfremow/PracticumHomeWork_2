@@ -18,11 +18,8 @@ class App : Application() {
         searchPreferences = SearchPreferencesImpl(sharedPreferences)
         settingsPreferences = SettingsPreferencesImpl(sharedPreferences)
         val isDarkTheme = settingsPreferences.getCurrentTheme()
-        switchTheme(isDarkTheme)
-    }
-    fun switchTheme(darkThemeEnabled: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
+            if (isDarkTheme) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO

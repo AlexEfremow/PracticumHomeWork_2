@@ -11,12 +11,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
 import com.example.practicumhomework_2.search.data.network.TracksSearchApi
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
+import com.example.practicumhomework_2.settings.presentation.SettingsViewModel
+import com.example.practicumhomework_2.settings.presentation.SettingsViewModelFactory
 import kotlinx.coroutines.Runnable
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +29,7 @@ import retrofit2.Response
 class SearchActivity : AppCompatActivity() {
     private val preferences by lazy { (application as App).searchPreferences }
     private val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var viewModel: SearchViewModel
 
     private val editText by lazy { findViewById<EditText>(R.id.EditText) }
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
@@ -88,6 +93,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.search)
 
         val tracksHistoryList = preferences.getTrackList()
+        viewModel = ViewModelProvider(this, SearchViewModelFactory((application as App).searchPreferences))[SearchViewModel::class.java]
 
         val textWatcher = TextWatcher {
             searchDebounce()
@@ -160,6 +166,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
         TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
+        viewModel.getTrackList(query, callback)
     }
 
     private fun searchDebounce() {

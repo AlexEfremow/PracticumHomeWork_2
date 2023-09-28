@@ -11,23 +11,18 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
-import com.example.practicumhomework_2.search.data.network.TracksSearchApi
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
-import com.example.practicumhomework_2.settings.presentation.SettingsViewModel
-import com.example.practicumhomework_2.settings.presentation.SettingsViewModelFactory
 import kotlinx.coroutines.Runnable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
-    private val preferences by lazy { (application as App).searchPreferences }
     private val mainHandler = Handler(Looper.getMainLooper())
     private lateinit var viewModel: SearchViewModel
 
@@ -51,8 +46,8 @@ class SearchActivity : AppCompatActivity() {
 
     private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
     private val trackAdapter = TrackAdapter {
-        preferences.save(it)
-        historyAdapter.updateTrackList(preferences.getTrackList().reversed())
+        viewModel.saveTrackToHistory(it)
+        historyAdapter.updateTrackList(viewModel.getTrackHistory())
         openPlayer(it.trackId)
     }
     private val searchTrackCallBack = object : Callback<TrackSearchResponse> {
@@ -92,8 +87,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
 
-        val tracksHistoryList = preferences.getTrackList()
         viewModel = ViewModelProvider(this, SearchViewModelFactory((application as App).searchPreferences))[SearchViewModel::class.java]
+        val tracksHistoryList = viewModel.getTrackHistory()
 
         val textWatcher = TextWatcher {
             searchDebounce()
@@ -101,7 +96,7 @@ class SearchActivity : AppCompatActivity() {
             noResultsStub.visibility = View.GONE
 
             if (editText.hasFocus() && editText.text.isEmpty()) {
-                if (preferences.getTrackList().isEmpty()) {
+                if (viewModel.getTrackHistory().isEmpty()) {
                     searchHistory.visibility = View.GONE
                 } else {
                     searchHistory.visibility = View.VISIBLE
@@ -117,7 +112,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyRecyclerView.adapter = historyAdapter
 
-        historyAdapter.updateTrackList(tracksHistoryList.reversed())
+        historyAdapter.updateTrackList(tracksHistoryList)
         if (tracksHistoryList.isEmpty()) {
             searchHistory.visibility = View.GONE
         } else {
@@ -157,7 +152,7 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
         clearHistoryButton.setOnClickListener {
-            preferences.clearHistory()
+            viewModel.clearHistory()
             historyAdapter.updateTrackList(emptyList())
             searchHistory.visibility = View.GONE
         }
@@ -165,8 +160,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
-        TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
-        viewModel.getTrackList(query, callback)
+        viewModel.loadTrackList(query, callback)
     }
 
     private fun searchDebounce() {

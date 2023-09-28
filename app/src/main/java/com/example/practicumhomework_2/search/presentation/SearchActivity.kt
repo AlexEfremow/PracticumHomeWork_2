@@ -15,12 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
+import com.example.practicumhomework_2.search.domain.SearchState
 import kotlinx.coroutines.Runnable
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -40,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
     private val runnable = Runnable {
         progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
-        searchTracks(editText.text.toString(), searchTrackCallBack)
+        searchTracks(editText.text.toString())
     }
 
 
@@ -50,46 +47,44 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter.updateTrackList(viewModel.getTrackHistory())
         openPlayer(it.trackId)
     }
-    private val searchTrackCallBack = object : Callback<TrackSearchResponse> {
-        override fun onResponse(
-            call: Call<TrackSearchResponse>,
-            response: Response<TrackSearchResponse>
-        ) {
-            if (response.isSuccessful) {
-                lostConnectionStub.visibility = View.GONE
-                progressBar.visibility = View.GONE
-                val trackList = response.body()?.results
-                if (trackList.isNullOrEmpty()) {
-                    noResultsStub.visibility = View.VISIBLE
-                    recyclerView.visibility = View.GONE
-                    searchHistory.visibility = View.GONE
-                } else {
-                    noResultsStub.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    trackAdapter.updateTrackList(trackList)
-                }
-            }
-        }
-
-
-        override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-            recyclerView.visibility = View.GONE
-            noResultsStub.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchHistory.visibility = View.GONE
-
-            lostConnectionStub.visibility = View.VISIBLE
-        }
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
 
-        viewModel = ViewModelProvider(this, SearchViewModelFactory((application as App).searchPreferences))[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            SearchViewModelFactory((application as App).searchPreferences)
+        )[SearchViewModel::class.java]
         val tracksHistoryList = viewModel.getTrackHistory()
 
+        viewModel.searchState.observe(this) {
+            when (it) {
+                is SearchState.Error -> {
+                    recyclerView.visibility = View.GONE
+                    noResultsStub.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    searchHistory.visibility = View.GONE
+                    lostConnectionStub.visibility = View.VISIBLE
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+                is SearchState.Success -> {
+                    lostConnectionStub.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    val trackList = it.trackList
+                    if (trackList.isEmpty()) {
+                        noResultsStub.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                        searchHistory.visibility = View.GONE
+                    } else {
+                        noResultsStub.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        trackAdapter.updateTrackList(trackList)
+                    }
+                }
+            }
+
+        }
         val textWatcher = TextWatcher {
             searchDebounce()
             clearButton.isVisible = editText.text.isNotEmpty()
@@ -125,7 +120,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         refreshButton.setOnClickListener {
-            searchTracks(editText.text.toString(), searchTrackCallBack)
+            searchTracks(editText.text.toString())
         }
         recyclerView.adapter = trackAdapter
 
@@ -138,7 +133,7 @@ class SearchActivity : AppCompatActivity() {
         editText.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text != null) {
-                    searchTracks(v.text.toString(), searchTrackCallBack)
+                    searchTracks(v.text.toString())
                     inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 } else {
                     noResultsStub.visibility = View.GONE
@@ -159,8 +154,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
-        viewModel.loadTrackList(query, callback)
+    private fun searchTracks(query: String) {
+        viewModel.loadTrackList(query)
     }
 
     private fun searchDebounce() {
@@ -168,7 +163,7 @@ class SearchActivity : AppCompatActivity() {
         mainHandler.postDelayed(runnable, SEARCH_DELAY)
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false

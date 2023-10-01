@@ -1,9 +1,9 @@
 package com.example.practicumhomework_2.main.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.media.presentation.MediaActivity
 import com.example.practicumhomework_2.search.presentation.SearchActivity

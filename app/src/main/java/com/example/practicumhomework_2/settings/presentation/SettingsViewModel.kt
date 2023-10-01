@@ -6,15 +6,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.practicumhomework_2.settings.data.SettingsPreferences
+import com.example.practicumhomework_2.settings.domain.SettingsInteractor
 
-class SettingsViewModel(private val settingsPreferences: SettingsPreferences): ViewModel() {
+class SettingsViewModel(private val interactor: SettingsInteractor): ViewModel() {
 
     private val _isNightThemeState = MutableLiveData<Boolean>()
     val isNightThemeState: LiveData<Boolean> = _isNightThemeState
 
     init {
-        val currentTheme = settingsPreferences.getCurrentTheme()
+        val currentTheme = interactor.currentTheme
         _isNightThemeState.value = currentTheme
     }
 
@@ -26,7 +26,7 @@ class SettingsViewModel(private val settingsPreferences: SettingsPreferences): V
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        settingsPreferences.saveTheme(darkThemeEnabled)
+        interactor.saveTheme(darkThemeEnabled)
     }
     fun getShareLinkIntent(email: String, type: String): Intent {
         val sendIntent: Intent = Intent().apply {

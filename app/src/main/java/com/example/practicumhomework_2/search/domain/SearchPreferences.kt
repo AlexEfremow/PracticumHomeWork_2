@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.search.data.local
+package com.example.practicumhomework_2.search.domain
 
 import com.example.practicumhomework_2.player.domain.entity.Track
 

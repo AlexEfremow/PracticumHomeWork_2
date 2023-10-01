@@ -3,7 +3,7 @@ package com.example.practicumhomework_2
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.practicumhomework_2.search.data.local.SearchPreferencesImpl
-import com.example.practicumhomework_2.search.data.local.SearchPreferences
+import com.example.practicumhomework_2.search.domain.SearchPreferences
 import com.example.practicumhomework_2.settings.data.SettingsPreferences
 import com.example.practicumhomework_2.settings.data.SettingsPreferencesImpl
 

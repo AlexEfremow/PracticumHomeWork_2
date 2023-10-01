@@ -2,13 +2,14 @@ package com.example.practicumhomework_2.search.data.local
 
 import android.content.SharedPreferences
 import com.example.practicumhomework_2.player.domain.entity.Track
+import com.example.practicumhomework_2.search.domain.SearchPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class SearchPreferencesImpl(private val preferences: SharedPreferences, private val gson: Gson = Gson()):
     SearchPreferences {
 
-    val typeToken = object : TypeToken<ArrayList<Track>>() {}.type
+    private val typeToken = object : TypeToken<ArrayList<Track>>() {}.type
 
     override fun save(track: Track){
         val trackListJson = preferences.getString(KEY, "")

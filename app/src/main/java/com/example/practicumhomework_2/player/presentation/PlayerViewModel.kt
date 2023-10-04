@@ -3,12 +3,10 @@ package com.example.practicumhomework_2.player.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.practicumhomework_2.player.domain.SingleTrackSearchCallBack
 import com.example.practicumhomework_2.player.domain.PlayerInteractor
 import com.example.practicumhomework_2.player.domain.PlayerState
-import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.practicumhomework_2.player.domain.entity.Track
 
 class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
 
@@ -16,18 +14,14 @@ class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
     val liveData: LiveData<PlayerState> = _trackLiveData
 
     fun searchTrack(trackId: String) {
-        val callBack = object : Callback<TrackSearchResponse> {
-            override fun onResponse(
-                call: Call<TrackSearchResponse>,
-                response: Response<TrackSearchResponse>
-            ) {
-                _trackLiveData.value =
-                    PlayerState.TrackLoaded(response.body()?.results?.first() ?: return)
+        val callBack = object : SingleTrackSearchCallBack {
+
+            override fun onSuccess(data: Track) {
+                _trackLiveData.value = PlayerState.TrackLoaded(data)
             }
 
-            override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                _trackLiveData.value = PlayerState.Error(t.message ?: "")
-
+            override fun onError(message: String) {
+                _trackLiveData.value = PlayerState.Error(message)
             }
         }
         interactor.searchTrack(trackId, callBack)

@@ -4,12 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.practicumhomework_2.player.domain.entity.Track
-import com.example.practicumhomework_2.search.data.network.TrackSearchResponse
+import com.example.practicumhomework_2.search.domain.TrackListSearchCallBack
 import com.example.practicumhomework_2.search.domain.SearchInteractor
 import com.example.practicumhomework_2.search.domain.SearchState
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
@@ -17,21 +14,14 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     val searchState: LiveData<SearchState> = _searchState
 
     fun loadTrackList(query: String) {
-        val callBack = object : Callback<TrackSearchResponse> {
-            override fun onResponse(
-                call: Call<TrackSearchResponse>,
-                response: Response<TrackSearchResponse>
-            ) {
-                if (response.isSuccessful)
-                    _searchState.value =
-                        SearchState.Success(response.body()?.results ?: emptyList())
-                else {
-                    _searchState.value = SearchState.Error(response.errorBody().toString())
-                }
+        val callBack = object : TrackListSearchCallBack {
+
+            override fun onSuccess(data: List<Track>) {
+                _searchState.value = SearchState.Success(data)
             }
 
-            override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                _searchState.value = SearchState.Error(t.message ?: "")
+            override fun onError(message: String) {
+                _searchState.value = SearchState.Error(message)
             }
         }
         interactor.searchTracks(query, callBack)

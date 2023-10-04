@@ -18,7 +18,8 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, SettingsViewModelFactory((application as App).settingsPreferences))[SettingsViewModel::class.java]
+        val viewModelFactory = (application as App).viewModelFactory
+        viewModel = ViewModelProvider(this, viewModelFactory)[SettingsViewModel::class.java]
         binding = SettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

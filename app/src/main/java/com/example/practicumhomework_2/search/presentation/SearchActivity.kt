@@ -51,11 +51,9 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
+        val viewModelFactory = (application as App).viewModelFactory
 
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModelFactory((application as App).searchPreferences)
-        )[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
         val tracksHistoryList = viewModel.getTrackHistory()
 
         viewModel.searchState.observe(this) {

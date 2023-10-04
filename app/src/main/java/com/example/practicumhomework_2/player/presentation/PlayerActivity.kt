@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
@@ -53,8 +54,8 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
         playButton = findViewById(R.id.play_button)
-
-        viewModel = ViewModelProvider(this, PlayerViewModelFactory())[PlayerViewModel::class.java]
+        val viewModelFactory = (application as App).viewModelFactory
+        viewModel = ViewModelProvider(this, viewModelFactory)[PlayerViewModel::class.java]
         val trackNameTextView = findViewById<TextView>(R.id.track_name)
         val musicianNameTextView = findViewById<TextView>(R.id.artist_name)
         val trackDurationTextView = findViewById<TextView>(R.id.track_duration_value)

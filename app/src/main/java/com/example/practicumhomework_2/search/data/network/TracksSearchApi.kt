@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.data.network
+package com.example.practicumhomework_2.search.data.network
 
 import retrofit2.Call
 import retrofit2.Retrofit

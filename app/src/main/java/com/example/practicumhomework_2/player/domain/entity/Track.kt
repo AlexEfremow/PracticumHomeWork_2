@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.domain.entity
+package com.example.practicumhomework_2.player.domain.entity
 
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat

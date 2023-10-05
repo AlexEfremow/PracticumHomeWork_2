@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.presentation.activities
+package com.example.practicumhomework_2.search.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -11,22 +11,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.App
-import com.example.practicumhomework_2.presentation.FocusListener
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.data.network.TrackSearchResponse
-import com.example.practicumhomework_2.data.network.TracksSearchApi
+import com.example.practicumhomework_2.player.presentation.PlayerActivity
+import com.example.practicumhomework_2.search.domain.SearchState
 import kotlinx.coroutines.Runnable
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import com.example.practicumhomework_2.presentation.TextWatcher
-import com.example.practicumhomework_2.presentation.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
-    private val preferences by lazy { (application as App).preferences }
     private val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var viewModel: SearchViewModel
 
     private val editText by lazy { findViewById<EditText>(R.id.EditText) }
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
@@ -42,62 +37,59 @@ class SearchActivity : AppCompatActivity() {
     private val runnable = Runnable {
         progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
-        searchTracks(editText.text.toString(), searchTrackCallBack)
+        searchTracks(editText.text.toString())
     }
 
 
     private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
     private val trackAdapter = TrackAdapter {
-        preferences.save(it)
-        historyAdapter.updateTrackList(preferences.getTrackList().reversed())
+        viewModel.saveTrackToHistory(it)
+        historyAdapter.updateTrackList(viewModel.getTrackHistory())
         openPlayer(it.trackId)
-    }
-    private val searchTrackCallBack = object : Callback<TrackSearchResponse> {
-        override fun onResponse(
-            call: Call<TrackSearchResponse>,
-            response: Response<TrackSearchResponse>
-        ) {
-            if (response.isSuccessful) {
-                lostConnectionStub.visibility = View.GONE
-                progressBar.visibility = View.GONE
-                val trackList = response.body()?.results
-                if (trackList.isNullOrEmpty()) {
-                    noResultsStub.visibility = View.VISIBLE
-                    recyclerView.visibility = View.GONE
-                    searchHistory.visibility = View.GONE
-                } else {
-                    noResultsStub.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    trackAdapter.updateTrackList(trackList)
-                }
-            }
-        }
-
-
-        override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-            recyclerView.visibility = View.GONE
-            noResultsStub.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchHistory.visibility = View.GONE
-
-            lostConnectionStub.visibility = View.VISIBLE
-        }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
+        val viewModelFactory = (application as App).viewModelFactory
 
-        val tracksHistoryList = preferences.getTrackList()
+        viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
+        val tracksHistoryList = viewModel.getTrackHistory()
 
+        viewModel.searchState.observe(this) {
+            when (it) {
+                is SearchState.Error -> {
+                    recyclerView.visibility = View.GONE
+                    noResultsStub.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    searchHistory.visibility = View.GONE
+                    lostConnectionStub.visibility = View.VISIBLE
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+                is SearchState.Success -> {
+                    lostConnectionStub.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    val trackList = it.trackList
+                    if (trackList.isEmpty()) {
+                        noResultsStub.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                        searchHistory.visibility = View.GONE
+                    } else {
+                        noResultsStub.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        trackAdapter.updateTrackList(trackList)
+                    }
+                }
+            }
+
+        }
         val textWatcher = TextWatcher {
             searchDebounce()
             clearButton.isVisible = editText.text.isNotEmpty()
             noResultsStub.visibility = View.GONE
 
             if (editText.hasFocus() && editText.text.isEmpty()) {
-                if (preferences.getTrackList().isEmpty()) {
+                if (viewModel.getTrackHistory().isEmpty()) {
                     searchHistory.visibility = View.GONE
                 } else {
                     searchHistory.visibility = View.VISIBLE
@@ -113,7 +105,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyRecyclerView.adapter = historyAdapter
 
-        historyAdapter.updateTrackList(tracksHistoryList.reversed())
+        historyAdapter.updateTrackList(tracksHistoryList)
         if (tracksHistoryList.isEmpty()) {
             searchHistory.visibility = View.GONE
         } else {
@@ -126,7 +118,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         refreshButton.setOnClickListener {
-            searchTracks(editText.text.toString(), searchTrackCallBack)
+            searchTracks(editText.text.toString())
         }
         recyclerView.adapter = trackAdapter
 
@@ -139,7 +131,7 @@ class SearchActivity : AppCompatActivity() {
         editText.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text != null) {
-                    searchTracks(v.text.toString(), searchTrackCallBack)
+                    searchTracks(v.text.toString())
                     inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 } else {
                     noResultsStub.visibility = View.GONE
@@ -153,15 +145,15 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
         clearHistoryButton.setOnClickListener {
-            preferences.clearHistory()
+            viewModel.clearHistory()
             historyAdapter.updateTrackList(emptyList())
             searchHistory.visibility = View.GONE
         }
     }
 
 
-    private fun searchTracks(query: String, callback: Callback<TrackSearchResponse>) {
-        TracksSearchApi.retrofit.searchTracks(query).enqueue(callback)
+    private fun searchTracks(query: String) {
+        viewModel.loadTrackList(query)
     }
 
     private fun searchDebounce() {
@@ -169,7 +161,7 @@ class SearchActivity : AppCompatActivity() {
         mainHandler.postDelayed(runnable, SEARCH_DELAY)
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false

@@ -1,20 +1,22 @@
-package com.example.practicumhomework_2.presentation.activities
+package com.example.practicumhomework_2.player.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.domain.entity.Track
-import com.example.practicumhomework_2.data.network.TrackSearchResponse
-import com.example.practicumhomework_2.data.network.TracksSearchApi
-import retrofit2.Call
-import retrofit2.Response
+import com.example.practicumhomework_2.player.domain.PlayerState
+import com.example.practicumhomework_2.player.domain.entity.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private lateinit var secondsLeftTextView: TextView
+    private lateinit var viewModel: PlayerViewModel
 
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
@@ -38,12 +41,12 @@ class PlayerActivity : AppCompatActivity() {
     private var counter = 0
     private val runnable = object : Runnable {
         override fun run() {
-//            if (playerState == STATE_PLAYING) {
-                secondsLeftTextView.text =
-                    SimpleDateFormat("mm:ss", Locale.getDefault()).format(counter)
-                mainThreadHandler.postDelayed(this, DELAY)
-                counter += 1000
-//            }
+            if (playerState == STATE_PLAYING) {
+            secondsLeftTextView.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(counter)
+            mainThreadHandler.postDelayed(this, DELAY)
+            counter += 1000
+            }
         }
     }
 
@@ -51,8 +54,8 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
         playButton = findViewById(R.id.play_button)
-
-
+        val viewModelFactory = (application as App).viewModelFactory
+        viewModel = ViewModelProvider(this, viewModelFactory)[PlayerViewModel::class.java]
         val trackNameTextView = findViewById<TextView>(R.id.track_name)
         val musicianNameTextView = findViewById<TextView>(R.id.artist_name)
         val trackDurationTextView = findViewById<TextView>(R.id.track_duration_value)
@@ -63,20 +66,14 @@ class PlayerActivity : AppCompatActivity() {
         val trackCountryTextView = findViewById<TextView>(R.id.track_country_value)
 
         val trackId = intent.getStringExtra("track_id") ?: ""
-
-        playButton.setOnClickListener {
-            playbackControl()
-        }
-
-
-        val searchTrackCallBack = object : retrofit2.Callback<TrackSearchResponse> {
-
-            override fun onResponse(
-                call: Call<TrackSearchResponse>,
-                response: Response<TrackSearchResponse>
-            ) {
-                if (response.isSuccessful) {
-                    track = response.body()?.results?.first() ?: return
+        viewModel.searchTrack(trackId)
+        viewModel.liveData.observe(this) {
+            when (it) {
+                is PlayerState.Error -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+                is PlayerState.TrackLoaded -> {
+                    track = it.track
                     trackNameTextView.text = track.trackName
                     musicianNameTextView.text = track.artistName
                     trackDurationTextView.text = track.timeFormat()
@@ -98,12 +95,11 @@ class PlayerActivity : AppCompatActivity() {
                         .into(findViewById(R.id.track_poster))
                 }
             }
-
-
-            override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {}
-
         }
-        TracksSearchApi.retrofit.searchTracks(trackId).enqueue(searchTrackCallBack)
+        playButton.setOnClickListener {
+            playbackControl()
+        }
+
 
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()

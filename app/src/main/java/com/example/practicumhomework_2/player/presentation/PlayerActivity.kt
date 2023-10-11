@@ -17,6 +17,7 @@ import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,7 +32,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private lateinit var secondsLeftTextView: TextView
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel  by viewModel<PlayerViewModel>()
 
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
@@ -54,8 +55,7 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
         playButton = findViewById(R.id.play_button)
-        val viewModelFactory = (application as App).viewModelFactory
-        viewModel = ViewModelProvider(this, viewModelFactory)[PlayerViewModel::class.java]
+
         val trackNameTextView = findViewById<TextView>(R.id.track_name)
         val musicianNameTextView = findViewById<TextView>(R.id.artist_name)
         val trackDurationTextView = findViewById<TextView>(R.id.track_duration_value)

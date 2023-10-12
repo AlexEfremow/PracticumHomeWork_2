@@ -13,7 +13,7 @@ interface TracksSearchApi {
     fun searchTracks(@Query("term") value: String): Call<TrackSearchResponse>
 
     companion object {
-        val retrofit = Retrofit.Builder()
+        var retrofit = Retrofit.Builder()
             .baseUrl("https://itunes.apple.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()

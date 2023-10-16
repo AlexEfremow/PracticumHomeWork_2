@@ -16,12 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
+import com.example.practicumhomework_2.player.presentation.PlayerViewModel
 import com.example.practicumhomework_2.search.domain.SearchState
 import kotlinx.coroutines.Runnable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
     private val mainHandler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel  by viewModel<SearchViewModel>()
 
     private val editText by lazy { findViewById<EditText>(R.id.EditText) }
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler_view) }
@@ -51,9 +53,6 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
-        val viewModelFactory = (application as App).viewModelFactory
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
         val tracksHistoryList = viewModel.getTrackHistory()
 
         viewModel.searchState.observe(this) {

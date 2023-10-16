@@ -8,37 +8,44 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.SettingsBinding
+import com.example.practicumhomework_2.player.presentation.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: SettingsBinding
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel by viewModel<SettingsViewModel>()
 
 
     @RequiresApi(Build.VERSION_CODES.R)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelFactory = (application as App).viewModelFactory
-        viewModel = ViewModelProvider(this, viewModelFactory)[SettingsViewModel::class.java]
         binding = SettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.returnButton.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        viewModel.isNightThemeState.observe(this){
+        viewModel.isNightThemeState.observe(this) {
             binding.switcher.isChecked = it
         }
         binding.switcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchTheme(isChecked)
         }
         binding.shareButton.setOnClickListener {
-            val intent = viewModel.getShareLinkIntent(getString(R.string.share_email), getString(R.string.text_pattern))
+            val intent = viewModel.getShareLinkIntent(
+                getString(R.string.share_email),
+                getString(R.string.text_pattern)
+            )
             startActivity(intent)
         }
 
         binding.supportButton.setOnClickListener {
-            val intent = viewModel.getSupportIntent(getString(R.string.message), getString(R.string.mailto), getString(R.string.email))
+            val intent = viewModel.getSupportIntent(
+                getString(R.string.message),
+                getString(R.string.mailto),
+                getString(R.string.email)
+            )
             startActivity(intent)
         }
         binding.agreementButton.setOnClickListener {

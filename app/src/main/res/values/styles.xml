@@ -82,4 +82,10 @@
     <style name="track_name_style_player">
         <item name="android:textColor">@color/black_2</item>
     </style>
+    <style name="Widget.TabItem" parent="TextAppearance.Design.Tab">
+        <item name="tabTextColor">@color/black_2</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="tabIndicatorColor">@color/black_2</item>
+    </style>
+
 </resources>

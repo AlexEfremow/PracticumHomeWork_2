@@ -68,6 +68,7 @@
     <style name="track_details_button">
         <item name="android:tint">@color/white</item>
     </style>
+
     <style name="track_info_point">
         <item name="android:tint">@color/white</item>
     </style>
@@ -75,27 +76,39 @@
     <style name="clear_button_style">
         <item name="android:tint">@color/black_2</item>
     </style>
+
     <style name="no_results_stub_style">
         <item name="android:src">@drawable/no_results_stub_night</item>
     </style>
+
     <style name="no_connection_stub_style">
         <item name="android:src">@drawable/lost_connection_stub_night</item>
     </style>
+
     <style name="stubs_text_style">
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="refresh_button_style">
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
     <style name="history_textView">
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="track_name_style_player">
         <item name="android:textColor">@color/white</item>
     </style>
-    <style name="Widget.TabItem" parent="TextAppearance.Design.Tab">
-            <item name="tabTextColor">@color/white</item>
-            <item name="android:backgroundTint">@color/black_2</item>
-            <item name="tabIndicatorColor">@color/white</item>
+
+    <style name="tab_style" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:backgroundTint">@color/black_2</item>
+        <item name="fontFamily">@font/ys_text_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="tab_layout_style">
+        <item name="tabTextColor">@color/white</item>
+
     </style>
 </resources>

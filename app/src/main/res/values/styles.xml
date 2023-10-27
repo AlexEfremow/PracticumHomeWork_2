@@ -82,10 +82,15 @@
     <style name="track_name_style_player">
         <item name="android:textColor">@color/black_2</item>
     </style>
-    <style name="Widget.TabItem" parent="TextAppearance.Design.Tab">
-        <item name="tabTextColor">@color/black_2</item>
+    <style name="tab_style" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
         <item name="android:backgroundTint">@color/white</item>
-        <item name="tabIndicatorColor">@color/black_2</item>
+        <item name="fontFamily">@font/ys_text_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="tab_layout_style">
+        <item name="tabTextColor">@color/black_2</item>
+
     </style>
 
 </resources>

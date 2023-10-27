@@ -42,7 +42,11 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         app:tabMode="fixed"
-        style="@style/Widget.TabItem"
+        app:tabIndicator="@drawable/indicator"
+        app:tabIndicatorHeight="2dp"
+        style="@style/tab_layout_style"
+        app:tabTextAppearance="@style/tab_style"
+        app:tabSelectedTextAppearance="@style/tab_style"
         android:layout_height="wrap_content"/>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

@@ -8,6 +8,6 @@ class MediaAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) FavouriteTracksFragment() else PlaylistsFragment()
+        return if (position == 0) FavouriteTracksFragment.newInstance() else PlaylistsFragment.newInstance()
     }
 }

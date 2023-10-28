@@ -109,6 +109,16 @@
     </style>
     <style name="tab_layout_style">
         <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="android:background">@color/black_2</item>
 
+    </style>
+    <style name="ToggleSwitchTheme">
+        <item name="colorAccent">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:paddingVertical">21dp</item>
     </style>
 </resources>

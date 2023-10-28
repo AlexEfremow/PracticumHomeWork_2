@@ -54,6 +54,7 @@
             android:drawableStart="@drawable/ic_baseline_search_24"
             android:drawablePadding="10dp"
             android:fontFamily="@font/ys_text_regular"
+            android:textCursorDrawable="@drawable/search_cursor"
             android:hint="@string/hint_search"
             android:imeOptions="actionSearch"
             android:singleLine="true" />

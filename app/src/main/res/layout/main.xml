@@ -1,47 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="16dp"
-    android:paddingBottom="16dp">
-    <TextView
-        android:id="@+id/textViewTitle"
-        style="@style/main_screen_header"
-        android:layout_width="match_parent"
-        android:fontFamily="@font/ys_text_medium"
-        android:layout_height="wrap_content"
-        android:text="@string/playlist_maker" />
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_search"
-        style="@style/main_screen_button"
-        android:fontFamily="@font/ys_text_medium"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+<androidx.fragment.app.FragmentContainerView
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/navigation_graph"
+    android:name="androidx.navigation.fragment.NavHostFragment" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/search"
-        app:icon="@drawable/ic_baseline_search_24" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_media"
-        style="@style/main_screen_button"
-        android:fontFamily="@font/ys_text_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/media"
-        app:icon="@drawable/ic_baseline_library_music_24" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_settings"
-        style="@style/main_screen_button"
-        android:layout_width="match_parent"
-        android:fontFamily="@font/ys_text_medium"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/settings"
-        app:icon="@drawable/ic_baseline_settings_24" />
-
+        app:menu="@menu/bottom_nav_menu"/>
 </LinearLayout>

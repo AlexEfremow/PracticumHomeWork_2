@@ -40,10 +40,11 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switcher"
-        style="@style/settings_button_style"
+        android:theme="@style/ToggleSwitchTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+
         android:fontFamily="@font/ys_text_regular"
         android:text="@string/night_theme" />
 

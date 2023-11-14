@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/Screen_Theme"
@@ -37,5 +38,20 @@
             android:fontFamily="@font/ys_text_medium"
             android:text="@string/media" />
     </LinearLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        app:tabMode="fixed"
+        app:tabIndicator="@drawable/indicator"
+        app:tabIndicatorHeight="2dp"
+        style="@style/tab_layout_style"
+        app:tabTextAppearance="@style/tab_style"
+        app:tabSelectedTextAppearance="@style/tab_style"
+        android:layout_height="wrap_content"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

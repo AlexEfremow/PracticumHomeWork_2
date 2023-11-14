@@ -15,29 +15,21 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.R
+import com.example.practicumhomework_2.databinding.SearchBinding
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
 import com.example.practicumhomework_2.search.domain.SearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
     private val mainHandler = Handler(Looper.getMainLooper())
-    private val viewModel  by viewModel<SearchViewModel>()
-
-    private val editText by lazy { view!!.findViewById<EditText>(R.id.EditText) }
-    private val recyclerView by lazy { view!!.findViewById<RecyclerView>(R.id.recycler_view) }
-    private val clearButton by lazy { view!!.findViewById<ImageView>(R.id.clear_button) }
-    private val noResultsStub by lazy { view!!.findViewById<LinearLayout>(R.id.no_results_stub) }
-    private val lostConnectionStub by lazy { view!!.findViewById<LinearLayout>(R.id.lost_connection_stub) }
-    private val refreshButton by lazy { view!!.findViewById<Button>(R.id.refresh_button) }
-    private val searchHistory by lazy { view!!.findViewById<ScrollView>(R.id.search_history) }
-    private val historyRecyclerView by lazy { view!!.findViewById<RecyclerView>(R.id.history_track_list) }
-    private val clearHistoryButton by lazy { view!!.findViewById<Button>(R.id.clear_history_button) }
-    private val progressBar by lazy { view!!.findViewById<FrameLayout>(R.id.progress_bar_layout) }
+    private val viewModel by viewModel<SearchViewModel>()
+    private var _binding: SearchBinding? = null
+    private val binding get() = _binding!!
     private var isClickAllowed = true
     private val runnable = kotlinx.coroutines.Runnable {
-        progressBar.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
-        searchTracks(editText.text.toString())
+        binding.progressBarLayout.root.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
+        searchTracks(binding.EditText.text.toString())
     }
 
 
@@ -52,35 +44,37 @@ class SearchFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search, container, false)
+    ): View {
+        _binding = SearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val tracksHistoryList = viewModel.getTrackHistory()
+        binding.recyclerView.isVisible = binding.EditText.text.isNotEmpty()
 
         viewModel.searchState.observe(this) {
             when (it) {
                 is SearchState.Error -> {
-                    recyclerView.visibility = View.GONE
-                    noResultsStub.visibility = View.GONE
-                    progressBar.visibility = View.GONE
-                    searchHistory.visibility = View.GONE
-                    lostConnectionStub.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                    binding.noResultsStub.root.visibility = View.GONE
+                    binding.progressBarLayout.root.visibility = View.GONE
+                    binding.searchHistory.root.visibility = View.GONE
+                    binding.lostConnectionStub.root.visibility = View.VISIBLE
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
                 is SearchState.Success -> {
-                    lostConnectionStub.visibility = View.GONE
-                    progressBar.visibility = View.GONE
+                    binding.lostConnectionStub.root.visibility = View.GONE
+                    binding.progressBarLayout.root.visibility = View.GONE
                     val trackList = it.trackList
                     if (trackList.isEmpty()) {
-                        noResultsStub.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                        searchHistory.visibility = View.GONE
+                        binding.noResultsStub.root.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
+                        binding.searchHistory.root.visibility = View.GONE
                     } else {
-                        noResultsStub.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
+                        binding.noResultsStub.root.visibility = View.GONE
+                        binding.recyclerView.visibility = View.VISIBLE
                         trackAdapter.updateTrackList(trackList)
                     }
                 }
@@ -88,79 +82,84 @@ class SearchFragment: Fragment() {
 
         }
         val textWatcher = TextWatcher {
+            binding.clearButton.isVisible = binding.EditText.text.isNotEmpty()
+            binding.recyclerView.isVisible = binding.EditText.text.isNotEmpty()
+            binding.noResultsStub.root.visibility = View.GONE
             searchDebounce()
-            clearButton.isVisible = editText.text.isNotEmpty()
-            noResultsStub.visibility = View.GONE
 
-            if (editText.hasFocus() && editText.text.isEmpty()) {
+            if (binding.EditText.hasFocus() && binding.EditText.text.isEmpty()) {
                 if (viewModel.getTrackHistory().isEmpty()) {
-                    searchHistory.visibility = View.GONE
+                    binding.searchHistory.root.visibility = View.GONE
                 } else {
-                    searchHistory.visibility = View.VISIBLE
+                    binding.searchHistory.root.visibility = View.VISIBLE
                 }
-                recyclerView.visibility = View.GONE
-                lostConnectionStub.visibility = View.GONE
-                noResultsStub.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+                binding.lostConnectionStub.root.visibility = View.GONE
+                binding.noResultsStub.root.visibility = View.GONE
             } else {
-                searchHistory.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                binding.searchHistory.root.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
             }
         }
 
-        historyRecyclerView.adapter = historyAdapter
+        binding.searchHistory.historyTrackList.adapter = historyAdapter
 
         historyAdapter.updateTrackList(tracksHistoryList)
         if (tracksHistoryList.isEmpty()) {
-            searchHistory.visibility = View.GONE
+            binding.searchHistory.root.visibility = View.GONE
         } else {
-            searchHistory.visibility = View.VISIBLE
+            binding.searchHistory.root.visibility = View.VISIBLE
         }
-        editText.requestFocus()
-        editText.addTextChangedListener(textWatcher)
-        editText.onFocusChangeListener = FocusListener()
+        binding.EditText.requestFocus()
+        binding.EditText.addTextChangedListener(textWatcher)
+//        binding.EditText.onFocusChangeListener = FocusListener()
 
 
-
-        refreshButton.setOnClickListener {
-            searchTracks(editText.text.toString())
+        binding.lostConnectionStub.refreshButton.setOnClickListener {
+            searchTracks(binding.EditText.text.toString())
         }
-        recyclerView.adapter = trackAdapter
+        binding.recyclerView.adapter = trackAdapter
 
-        view.findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        editText.setOnEditorActionListener { v, actionId, _ ->
+        binding.EditText.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text != null) {
                     searchTracks(v.text.toString())
-                    inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+                    inputMethodManager.hideSoftInputFromWindow(
+                        requireActivity().currentFocus?.windowToken,
+                        0
+                    )
                 } else {
-                    noResultsStub.visibility = View.GONE
-                    lostConnectionStub.visibility = View.GONE
+                    binding.noResultsStub.root.visibility = View.GONE
+                    binding.lostConnectionStub.root.visibility = View.GONE
                 }
                 true
             } else false
         }
-        clearButton.setOnClickListener {
-            editText.text.clear()
-            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+        binding.clearButton.setOnClickListener {
+            binding.EditText.text?.clear()
+            inputMethodManager.hideSoftInputFromWindow(
+                requireActivity().currentFocus?.windowToken,
+                0
+            )
         }
-        clearHistoryButton.setOnClickListener {
+        binding.searchHistory.clearHistoryButton.setOnClickListener {
             viewModel.clearHistory()
             historyAdapter.updateTrackList(emptyList())
-            searchHistory.visibility = View.GONE
+            binding.searchHistory.root.visibility = View.GONE
         }
     }
+
     private fun searchTracks(query: String) {
         viewModel.loadTrackList(query)
     }
 
     private fun searchDebounce() {
         mainHandler.removeCallbacks(runnable)
-        mainHandler.postDelayed(runnable, SEARCH_DELAY)
+        if (binding.EditText.text.isNotBlank())
+            mainHandler.postDelayed(runnable, SEARCH_DELAY)
     }
 
     private fun clickDebounce(): Boolean {
@@ -174,21 +173,27 @@ class SearchFragment: Fragment() {
 
 
     private fun openPlayer(trackId: String) {
-        val playerIntent = Intent(requireActivity(), PlayerActivity::class.java).putExtra("track_id", trackId)
+        val playerIntent =
+            Intent(requireActivity(), PlayerActivity::class.java).putExtra("track_id", trackId)
         if (clickDebounce()) {
             startActivity(playerIntent)
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("search_key", editText.text.toString())
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putString("search_key", binding.EditText.text.toString())
+//    }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        val restore = savedInstanceState?.getString("search_key")
-        editText.setText(restore)
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        val restore = savedInstanceState?.getString("search_key")
+//        binding.EditText.setText(restore)
+//    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

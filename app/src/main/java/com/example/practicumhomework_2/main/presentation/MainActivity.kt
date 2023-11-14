@@ -1,5 +1,7 @@
 package com.example.practicumhomework_2.main.presentation
 
+import android.content.res.ColorStateList
+import android.content.res.XmlResourceParser
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment

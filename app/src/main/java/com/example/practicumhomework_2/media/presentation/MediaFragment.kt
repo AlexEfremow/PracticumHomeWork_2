@@ -35,9 +35,6 @@ class MediaFragment: Fragment() {
         }
         tabMediator.attach()
 
-        view.findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
     }
 
     override fun onDestroyView() {

@@ -3,10 +3,11 @@ package com.example.practicumhomework_2.search.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.entity.Track
-import com.example.practicumhomework_2.search.domain.TrackListSearchCallBack
 import com.example.practicumhomework_2.search.domain.SearchInteractor
 import com.example.practicumhomework_2.search.domain.SearchState
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
@@ -14,17 +15,9 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     val searchState: LiveData<SearchState> = _searchState
 
     fun loadTrackList(query: String) {
-        val callBack = object : TrackListSearchCallBack {
-
-            override fun onSuccess(data: List<Track>) {
-                _searchState.value = SearchState.Success(data)
-            }
-
-            override fun onError(message: String) {
-                _searchState.value = SearchState.Error(message)
-            }
+        viewModelScope.launch {
+            _searchState.value = interactor.searchTracks(query)
         }
-        interactor.searchTracks(query, callBack)
     }
 
     fun saveTrackToHistory(track: Track) {

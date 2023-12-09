@@ -3,10 +3,10 @@ package com.example.practicumhomework_2.player.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.practicumhomework_2.player.domain.SingleTrackSearchCallBack
+import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.PlayerInteractor
 import com.example.practicumhomework_2.player.domain.PlayerState
-import com.example.practicumhomework_2.player.domain.entity.Track
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
 
@@ -14,16 +14,9 @@ class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
     val liveData: LiveData<PlayerState> = _trackLiveData
 
     fun searchTrack(trackId: String) {
-        val callBack = object : SingleTrackSearchCallBack {
-
-            override fun onSuccess(data: Track) {
-                _trackLiveData.value = PlayerState.TrackLoaded(data)
-            }
-
-            override fun onError(message: String) {
-                _trackLiveData.value = PlayerState.Error(message)
-            }
+        viewModelScope.launch {
+            _trackLiveData.value = interactor.searchTrack(trackId)
         }
-        interactor.searchTrack(trackId, callBack)
     }
+
 }

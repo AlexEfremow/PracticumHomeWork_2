@@ -180,16 +180,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putString("search_key", binding.EditText.text.toString())
-//    }
-
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        super.onViewStateRestored(savedInstanceState)
-//        val restore = savedInstanceState?.getString("search_key")
-//        binding.EditText.setText(restore)
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

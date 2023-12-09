@@ -18,6 +18,7 @@ import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.SearchBinding
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
 import com.example.practicumhomework_2.search.domain.SearchState
+import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -26,11 +27,6 @@ class SearchFragment : Fragment() {
     private var _binding: SearchBinding? = null
     private val binding get() = _binding!!
     private var isClickAllowed = true
-    private val runnable = kotlinx.coroutines.Runnable {
-        binding.progressBarLayout.root.visibility = View.VISIBLE
-        binding.recyclerView.visibility = View.GONE
-        searchTracks(binding.EditText.text.toString())
-    }
 
 
     private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
@@ -78,6 +74,10 @@ class SearchFragment : Fragment() {
                         trackAdapter.updateTrackList(trackList)
                     }
                 }
+                is SearchState.Loading -> {
+                    binding.progressBarLayout.root.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                }
             }
 
         }
@@ -85,7 +85,7 @@ class SearchFragment : Fragment() {
             binding.clearButton.isVisible = binding.EditText.text.isNotEmpty()
             binding.recyclerView.isVisible = binding.EditText.text.isNotEmpty()
             binding.noResultsStub.root.visibility = View.GONE
-            searchDebounce()
+            viewModel.searchDebounce(it)
 
             if (binding.EditText.hasFocus() && binding.EditText.text.isEmpty()) {
                 if (viewModel.getTrackHistory().isEmpty()) {
@@ -156,12 +156,6 @@ class SearchFragment : Fragment() {
         viewModel.loadTrackList(query)
     }
 
-    private fun searchDebounce() {
-        mainHandler.removeCallbacks(runnable)
-        if (binding.EditText.text.isNotBlank())
-            mainHandler.postDelayed(runnable, SEARCH_DELAY)
-    }
-
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -187,7 +181,6 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val SEARCH_DELAY = 2000L
         private const val TRACK_CLICK_DELAY = 1000L
     }
 }

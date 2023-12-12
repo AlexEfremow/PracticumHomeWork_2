@@ -27,6 +27,7 @@ class SettingsViewModel(private val interactor: SettingsInteractor): ViewModel()
             }
         )
         interactor.saveTheme(darkThemeEnabled)
+        _isNightThemeState.value = darkThemeEnabled
     }
     fun getShareLinkIntent(email: String, type: String): Intent {
         val sendIntent: Intent = Intent().apply {

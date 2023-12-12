@@ -1,13 +1,13 @@
 package com.example.practicumhomework_2.main.presentation
 
-import android.content.Intent
+import android.content.res.ColorStateList
+import android.content.res.XmlResourceParser
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.media.presentation.MediaActivity
-import com.example.practicumhomework_2.search.presentation.SearchActivity
-import com.example.practicumhomework_2.settings.presentation.SettingsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,18 +15,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
-        findViewById<Button>(R.id.button_search).setOnClickListener {
-            val searchIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchIntent)
-        }
-        findViewById<Button>(R.id.button_media).setOnClickListener {
-            val mediaIntent = Intent(this, MediaActivity::class.java)
-            startActivity(mediaIntent)
-        }
-        findViewById<Button>(R.id.button_settings).setOnClickListener {
-            val settingsIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsIntent)
-        }
 
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setupWithNavController(navController)
     }
 }

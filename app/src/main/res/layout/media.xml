@@ -5,35 +5,18 @@
     android:layout_height="match_parent"
     style="@style/Screen_Theme"
     android:orientation="vertical">
-
     <LinearLayout
         style="@style/Screen_Theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="12dp"
         android:gravity="center_vertical">
-
-        <FrameLayout
-            android:id="@+id/return_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                style="@style/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_baseline_arrow_back_16"
-                android:contentDescription="@string/back_button" />
-
-        </FrameLayout>
 
         <TextView
             style="@style/toolbar_text_style"
             android:layout_width="0dp"
-            android:layout_marginStart="12dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:fontFamily="@font/ys_text_medium"
             android:text="@string/media" />

@@ -1,23 +1,24 @@
 package com.example.practicumhomework_2.settings.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.SettingsBinding
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsFragment: Fragment() {
+class SettingsFragment : Fragment() {
     private var _binding: SettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SettingsViewModel>()
 
 
-    //@RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,9 +30,12 @@ class SettingsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.isNightThemeState.observe(this) {
-            binding.switcher.isChecked = it
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isNightThemeState.collect {
+                    binding.switcher.isChecked = it
+                }
+            }
         }
         binding.switcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchTheme(isChecked)
@@ -59,4 +63,4 @@ class SettingsFragment: Fragment() {
 
 
     }
-    }
+}

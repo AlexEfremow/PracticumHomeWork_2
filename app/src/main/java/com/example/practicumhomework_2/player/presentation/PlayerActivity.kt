@@ -2,25 +2,22 @@ package com.example.practicumhomework_2.player.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.practicumhomework_2.App
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
     companion object {
@@ -53,37 +50,48 @@ class PlayerActivity : AppCompatActivity() {
 
         val trackId = intent.getStringExtra("track_id") ?: ""
         viewModel.searchTrack(trackId)
-        viewModel.liveData.observe(this) {
-            when (it) {
-                is PlayerState.Error -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                }
-                is PlayerState.TrackLoaded -> {
-                    track = it.track
-                    trackNameTextView.text = track.trackName
-                    musicianNameTextView.text = track.artistName
-                    trackDurationTextView.text = track.timeFormat()
-                    albumTextView.text = track.collectionName
-                    preparePlayer()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow
+                    .collect {
+                        when (it) {
+                            is PlayerState.Error -> {
+                                Toast.makeText(this@PlayerActivity, it.message, Toast.LENGTH_SHORT).show()
+                            }
+                            is PlayerState.TrackLoaded -> {
+                                track = it.track
+                                trackNameTextView.text = track.trackName
+                                musicianNameTextView.text = track.artistName
+                                trackDurationTextView.text = track.timeFormat()
+                                albumTextView.text = track.collectionName
+                                preparePlayer()
 
-                    trackReleaseYearTextView.text = track.releaseDate.take(4)
-                    trackGenreTextView.text = track.primaryGenreName
-                    trackCountryTextView.text = track.country
+                                trackReleaseYearTextView.text = track.releaseDate.take(4)
+                                trackGenreTextView.text = track.primaryGenreName
+                                trackCountryTextView.text = track.country
 
 
-                    Glide.with(this@PlayerActivity)
-                        .load(track.getCoverArtwork())
-                        .transform(
-                            CenterInside(),
-                            RoundedCorners(resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
-                        )
-                        .placeholder(R.drawable.placeholder)
-                        .into(findViewById(R.id.track_poster))
-                }
-                is PlayerState.InProgress -> {
-                    secondsLeftTextView.text = it.formatted()
-                }
+                                Glide.with(this@PlayerActivity)
+                                    .load(track.getCoverArtwork())
+                                    .transform(
+                                        CenterInside(),
+                                        RoundedCorners(resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
+                                    )
+                                    .placeholder(R.drawable.placeholder)
+                                    .into(findViewById(R.id.track_poster))
+                            }
+                            is PlayerState.InProgress -> {
+                                secondsLeftTextView.text = it.formatted()
+                            }
+                            is PlayerState.Initial -> {}
+                        }
+                    }
             }
+        }
+
+
+        playButton.setOnClickListener {
+            playbackControl()
         }
         playButton.setOnClickListener {
             playbackControl()

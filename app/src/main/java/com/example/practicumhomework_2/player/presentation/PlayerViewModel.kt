@@ -1,22 +1,20 @@
 package com.example.practicumhomework_2.player.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.PlayerInteractor
 import com.example.practicumhomework_2.player.domain.PlayerState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
-
-    private val _trackLiveData = MutableLiveData<PlayerState>()
-    val liveData: LiveData<PlayerState> = _trackLiveData
+    private val _stateFlow = MutableStateFlow<PlayerState>(PlayerState.Initial)
+    val stateFlow: StateFlow<PlayerState> = _stateFlow.asStateFlow()
     private var counter = 0
     private var job: Job? = null
 
@@ -26,7 +24,7 @@ class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
             while (isActive) {
                 delay(DELAY)
                 counter += 1000
-                _trackLiveData.value = PlayerState.InProgress(counter)
+                _stateFlow.value = PlayerState.InProgress(counter)
             }
         }
     }
@@ -34,12 +32,12 @@ class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
         job?.cancel()
     }
     fun resetCounter() {
-        _trackLiveData.value = PlayerState.InProgress(0)
+        _stateFlow.value = PlayerState.InProgress(0)
     }
 
     fun searchTrack(trackId: String) {
         viewModelScope.launch {
-            _trackLiveData.value = interactor.searchTrack(trackId)
+            _stateFlow.value = interactor.searchTrack(trackId)
         }
     }
 

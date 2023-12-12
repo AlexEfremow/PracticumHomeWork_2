@@ -3,30 +3,26 @@ package com.example.practicumhomework_2.search.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
-import com.example.practicumhomework_2.R
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.practicumhomework_2.databinding.SearchBinding
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
 import com.example.practicumhomework_2.search.domain.SearchState
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
-    private val mainHandler = Handler(Looper.getMainLooper())
     private val viewModel by viewModel<SearchViewModel>()
     private var _binding: SearchBinding? = null
     private val binding get() = _binding!!
@@ -54,37 +50,42 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val tracksHistoryList = viewModel.getTrackHistory()
         binding.recyclerView.isVisible = binding.EditText.text.isNotEmpty()
-
-        viewModel.searchState.observe(this) {
-            when (it) {
-                is SearchState.Error -> {
-                    binding.recyclerView.visibility = View.GONE
-                    binding.noResultsStub.root.visibility = View.GONE
-                    binding.progressBarLayout.root.visibility = View.GONE
-                    binding.searchHistory.root.visibility = View.GONE
-                    binding.lostConnectionStub.root.visibility = View.VISIBLE
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                }
-                is SearchState.Success -> {
-                    binding.lostConnectionStub.root.visibility = View.GONE
-                    binding.progressBarLayout.root.visibility = View.GONE
-                    val trackList = it.trackList
-                    if (trackList.isEmpty()) {
-                        binding.noResultsStub.root.visibility = View.VISIBLE
-                        binding.recyclerView.visibility = View.GONE
-                        binding.searchHistory.root.visibility = View.GONE
-                    } else {
-                        binding.noResultsStub.root.visibility = View.GONE
-                        binding.recyclerView.visibility = View.VISIBLE
-                        trackAdapter.updateTrackList(trackList)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchState.collect {
+                    when (it) {
+                        is SearchState.Error -> {
+                            binding.recyclerView.visibility = View.GONE
+                            binding.noResultsStub.root.visibility = View.GONE
+                            binding.progressBarLayout.root.visibility = View.GONE
+                            binding.searchHistory.root.visibility = View.GONE
+                            binding.lostConnectionStub.root.visibility = View.VISIBLE
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is SearchState.Success -> {
+                            binding.lostConnectionStub.root.visibility = View.GONE
+                            binding.progressBarLayout.root.visibility = View.GONE
+                            val trackList = it.trackList
+                            if (trackList.isEmpty()) {
+                                binding.noResultsStub.root.visibility = View.VISIBLE
+                                binding.recyclerView.visibility = View.GONE
+                                binding.searchHistory.root.visibility = View.GONE
+                            } else {
+                                binding.noResultsStub.root.visibility = View.GONE
+                                binding.recyclerView.visibility = View.VISIBLE
+                                trackAdapter.updateTrackList(trackList)
+                            }
+                        }
+                        is SearchState.Loading -> {
+                            binding.progressBarLayout.root.visibility = View.VISIBLE
+                            binding.recyclerView.visibility = View.GONE
+                        }
+                        is SearchState.Initial -> {}
                     }
-                }
-                is SearchState.Loading -> {
-                    binding.progressBarLayout.root.visibility = View.VISIBLE
-                    binding.recyclerView.visibility = View.GONE
+
+
                 }
             }
-
         }
         val textWatcher = TextWatcher {
             binding.clearButton.isVisible = binding.EditText.text.isNotEmpty()
@@ -117,7 +118,6 @@ class SearchFragment : Fragment() {
         }
         binding.EditText.requestFocus()
         binding.EditText.addTextChangedListener(textWatcher)
-//        binding.EditText.onFocusChangeListener = FocusListener()
 
 
         binding.lostConnectionStub.refreshButton.setOnClickListener {

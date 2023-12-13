@@ -7,16 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
@@ -78,7 +74,7 @@ class PlayerActivity : AppCompatActivity() {
                         .into(findViewById(R.id.track_poster))
                 }
                 is PlayerState.InProgress -> {
-                    secondsLeftTextView.text = it.formatted()
+                    secondsLeftTextView.text = it.counterText
                 }
                 is PlayerState.Initial -> {}
             }

@@ -5,12 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.SettingsBinding
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
@@ -30,12 +26,8 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isNightThemeState.collect {
-                    binding.switcher.isChecked = it
-                }
-            }
+        viewModel.isNightThemeState.observe(this) {
+            binding.switcher.isChecked = it
         }
         binding.switcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchTheme(isChecked)

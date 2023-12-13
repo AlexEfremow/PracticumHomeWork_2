@@ -50,42 +50,37 @@ class PlayerActivity : AppCompatActivity() {
 
         val trackId = intent.getStringExtra("track_id") ?: ""
         viewModel.searchTrack(trackId)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow
-                    .collect {
-                        when (it) {
-                            is PlayerState.Error -> {
-                                Toast.makeText(this@PlayerActivity, it.message, Toast.LENGTH_SHORT).show()
-                            }
-                            is PlayerState.TrackLoaded -> {
-                                track = it.track
-                                trackNameTextView.text = track.trackName
-                                musicianNameTextView.text = track.artistName
-                                trackDurationTextView.text = track.timeFormat()
-                                albumTextView.text = track.collectionName
-                                preparePlayer()
+        viewModel.trackLiveData.observe(this) {
+            when (it) {
+                is PlayerState.Error -> {
+                    Toast.makeText(this@PlayerActivity, it.message, Toast.LENGTH_SHORT).show()
+                }
+                is PlayerState.TrackLoaded -> {
+                    track = it.track
+                    trackNameTextView.text = track.trackName
+                    musicianNameTextView.text = track.artistName
+                    trackDurationTextView.text = track.timeFormat()
+                    albumTextView.text = track.collectionName
+                    preparePlayer()
 
-                                trackReleaseYearTextView.text = track.releaseDate.take(4)
-                                trackGenreTextView.text = track.primaryGenreName
-                                trackCountryTextView.text = track.country
+                    trackReleaseYearTextView.text = track.releaseDate.take(4)
+                    trackGenreTextView.text = track.primaryGenreName
+                    trackCountryTextView.text = track.country
 
 
-                                Glide.with(this@PlayerActivity)
-                                    .load(track.getCoverArtwork())
-                                    .transform(
-                                        CenterInside(),
-                                        RoundedCorners(resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
-                                    )
-                                    .placeholder(R.drawable.placeholder)
-                                    .into(findViewById(R.id.track_poster))
-                            }
-                            is PlayerState.InProgress -> {
-                                secondsLeftTextView.text = it.formatted()
-                            }
-                            is PlayerState.Initial -> {}
-                        }
-                    }
+                    Glide.with(this@PlayerActivity)
+                        .load(track.getCoverArtwork())
+                        .transform(
+                            CenterInside(),
+                            RoundedCorners(resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
+                        )
+                        .placeholder(R.drawable.placeholder)
+                        .into(findViewById(R.id.track_poster))
+                }
+                is PlayerState.InProgress -> {
+                    secondsLeftTextView.text = it.formatted()
+                }
+                is PlayerState.Initial -> {}
             }
         }
 

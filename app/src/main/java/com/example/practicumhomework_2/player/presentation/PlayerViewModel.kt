@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.player.presentation
 
+import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.PlayerInteractor
@@ -15,16 +16,14 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
     private val _stateFlow = MutableStateFlow<PlayerState>(PlayerState.Initial)
     val stateFlow: StateFlow<PlayerState> = _stateFlow.asStateFlow()
-    private var counter = 0
     private var job: Job? = null
 
-    fun startProgress() {
+    fun startProgress(mediaPlayer: MediaPlayer) {
         job?.cancel()
         job = viewModelScope.launch {
             while (isActive) {
                 delay(DELAY)
-                counter += 1000
-                _stateFlow.value = PlayerState.InProgress(counter)
+                _stateFlow.value = PlayerState.InProgress(mediaPlayer.currentPosition)
             }
         }
     }
@@ -42,7 +41,7 @@ class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
     }
 
     companion object {
-        private const val DELAY = 1000L
+        private const val DELAY = 300L
     }
 
 }

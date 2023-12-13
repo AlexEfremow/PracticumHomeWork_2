@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.search.data.network
 
+import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.search.domain.SearchState
 import com.example.practicumhomework_2.search.domain.TrackSearchWrapper
@@ -20,7 +21,7 @@ class TrackSearchWrapperImpl(private val searchApi: TracksSearchApi) : TrackSear
         val searchResponse = searchApi.searchTracks(trackId)
         return if(searchResponse.isSuccessful) {
             searchResponse.body()?.results?.first()?.let { PlayerState.TrackLoaded(it) }
-                ?:PlayerState.Error("Что-то пошло не так.")
+                ?:PlayerState.Error(searchResponse.message())
         } else {
             PlayerState.Error(searchResponse.message())
         }

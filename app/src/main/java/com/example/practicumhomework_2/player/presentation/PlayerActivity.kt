@@ -121,7 +121,7 @@ class PlayerActivity : AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
         playButton.setImageResource(R.drawable.pause_button)
-        viewModel.startProgress()
+        viewModel.startProgress(mediaPlayer)
         playerState = STATE_PLAYING
     }
 

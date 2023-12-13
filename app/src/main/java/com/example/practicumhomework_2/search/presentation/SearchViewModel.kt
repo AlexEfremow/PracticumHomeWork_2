@@ -49,6 +49,6 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         interactor.clearHistory()
     }
     companion object {
-        private const val SEARCH_DELAY = 2000L
+        private const val SEARCH_DELAY = 500L
     }
 }

@@ -1,29 +1,49 @@
 package com.example.practicumhomework_2.player.presentation
 
+import android.media.MediaPlayer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.practicumhomework_2.player.domain.SingleTrackSearchCallBack
+import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.PlayerInteractor
 import com.example.practicumhomework_2.player.domain.PlayerState
-import com.example.practicumhomework_2.player.domain.entity.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PlayerViewModel(private val interactor: PlayerInteractor) : ViewModel() {
-
     private val _trackLiveData = MutableLiveData<PlayerState>()
-    val liveData: LiveData<PlayerState> = _trackLiveData
+    val trackLiveData: LiveData<PlayerState> = _trackLiveData
+    private var job: Job? = null
+    private val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
 
-    fun searchTrack(trackId: String) {
-        val callBack = object : SingleTrackSearchCallBack {
-
-            override fun onSuccess(data: Track) {
-                _trackLiveData.value = PlayerState.TrackLoaded(data)
-            }
-
-            override fun onError(message: String) {
-                _trackLiveData.value = PlayerState.Error(message)
+    fun startProgress(mediaPlayer: MediaPlayer) {
+        job?.cancel()
+        job = viewModelScope.launch {
+            while (isActive) {
+                delay(DELAY)
+                _trackLiveData.value = PlayerState.InProgress(formatter.format(mediaPlayer.currentPosition))
             }
         }
-        interactor.searchTrack(trackId, callBack)
     }
+    fun stopProgress() {
+        job?.cancel()
+    }
+    fun resetCounter() {
+        _trackLiveData.value = PlayerState.InProgress(formatter.format(0))
+    }
+
+    fun searchTrack(trackId: String) {
+        viewModelScope.launch {
+            _trackLiveData.value = interactor.searchTrack(trackId)
+        }
+    }
+
+    companion object {
+        private const val DELAY = 300L
+    }
+
 }

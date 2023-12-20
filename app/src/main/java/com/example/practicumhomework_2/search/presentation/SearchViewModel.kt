@@ -3,28 +3,37 @@ package com.example.practicumhomework_2.search.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.entity.Track
-import com.example.practicumhomework_2.search.domain.TrackListSearchCallBack
 import com.example.practicumhomework_2.search.domain.SearchInteractor
 import com.example.practicumhomework_2.search.domain.SearchState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
-    private val _searchState = MutableLiveData<SearchState>()
-    val searchState: LiveData<SearchState> = _searchState
+    private val _searchLiveData = MutableLiveData<SearchState>()
+    val searchLiveData: LiveData<SearchState> = _searchLiveData
+    private var latestSearchText: String? = null
+    private var searchJob: Job? = null
 
     fun loadTrackList(query: String) {
-        val callBack = object : TrackListSearchCallBack {
-
-            override fun onSuccess(data: List<Track>) {
-                _searchState.value = SearchState.Success(data)
-            }
-
-            override fun onError(message: String) {
-                _searchState.value = SearchState.Error(message)
-            }
+        if (query.isEmpty()) return
+        viewModelScope.launch {
+            _searchLiveData.value = SearchState.Loading()
+            _searchLiveData.value = interactor.searchTracks(query)
         }
-        interactor.searchTracks(query, callBack)
+    }
+    fun searchDebounce(changedText: String) {
+        if(latestSearchText == changedText) return
+        latestSearchText = changedText
+
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DELAY)
+            loadTrackList(changedText)
+        }
     }
 
     fun saveTrackToHistory(track: Track) {
@@ -37,5 +46,8 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
     fun clearHistory() {
         interactor.clearHistory()
+    }
+    companion object {
+        private const val SEARCH_DELAY = 500L
     }
 }

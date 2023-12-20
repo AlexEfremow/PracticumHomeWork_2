@@ -6,8 +6,8 @@ class SearchInteractor(
     private val searchPreferences: SearchPreferences,
     private val searchWrapper: TrackSearchWrapper
 ) {
-    fun searchTracks(query: String, callback: TrackListSearchCallBack) {
-        searchWrapper.searchTracks(query, callback)
+    suspend fun searchTracks(query: String): SearchState {
+        return searchWrapper.searchTracks(query)
     }
     fun saveTrackToHistory(track: Track) {
         searchPreferences.save(track)

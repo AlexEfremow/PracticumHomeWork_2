@@ -3,34 +3,31 @@ package com.example.practicumhomework_2.search.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.practicumhomework_2.R
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.practicumhomework_2.databinding.SearchBinding
 import com.example.practicumhomework_2.player.presentation.PlayerActivity
 import com.example.practicumhomework_2.search.domain.SearchState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
-    private val mainHandler = Handler(Looper.getMainLooper())
     private val viewModel by viewModel<SearchViewModel>()
     private var _binding: SearchBinding? = null
     private val binding get() = _binding!!
     private var isClickAllowed = true
-    private val runnable = kotlinx.coroutines.Runnable {
-        binding.progressBarLayout.root.visibility = View.VISIBLE
-        binding.recyclerView.visibility = View.GONE
-        searchTracks(binding.EditText.text.toString())
-    }
+    private var jobDebounce: Job? = null
 
 
     private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
@@ -53,8 +50,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val tracksHistoryList = viewModel.getTrackHistory()
         binding.recyclerView.isVisible = binding.EditText.text.isNotEmpty()
-
-        viewModel.searchState.observe(this) {
+        viewModel.searchLiveData.observe(this) {
             when (it) {
                 is SearchState.Error -> {
                     binding.recyclerView.visibility = View.GONE
@@ -78,14 +74,18 @@ class SearchFragment : Fragment() {
                         trackAdapter.updateTrackList(trackList)
                     }
                 }
+                is SearchState.Loading -> {
+                    binding.progressBarLayout.root.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                }
+                is SearchState.Initial -> {}
             }
-
         }
         val textWatcher = TextWatcher {
             binding.clearButton.isVisible = binding.EditText.text.isNotEmpty()
             binding.recyclerView.isVisible = binding.EditText.text.isNotEmpty()
             binding.noResultsStub.root.visibility = View.GONE
-            searchDebounce()
+            viewModel.searchDebounce(it)
 
             if (binding.EditText.hasFocus() && binding.EditText.text.isEmpty()) {
                 if (viewModel.getTrackHistory().isEmpty()) {
@@ -112,7 +112,6 @@ class SearchFragment : Fragment() {
         }
         binding.EditText.requestFocus()
         binding.EditText.addTextChangedListener(textWatcher)
-//        binding.EditText.onFocusChangeListener = FocusListener()
 
 
         binding.lostConnectionStub.refreshButton.setOnClickListener {
@@ -156,17 +155,15 @@ class SearchFragment : Fragment() {
         viewModel.loadTrackList(query)
     }
 
-    private fun searchDebounce() {
-        mainHandler.removeCallbacks(runnable)
-        if (binding.EditText.text.isNotBlank())
-            mainHandler.postDelayed(runnable, SEARCH_DELAY)
-    }
-
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            mainHandler.postDelayed({ isClickAllowed = true }, TRACK_CLICK_DELAY)
+            jobDebounce?.cancel()
+            jobDebounce = lifecycleScope.launch {
+                delay(TRACK_CLICK_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
@@ -180,16 +177,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putString("search_key", binding.EditText.text.toString())
-//    }
-
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        super.onViewStateRestored(savedInstanceState)
-//        val restore = savedInstanceState?.getString("search_key")
-//        binding.EditText.setText(restore)
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -197,7 +184,6 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val SEARCH_DELAY = 2000L
         private const val TRACK_CLICK_DELAY = 1000L
     }
 }

@@ -7,16 +7,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.practicumhomework_2.settings.domain.SettingsInteractor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class SettingsViewModel(private val interactor: SettingsInteractor): ViewModel() {
 
-    private val _isNightThemeState = MutableLiveData<Boolean>()
+    private val _isNightThemeState = MutableLiveData(interactor.currentTheme)
     val isNightThemeState: LiveData<Boolean> = _isNightThemeState
-
-    init {
-        val currentTheme = interactor.currentTheme
-        _isNightThemeState.value = currentTheme
-    }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
         AppCompatDelegate.setDefaultNightMode(

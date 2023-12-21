@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.player.domain.entity
 
+import com.example.practicumhomework_2.data.db.entity.TrackDbEntity
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,4 +20,17 @@ data class Track(
 ) {
     fun getCoverArtwork() = artworkUrl.replaceAfterLast('/', "512x512bb.jpg")
     fun timeFormat(): String = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTime)
+
+    fun toDbModel() = TrackDbEntity(
+        trackName,
+        artistName,
+        trackTime,
+        artworkUrl,
+        trackId,
+        releaseDate,
+        country,
+        primaryGenreName,
+        collectionName,
+        previewUrl
+    )
 }

@@ -2,6 +2,7 @@ package com.example.practicumhomework_2.data.db
 
 import androidx.room.*
 import com.example.practicumhomework_2.data.db.entity.TrackDbEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao {
@@ -12,7 +13,7 @@ interface TrackDao {
     suspend fun deleteTrackFromFavorites(track: TrackDbEntity)
 
     @Query("SELECT * FROM track_table")
-    suspend fun getTracks(): List<TrackDbEntity>
+    suspend fun getTracks(): Flow<List<TrackDbEntity>>
 
     @Query("SELECT trackId FROM track_table")
     suspend fun getFavoriteTracksIds(): List<String>

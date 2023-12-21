@@ -14,7 +14,8 @@ data class Track(
     val country: String,
     val primaryGenreName: String,
     val collectionName: String,
-    val previewUrl: String
+    val previewUrl: String,
+    val isFavorite: Boolean
 ) {
     fun getCoverArtwork() = artworkUrl.replaceAfterLast('/', "512x512bb.jpg")
     fun timeFormat(): String = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTime)

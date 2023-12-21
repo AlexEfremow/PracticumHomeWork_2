@@ -2,6 +2,7 @@ package com.example.practicumhomework_2
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.practicumhomework_2.data.di.dataModule
 import com.example.practicumhomework_2.player.di.playerModule
 import com.example.practicumhomework_2.search.di.searchModule
 import com.example.practicumhomework_2.settings.data.SettingsPreferences
@@ -16,7 +17,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(listOf(playerModule, searchModule, settingsModule))
+            modules(listOf(playerModule, searchModule, settingsModule, dataModule))
         }
         val settingsPreferences: SettingsPreferences by inject()
         val isDarkTheme = settingsPreferences.getCurrentTheme()

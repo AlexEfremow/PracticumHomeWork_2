@@ -2,9 +2,9 @@ package com.example.practicumhomework_2.search.data.network
 
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.search.domain.SearchState
-import com.example.practicumhomework_2.search.domain.TrackSearchWrapper
+import com.example.practicumhomework_2.search.domain.TrackSearchRepository
 
-class TrackSearchWrapperImpl(private val searchApi: TracksSearchApi) : TrackSearchWrapper {
+class TrackSearchRepositoryImpl(private val searchApi: TracksSearchApi) : TrackSearchRepository {
 
     override suspend fun searchTracks(value: String): SearchState {
          val searchResponse = searchApi.searchTracks(value)

@@ -4,7 +4,7 @@ import com.example.practicumhomework_2.player.domain.entity.Track
 
 class SearchInteractor(
     private val searchPreferences: SearchPreferences,
-    private val searchWrapper: TrackSearchWrapper
+    private val searchWrapper: TrackSearchRepository
 ) {
     suspend fun searchTracks(query: String): SearchState {
         return searchWrapper.searchTracks(query)

@@ -13,7 +13,7 @@ class FavouriteTracksInteractorImpl(private val repository: FavoriteTracksReposi
         repository.deleteTrackFromFavorite(track)
     }
 
-    override suspend fun getFavoriteTracks(): Flow<List<Track>> {
+    override fun getFavoriteTracks(): Flow<List<Track>> {
         return repository.getFavoriteTracks().map { it.reversed() }
     }
 }

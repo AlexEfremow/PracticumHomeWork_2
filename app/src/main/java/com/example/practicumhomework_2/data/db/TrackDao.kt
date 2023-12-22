@@ -13,7 +13,7 @@ interface TrackDao {
     suspend fun deleteTrackFromFavorites(track: TrackDbEntity)
 
     @Query("SELECT * FROM track_table")
-    suspend fun getTracks(): Flow<List<TrackDbEntity>>
+    fun getTracks(): Flow<List<TrackDbEntity>>
 
     @Query("SELECT trackId FROM track_table")
     suspend fun getFavoriteTracksIds(): List<String>

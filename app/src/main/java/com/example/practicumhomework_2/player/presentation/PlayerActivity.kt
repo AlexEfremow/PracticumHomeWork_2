@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.player.presentation
 
+import android.media.Image
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.FrameLayout
@@ -43,6 +44,7 @@ class PlayerActivity : AppCompatActivity() {
         val trackReleaseYearTextView = findViewById<TextView>(R.id.track_release_year_value)
         val trackGenreTextView = findViewById<TextView>(R.id.track_genre_value)
         val trackCountryTextView = findViewById<TextView>(R.id.track_country_value)
+        val addFavoriteTrackButton = findViewById<ImageView>(R.id.add_favourite_song)
 
         val trackId = intent.getStringExtra("track_id") ?: ""
         viewModel.searchTrack(trackId)
@@ -89,8 +91,15 @@ class PlayerActivity : AppCompatActivity() {
         }
 
 
+
         findViewById<FrameLayout>(R.id.return_button).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+        viewModel.isFavoriteLiveData.observe(this) {
+            addFavoriteTrackButton.setImageResource(if (it) R.drawable.favorite_button else R.drawable.add_favourite_song)
+        }
+        addFavoriteTrackButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 

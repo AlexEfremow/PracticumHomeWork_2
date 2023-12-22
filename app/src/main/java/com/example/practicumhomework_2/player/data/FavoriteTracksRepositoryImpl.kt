@@ -17,7 +17,7 @@ class FavoriteTracksRepositoryImpl(private val dataBase: AppDataBase): FavoriteT
         trackDao.deleteTrackFromFavorites(track.toDbModel())
     }
 
-    override suspend fun getFavoriteTracks(): Flow<List<Track>> {
+    override fun getFavoriteTracks(): Flow<List<Track>> {
         return trackDao.getTracks().map { it.map { it.toDomainModel() }}
     }
 }

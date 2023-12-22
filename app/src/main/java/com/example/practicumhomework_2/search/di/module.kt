@@ -21,7 +21,7 @@ val searchModule = module {
         SearchPreferencesImpl(get())
     }
     factory<TrackSearchRepository> {
-        TrackSearchRepositoryImpl(get())
+        TrackSearchRepositoryImpl(get(), get())
     }
     single<SharedPreferences> {
         androidApplication().getSharedPreferences("my_prefs", Application.MODE_PRIVATE)

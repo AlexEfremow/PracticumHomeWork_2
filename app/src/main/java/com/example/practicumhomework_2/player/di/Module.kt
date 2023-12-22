@@ -21,7 +21,7 @@ val playerModule = module {
         PlayerInteractor(get())
     }
     factory<TrackSearchRepository> {
-        TrackSearchRepositoryImpl(get())
+        TrackSearchRepositoryImpl(get(), get())
     }
     single {
         Retrofit.Builder()

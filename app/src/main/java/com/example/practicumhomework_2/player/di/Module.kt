@@ -20,9 +20,6 @@ val playerModule = module {
     factory {
         PlayerInteractor(get())
     }
-    factory<TrackSearchRepository> {
-        TrackSearchRepositoryImpl(get(), get())
-    }
     single {
         Retrofit.Builder()
             .baseUrl("https://itunes.apple.com/")

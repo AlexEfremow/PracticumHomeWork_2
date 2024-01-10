@@ -126,4 +126,7 @@
         <item name="itemTextColor">@color/bottom_nav_color_selector_night</item>
         <item name="android:background">@color/black_2</item>
     </style>
+    <style name="separator_view">
+        <item name="android:background">#E6E8EB</item>
+    </style>
 </resources>

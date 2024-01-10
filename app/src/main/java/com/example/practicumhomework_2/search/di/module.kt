@@ -3,10 +3,10 @@ package com.example.practicumhomework_2.search.di
 import android.app.Application
 import android.content.SharedPreferences
 import com.example.practicumhomework_2.search.data.local.SearchPreferencesImpl
-import com.example.practicumhomework_2.search.data.network.TrackSearchWrapperImpl
+import com.example.practicumhomework_2.search.data.network.TrackSearchRepositoryImpl
 import com.example.practicumhomework_2.search.domain.SearchInteractor
 import com.example.practicumhomework_2.search.domain.SearchPreferences
-import com.example.practicumhomework_2.search.domain.TrackSearchWrapper
+import com.example.practicumhomework_2.search.domain.TrackSearchRepository
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 import com.example.practicumhomework_2.search.presentation.SearchViewModel
@@ -20,8 +20,8 @@ val searchModule = module {
     factory<SearchPreferences> {
         SearchPreferencesImpl(get())
     }
-    factory<TrackSearchWrapper> {
-        TrackSearchWrapperImpl(get())
+    factory<TrackSearchRepository> {
+        TrackSearchRepositoryImpl(get(), get())
     }
     single<SharedPreferences> {
         androidApplication().getSharedPreferences("my_prefs", Application.MODE_PRIVATE)

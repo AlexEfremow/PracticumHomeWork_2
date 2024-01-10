@@ -104,4 +104,7 @@
         <item name="itemIconTint">@color/bottom_nav_color_selector</item>
         <item name="itemTextColor">@color/bottom_nav_color_selector</item>
     </style>
+    <style name="separator_view">
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>

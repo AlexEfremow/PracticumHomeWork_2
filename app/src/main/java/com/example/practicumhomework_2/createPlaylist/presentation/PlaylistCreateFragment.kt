@@ -12,9 +12,15 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.FragmentCreatePlaylistBinding
 
 class PlaylistCreateFragment : Fragment() {
@@ -27,7 +33,14 @@ class PlaylistCreateFragment : Fragment() {
     private val pickMediaLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
-                Log.d("AAA", "Selected URI: $uri")
+                binding.playlistCover.setPadding(0)
+                Glide.with(this)
+                    .load(uri)
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
+                    )
+                    .into(binding.playlistCover)
             } else {
                 Log.d("AAA", "No media selected")
             }

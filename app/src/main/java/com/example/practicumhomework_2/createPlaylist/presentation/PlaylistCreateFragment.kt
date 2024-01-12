@@ -22,17 +22,24 @@ import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.FragmentCreatePlaylistBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class PlaylistCreateFragment : Fragment() {
     private var _binding: FragmentCreatePlaylistBinding? = null
     private val binding get() = _binding!!
+    private var isImageChosen = false
     private val permissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if(it) pickImages() else Toast.makeText(requireContext(), "The permission is needed", Toast.LENGTH_LONG).show()
+            if (it) pickImages() else Toast.makeText(
+                requireContext(),
+                "The permission is needed",
+                Toast.LENGTH_LONG
+            ).show()
         }
     private val pickMediaLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
+                isImageChosen = true
                 binding.playlistCover.setPadding(0)
                 Glide.with(this)
                     .load(uri)
@@ -61,17 +68,28 @@ class PlaylistCreateFragment : Fragment() {
             binding.createPlaylistButton.isEnabled = !text.isNullOrBlank()
         }
         binding.returnButton.setOnClickListener {
-            findNavController().popBackStack()
+            if (binding.editText.text.isNullOrBlank() && binding.descriptionEditText.text.isNullOrBlank() && !isImageChosen) {
+                findNavController().popBackStack()
+            } else {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Завершить создание плейлиста?") // Заголовок диалога
+                    .setMessage("Все несохраненные данные будут потеряны") // Описание диалога
+                    .setNegativeButton("Отмена") { _, _ -> }
+                    .setPositiveButton("Завершить") { _, _ -> findNavController().popBackStack() }
+                    .show()
+            }
         }
         binding.playlistCover.setOnClickListener {
             checkPermissions()
         }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     fun pickImages() {
         pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
@@ -84,7 +102,7 @@ class PlaylistCreateFragment : Fragment() {
                 permissionsLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
             }
         } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-            if (isGranted(Manifest.permission.READ_EXTERNAL_STORAGE) ){
+            if (isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 pickImages()
             } else {
                 permissionsLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -95,6 +113,9 @@ class PlaylistCreateFragment : Fragment() {
     }
 
     fun isGranted(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }

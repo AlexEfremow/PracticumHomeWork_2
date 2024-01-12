@@ -44,7 +44,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/rectangle"
+        android:id="@+id/playlist_cover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -73,7 +73,7 @@
         android:textColorHint="@color/black_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rectangle" />
+        app:layout_constraintTop_toBottomOf="@id/playlist_cover" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/descriptionEditText"

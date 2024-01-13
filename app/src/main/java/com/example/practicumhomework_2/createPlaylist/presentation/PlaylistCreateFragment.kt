@@ -1,9 +1,14 @@
 package com.example.practicumhomework_2.createPlaylist.presentation
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +17,8 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.decodeBitmap
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
@@ -22,12 +29,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
+import com.example.practicumhomework_2.createPlaylist.data.ImageSaver
 import com.example.practicumhomework_2.databinding.FragmentCreatePlaylistBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.android.ext.android.inject
+import java.io.File
+import java.io.FileOutputStream
 
 class PlaylistCreateFragment : Fragment() {
     private var _binding: FragmentCreatePlaylistBinding? = null
     private val binding get() = _binding!!
+    private val imageSaver: ImageSaver by inject()
+    private var imageUri: Uri = Uri.EMPTY
     private var isImageChosen = false
     private val permissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -40,6 +53,7 @@ class PlaylistCreateFragment : Fragment() {
     private val pickMediaLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
+                imageUri = uri
                 isImageChosen = true
                 binding.playlistCover.setPadding(0)
                 Glide.with(this)
@@ -85,6 +99,7 @@ class PlaylistCreateFragment : Fragment() {
         }
 
         binding.createPlaylistButton.setOnClickListener {
+            imageSaver.saveToInternal(imageUri, binding.editText.text.toString())
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                 CREATE_RESULT,
                 bundleOf("isSuccess" to true, "playlistName" to binding.editText.text.toString())

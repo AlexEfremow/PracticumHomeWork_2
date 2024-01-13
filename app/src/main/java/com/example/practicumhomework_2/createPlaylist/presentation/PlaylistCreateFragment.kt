@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -83,6 +84,14 @@ class PlaylistCreateFragment : Fragment() {
             checkPermissions()
         }
 
+        binding.createPlaylistButton.setOnClickListener {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                CREATE_RESULT,
+                bundleOf("isSuccess" to true, "playlistName" to binding.editText.text.toString())
+            )
+            findNavController().popBackStack()
+        }
+
     }
 
     override fun onDestroyView() {
@@ -117,5 +126,9 @@ class PlaylistCreateFragment : Fragment() {
             requireContext(),
             permission
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    companion object {
+        const val CREATE_RESULT = "CREATE_RESULT"
     }
 }

@@ -28,6 +28,11 @@ class PlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = PlaylistAdapter()
+        binding.playlistList.adapter = adapter
+        viewModel.playlistsLiveData.observe(this) {
+             adapter.updatePlaylists(it)
+        }
         binding.newPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_mediaFragment_to_playlistCreateFragment)
         }
@@ -35,7 +40,6 @@ class PlaylistsFragment : Fragment() {
             PlaylistCreateFragment.CREATE_RESULT
         )?.observe(viewLifecycleOwner) {
             val isSuccess = it.getBoolean("isSuccess")
-            Log.d("AAA", isSuccess.toString())
             val playlistName = it.getString("playlistName")
             if (isSuccess) Toast.makeText(
                 requireContext(),

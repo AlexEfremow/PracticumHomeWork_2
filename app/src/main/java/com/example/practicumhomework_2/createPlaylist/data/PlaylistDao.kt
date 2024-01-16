@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.createPlaylist.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 
@@ -15,4 +16,7 @@ interface PlaylistDao {
 
     @Query("UPDATE PlaylistEntity SET trackList = :trackList WHERE id = :playlistId")
     suspend fun updateTrackList(playlistId: Int, trackList:String)
+
+    @Query("SELECT * FROM PlaylistEntity")
+    fun getPlaylists(): LiveData<List<PlaylistEntity>>
 }

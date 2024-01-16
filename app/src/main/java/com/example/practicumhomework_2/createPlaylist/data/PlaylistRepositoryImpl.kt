@@ -1,7 +1,10 @@
 package com.example.practicumhomework_2.createPlaylist.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistRepository
+import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -30,5 +33,9 @@ class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val gson: Gso
         val list = gson.fromJson<List<String>>(json, typeToken)
         list.toMutableList().remove(trackId)
         dao.updateTrackList(playlistId, gson.toJson(list))
+    }
+
+    override fun getPlaylists(): LiveData<List<PlaylistModel>> {
+        return dao.getPlaylists().map { list -> list.map { it.mapToUi() } }
     }
 }

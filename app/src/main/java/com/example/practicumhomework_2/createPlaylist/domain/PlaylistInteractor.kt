@@ -1,8 +1,10 @@
 package com.example.practicumhomework_2.createPlaylist.domain
 
+import androidx.lifecycle.LiveData
 import com.example.practicumhomework_2.createPlaylist.data.PlaylistDao
 import com.example.practicumhomework_2.createPlaylist.data.PlaylistRepositoryImpl
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
+import com.example.practicumhomework_2.media.domain.PlaylistModel
 
 class PlaylistInteractor(
     private val repository: PlaylistRepository
@@ -21,5 +23,8 @@ class PlaylistInteractor(
 
     suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
         repository.deleteTrackFromPlaylist(trackId,playlistId)
+    }
+    fun getPlaylists(): LiveData<List<PlaylistModel>> {
+        return repository.getPlaylists()
     }
 }

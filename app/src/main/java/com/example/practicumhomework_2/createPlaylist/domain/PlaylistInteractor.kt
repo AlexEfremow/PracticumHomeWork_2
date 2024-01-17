@@ -5,6 +5,7 @@ import com.example.practicumhomework_2.createPlaylist.data.PlaylistDao
 import com.example.practicumhomework_2.createPlaylist.data.PlaylistRepositoryImpl
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
+import com.example.practicumhomework_2.player.domain.entity.Track
 
 class PlaylistInteractor(
     private val repository: PlaylistRepository
@@ -26,5 +27,8 @@ class PlaylistInteractor(
     }
     fun getPlaylists(): LiveData<List<PlaylistModel>> {
         return repository.getPlaylists()
+    }
+    suspend fun addTrack(track: Track) {
+        repository.addTrack(track)
     }
 }

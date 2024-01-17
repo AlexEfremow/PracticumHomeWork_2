@@ -32,6 +32,7 @@ class AddToPlaylistFragment: BottomSheetDialogFragment() {
             adapter.updatePlaylists(it)
         }
 
+
     }
 
     override fun onDestroyView() {

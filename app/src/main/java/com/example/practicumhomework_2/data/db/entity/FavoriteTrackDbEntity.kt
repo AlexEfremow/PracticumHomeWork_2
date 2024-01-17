@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.practicumhomework_2.player.domain.entity.Track
 
 @Entity(tableName = "track_table")
-data class TrackDbEntity(
+data class FavoriteTrackDbEntity(
     val trackName: String,
     val artistName: String,
     val trackTime: Long,

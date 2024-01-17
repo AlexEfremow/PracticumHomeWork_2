@@ -1,7 +1,6 @@
 package com.example.practicumhomework_2.search.data.network
 
 import com.example.practicumhomework_2.data.db.AppDataBase
-import com.example.practicumhomework_2.data.db.entity.TrackDbEntity
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.search.domain.SearchState
 import com.example.practicumhomework_2.search.domain.TrackSearchRepository
@@ -24,7 +23,7 @@ class TrackSearchRepositoryImpl(
         searchApi.searchTracks(trackId)
         val searchResponse = searchApi.searchTracks(trackId)
         return if (searchResponse.isSuccessful) {
-            val favoriteTracksIds = dataBase.trackDao().getFavoriteTracksIds()
+            val favoriteTracksIds = dataBase.favoriteTracksDao().getFavoriteTracksIds()
             val track = searchResponse.body()?.results?.first()
 
             if (favoriteTracksIds.contains(trackId)) {

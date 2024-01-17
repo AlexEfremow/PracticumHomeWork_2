@@ -29,7 +29,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistCreateFragment : Fragment() {
-    private val viewModel : PlaylistCreateViewModel by viewModel()
+    private val viewModel: PlaylistCreateViewModel by viewModel()
     private var _binding: FragmentCreatePlaylistBinding? = null
     private val binding get() = _binding!!
     private val imageSaver: ImageSaver by inject()
@@ -92,8 +92,14 @@ class PlaylistCreateFragment : Fragment() {
         }
 
         binding.createPlaylistButton.setOnClickListener {
-            val cover = imageSaver.saveToInternal(imageUri, binding.editText.text.toString())
-            viewModel.addPlaylist(binding.editText.text.toString(), binding.descriptionEditText.text.toString(), cover.toString())
+            var cover = Uri.EMPTY
+            if (imageUri != Uri.EMPTY)
+                cover = imageSaver.saveToInternal(imageUri, binding.editText.text.toString())
+            viewModel.addPlaylist(
+                binding.editText.text.toString(),
+                binding.descriptionEditText.text.toString(),
+                cover.toString()
+            )
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                 CREATE_RESULT,
                 bundleOf("isSuccess" to true, "playlistName" to binding.editText.text.toString())

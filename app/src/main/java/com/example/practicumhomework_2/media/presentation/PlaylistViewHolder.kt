@@ -18,8 +18,10 @@ class PlaylistViewHolder(private val binding: PlaylistItemBinding): RecyclerView
             .load(item.cover)
             .transform(
                 CenterCrop(),
-                RoundedCorners(50)
+                RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
             )
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
             .into(binding.playlistCover)
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newPlaylistButton"
+        style="@style/refresh_button_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_text_medium"
+        android:text="Новый плейлист"
+        android:textAllCaps="false"
+        android:layout_marginBottom="24dp"
+        android:textSize="14sp"
+        app:cornerRadius="54dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/playlist_item_small"
+        android:layout_weight="1"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</LinearLayout>

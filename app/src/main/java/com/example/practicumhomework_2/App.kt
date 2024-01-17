@@ -2,6 +2,7 @@ package com.example.practicumhomework_2
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.practicumhomework_2.addToPlaylist.playlistSmallModule
 import com.example.practicumhomework_2.createPlaylist.di.playlistCreateModule
 import com.example.practicumhomework_2.data.di.dataModule
 import com.example.practicumhomework_2.media.di.mediaModule
@@ -19,7 +20,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(listOf(playerModule, searchModule, settingsModule, dataModule, mediaModule, playlistCreateModule))
+            modules(listOf(playerModule, searchModule, settingsModule, dataModule, mediaModule, playlistCreateModule, playlistSmallModule))
         }
         val settingsPreferences: SettingsPreferences by inject()
         val isDarkTheme = settingsPreferences.getCurrentTheme()

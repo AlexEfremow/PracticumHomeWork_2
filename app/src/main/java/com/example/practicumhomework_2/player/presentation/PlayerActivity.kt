@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
+import com.example.practicumhomework_2.addToPlaylist.AddToPlaylistFragment
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -88,6 +89,9 @@ class PlayerActivity : AppCompatActivity() {
         }
         playButton.setOnClickListener {
             playbackControl()
+        }
+        findViewById<ImageView>(R.id.add_song_button).setOnClickListener {
+            AddToPlaylistFragment().show(supportFragmentManager, null)
         }
 
 

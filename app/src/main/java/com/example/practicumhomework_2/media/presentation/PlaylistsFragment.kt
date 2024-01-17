@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.practicumhomework_2.R
@@ -31,7 +32,9 @@ class PlaylistsFragment : Fragment() {
         val adapter = PlaylistAdapter()
         binding.playlistList.adapter = adapter
         viewModel.playlistsLiveData.observe(this) {
-             adapter.updatePlaylists(it)
+            binding.playlistList.isVisible = it.isNotEmpty()
+            binding.noPlaylistsStub.root.isVisible = it.isEmpty()
+            adapter.updatePlaylists(it)
         }
         binding.newPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_mediaFragment_to_playlistCreateFragment)

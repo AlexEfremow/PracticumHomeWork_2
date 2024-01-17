@@ -28,7 +28,8 @@ class PlaylistInteractor(
     fun getPlaylists(): LiveData<List<PlaylistModel>> {
         return repository.getPlaylists()
     }
-    suspend fun addTrack(track: Track) {
+    suspend fun addTrack(track: Track, playlistId: Int) {
         repository.addTrack(track)
+        repository.addTrackToPlaylist(track.trackId, playlistId)
     }
 }

@@ -91,7 +91,9 @@ class PlayerActivity : AppCompatActivity() {
             playbackControl()
         }
         findViewById<ImageView>(R.id.add_song_button).setOnClickListener {
-            AddToPlaylistFragment().show(supportFragmentManager, null)
+            AddToPlaylistFragment
+                .newInstance(track)
+                .show(supportFragmentManager, null)
         }
 
 

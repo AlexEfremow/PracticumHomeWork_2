@@ -24,16 +24,19 @@ class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val gson: Gso
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
         val json = dao.getTrackListForPlaylist(playlistId)
-        val list = gson.fromJson<List<String>>(json, typeToken)
-        list.toMutableList().add(trackId)
-        dao.updateTrackList(playlistId, gson.toJson(list))
+        val list = json.split(SEPARATOR).toMutableList()
+        list.add(SEPARATOR)
+        list.add(trackId)
+        dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
     }
 
     override suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
         val json = dao.getTrackListForPlaylist(playlistId)
-        val list = gson.fromJson<List<String>>(json, typeToken)
-        list.toMutableList().remove(trackId)
-        dao.updateTrackList(playlistId, gson.toJson(list))
+        val list = json.split(SEPARATOR).toMutableList()
+        val index = list.indexOf(trackId)
+        list.removeAt(index-1)
+        list.remove(trackId)
+        dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
     }
 
     override fun getPlaylists(): LiveData<List<PlaylistModel>> {
@@ -42,6 +45,10 @@ class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val gson: Gso
 
     override suspend fun addTrack(track: Track) {
         playlistTrackDao.addTrack(track.toPlaylistDbModel())
+    }
+
+    companion object{
+        private const val SEPARATOR = "|"
     }
 
 }

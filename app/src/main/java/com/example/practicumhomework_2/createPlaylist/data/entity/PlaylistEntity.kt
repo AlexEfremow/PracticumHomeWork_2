@@ -16,6 +16,16 @@ data class PlaylistEntity(
     val trackCount: Int = 0
 ) {
     fun mapToUi(): PlaylistModel {
-        return PlaylistModel(id = id, cover = cover, name = name, count = trackCount)
+        return PlaylistModel(
+            id = id,
+            cover = cover,
+            name = name,
+            count = trackCount,
+            trackList = trackList.split(SEPARATOR)
+        )
+    }
+
+    companion object {
+        private const val SEPARATOR = "|"
     }
 }

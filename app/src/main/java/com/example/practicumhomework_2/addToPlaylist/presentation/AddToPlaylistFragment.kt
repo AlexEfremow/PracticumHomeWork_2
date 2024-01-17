@@ -1,22 +1,21 @@
-package com.example.practicumhomework_2.addToPlaylist
+package com.example.practicumhomework_2.addToPlaylist.presentation
 
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
 import com.example.practicumhomework_2.databinding.FragmentAddToPlaylistBinding
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AddToPlaylistFragment: BottomSheetDialogFragment() {
+class AddToPlaylistFragment : BottomSheetDialogFragment() {
     private val viewModel by viewModel<AddToPlaylistViewModel>()
-    private var _binding : FragmentAddToPlaylistBinding? = null
+    private var _binding: FragmentAddToPlaylistBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -24,18 +23,25 @@ class AddToPlaylistFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding =  FragmentAddToPlaylistBinding.inflate(inflater, container, false)
+        _binding = FragmentAddToPlaylistBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val track = BundleCompat.getParcelable(arguments?: bundleOf(), ARGS_KEY, Track::class.java)!!
+        val track =
+            BundleCompat.getParcelable(arguments ?: bundleOf(), ARGS_KEY, Track::class.java)!!
         val adapter = AddToPlaylistAdapter {
             viewModel.addTrackToPlaylist(track, it)
-//            dismiss()
         }
-
+        viewModel.trackAddingResultLiveData.observe(this) {
+            when (it){
+                is PlaylistState.Success -> dismiss()
+                is PlaylistState.Unavailable -> {
+                    Toast.makeText(requireContext(), it.playlistName, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
 
         binding.playlistList.adapter = adapter
         viewModel.playlistsLiveData.observe(this) {
@@ -50,8 +56,9 @@ class AddToPlaylistFragment: BottomSheetDialogFragment() {
 
     companion object {
         private const val ARGS_KEY = "args"
+
         @JvmStatic
-        fun newInstance(args: Parcelable): AddToPlaylistFragment{
+        fun newInstance(args: Parcelable): AddToPlaylistFragment {
             return AddToPlaylistFragment().apply {
                 arguments = bundleOf(ARGS_KEY to args)
             }

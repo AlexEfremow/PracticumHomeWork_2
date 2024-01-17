@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.addToPlaylist
+package com.example.practicumhomework_2.addToPlaylist.presentation
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

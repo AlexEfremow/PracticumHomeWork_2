@@ -1,6 +1,5 @@
 package com.example.practicumhomework_2.player.presentation
 
-import android.media.Image
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.FrameLayout
@@ -12,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.addToPlaylist.AddToPlaylistFragment
+import com.example.practicumhomework_2.addToPlaylist.presentation.AddToPlaylistFragment
 import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -1,6 +1,7 @@
-package com.example.practicumhomework_2.addToPlaylist
+package com.example.practicumhomework_2.addToPlaylist.di
 
 import com.example.practicumhomework_2.addToPlaylist.data.PlaylistTrackDao
+import com.example.practicumhomework_2.addToPlaylist.presentation.AddToPlaylistViewModel
 import com.example.practicumhomework_2.data.db.AppDataBase
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.bind

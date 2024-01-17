@@ -2,7 +2,7 @@ package com.example.practicumhomework_2
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.practicumhomework_2.addToPlaylist.playlistSmallModule
+import com.example.practicumhomework_2.addToPlaylist.di.playlistSmallModule
 import com.example.practicumhomework_2.createPlaylist.di.playlistCreateModule
 import com.example.practicumhomework_2.data.di.dataModule
 import com.example.practicumhomework_2.media.di.mediaModule

@@ -62,8 +62,8 @@ class AddToPlaylistFragment : BottomSheetDialogFragment() {
             adapter.updatePlaylists(it)
         }
         binding.newPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.playlistCreateFragment)
             dismiss()
+            findNavController().navigate(R.id.playlistCreateFragment)
         }
     }
 

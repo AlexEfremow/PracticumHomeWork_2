@@ -39,17 +39,6 @@ class PlaylistsFragment : Fragment() {
         binding.newPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_mediaFragment_to_playlistCreateFragment)
         }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
-            PlaylistCreateFragment.CREATE_RESULT
-        )?.observe(viewLifecycleOwner) {
-            val isSuccess = it.getBoolean("isSuccess")
-            val playlistName = it.getString("playlistName")
-            if (isSuccess) Toast.makeText(
-                requireContext(),
-                "Плейлист $playlistName создан",
-                Toast.LENGTH_LONG
-            ).show()
-        }
     }
 
 

@@ -100,10 +100,11 @@ class PlaylistCreateFragment : Fragment() {
                 binding.descriptionEditText.text.toString(),
                 cover.toString()
             )
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                CREATE_RESULT,
-                bundleOf("isSuccess" to true, "playlistName" to binding.editText.text.toString())
-            )
+            Toast.makeText(
+                requireContext(),
+                "Плейлист ${binding.editText.text.toString()} создан",
+                Toast.LENGTH_LONG
+            ).show()
             findNavController().popBackStack()
         }
 
@@ -114,11 +115,11 @@ class PlaylistCreateFragment : Fragment() {
         _binding = null
     }
 
-    fun pickImages() {
+    private fun pickImages() {
         pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    fun checkPermissions() {
+    private fun checkPermissions() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
             if (isGranted(Manifest.permission.READ_MEDIA_IMAGES)) {
                 pickImages()
@@ -136,14 +137,10 @@ class PlaylistCreateFragment : Fragment() {
         }
     }
 
-    fun isGranted(permission: String): Boolean {
+    private fun isGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
             permission
         ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    companion object {
-        const val CREATE_RESULT = "CREATE_RESULT"
     }
 }

@@ -1,7 +1,6 @@
 package com.example.practicumhomework_2.search.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +8,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.SearchBinding
-import com.example.practicumhomework_2.player.presentation.PlayerActivity
 import com.example.practicumhomework_2.search.domain.SearchState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -170,11 +169,9 @@ class SearchFragment : Fragment() {
 
 
     private fun openPlayer(trackId: String) {
-        val playerIntent =
-            Intent(requireActivity(), PlayerActivity::class.java).putExtra("track_id", trackId)
-        if (clickDebounce()) {
-            startActivity(playerIntent)
-        }
+        if (clickDebounce())
+            findNavController().navigate(R.id.playerFragment, bundleOf("track_id" to trackId))
+
     }
 
 

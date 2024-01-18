@@ -26,4 +26,8 @@
         android:id="@+id/playlistCreateFragment"
         android:name="com.example.practicumhomework_2.createPlaylist.presentation.PlaylistCreateFragment"
         android:label="PlaylistCreateFragment" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.practicumhomework_2.player.presentation.PlayerFragment"
+        android:label="PlayerFragment" />
 </navigation>

@@ -1,20 +1,16 @@
 package com.example.practicumhomework_2.media.presentation
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.FragmentFavouriteTracksBinding
-import com.example.practicumhomework_2.databinding.SettingsBinding
 import com.example.practicumhomework_2.media.domain.FavoriteTracksState
-import com.example.practicumhomework_2.player.presentation.PlayerActivity
-import com.example.practicumhomework_2.player.presentation.PlayerViewModel
-import com.example.practicumhomework_2.search.presentation.SearchFragment
 import com.example.practicumhomework_2.search.presentation.TrackAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -41,7 +37,7 @@ class FavouriteTracksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = favoriteTracksAdapter
         viewModel.favoriteTracksLiveData.observe(this) {
-            when(it) {
+            when (it) {
                 is FavoriteTracksState.NotEmpty -> {
                     binding.recyclerView.visibility = View.VISIBLE
                     binding.imageView.visibility = View.GONE
@@ -61,13 +57,13 @@ class FavouriteTracksFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun openPlayer(trackId: String) {
-        val playerIntent =
-            Intent(requireActivity(), PlayerActivity::class.java).putExtra("track_id", trackId)
-        if (clickDebounce()) {
-            startActivity(playerIntent)
-        }
+        if (clickDebounce())
+            findNavController().navigate(R.id.playerFragment, bundleOf("track_id" to trackId))
+
     }
+
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {

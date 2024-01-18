@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
+import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.FragmentAddToPlaylistBinding
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -35,10 +36,21 @@ class AddToPlaylistFragment : BottomSheetDialogFragment() {
             viewModel.addTrackToPlaylist(track, it)
         }
         viewModel.trackAddingResultLiveData.observe(this) {
-            when (it){
-                is PlaylistState.Success -> dismiss()
+            when (it) {
+                is PlaylistState.Success -> {
+                    Toast.makeText(
+                        requireContext(), requireContext().getString(
+                            R.string.adding_to_playlist_success, it.playlistName
+                        ), Toast.LENGTH_LONG
+                    ).show()
+                    dismiss()
+                }
                 is PlaylistState.Unavailable -> {
-                    Toast.makeText(requireContext(), it.playlistName, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(), requireContext().getString(
+                            R.string.adding_to_playlist_declined, it.playlistName
+                        ), Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

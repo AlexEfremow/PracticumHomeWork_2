@@ -2,6 +2,7 @@ package com.example.practicumhomework_2.createPlaylist.data.entity
 
 import android.net.Uri
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 
@@ -13,15 +14,17 @@ data class PlaylistEntity(
     val description: String,
     val cover: String,
     val trackList: String = "",
-    val trackCount: Int = 0
 ) {
+    @Ignore
+    private val parsedTrackList = trackList.split(SEPARATOR).filter { it.isNotBlank() }
+
     fun mapToUi(): PlaylistModel {
         return PlaylistModel(
             id = id,
             cover = cover,
             name = name,
-            count = trackCount,
-            trackList = trackList.split(SEPARATOR)
+            count = parsedTrackList.size,
+            trackList = parsedTrackList
         )
     }
 

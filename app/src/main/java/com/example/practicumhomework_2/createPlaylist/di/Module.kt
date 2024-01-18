@@ -21,7 +21,7 @@ val playlistCreateModule = module {
         PlaylistInteractor(get())
     }
     factory {
-        PlaylistRepositoryImpl(get(),get(),get())
+        PlaylistRepositoryImpl(get(),get())
     } bind PlaylistRepository::class
     factory {
         get<AppDataBase>().playlistDao()

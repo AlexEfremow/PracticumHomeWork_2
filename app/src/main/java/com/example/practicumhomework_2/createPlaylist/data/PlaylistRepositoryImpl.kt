@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.createPlaylist.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.practicumhomework_2.addToPlaylist.data.PlaylistTrackDao
@@ -10,9 +11,8 @@ import com.example.practicumhomework_2.player.domain.entity.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val gson: Gson, private val playlistTrackDao: PlaylistTrackDao) : PlaylistRepository {
+class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val playlistTrackDao: PlaylistTrackDao) : PlaylistRepository {
 
-    private val typeToken = object : TypeToken<ArrayList<Track>>() {}.type
 
     override suspend fun addPlaylist(playlist: PlaylistEntity) {
         dao.addPlaylist(playlist)
@@ -24,8 +24,7 @@ class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val gson: Gso
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
         val json = dao.getTrackListForPlaylist(playlistId)
-        val list = json.split(SEPARATOR).toMutableList()
-        list.add(SEPARATOR)
+        val list = json.split(SEPARATOR).filter { it.isNotBlank() }.toMutableList()
         list.add(trackId)
         dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
     }

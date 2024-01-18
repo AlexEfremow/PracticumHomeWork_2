@@ -18,7 +18,7 @@ import com.example.practicumhomework_2.player.domain.PlayerState
 import com.example.practicumhomework_2.player.domain.entity.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayerFragment: Fragment() {
+class PlayerFragment : Fragment() {
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -27,7 +27,7 @@ class PlayerFragment: Fragment() {
         private const val STATE_PAUSED = 3
     }
 
-    private var _binding : AudioPlayerBinding? = null
+    private var _binding: AudioPlayerBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<PlayerViewModel>()
@@ -41,7 +41,7 @@ class PlayerFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding =  AudioPlayerBinding.inflate(inflater, container, false)
+        _binding = AudioPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -108,17 +108,19 @@ class PlayerFragment: Fragment() {
     }
 
     fun preparePlayer() {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.playButton.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            binding.playButton.setImageResource(R.drawable.ic_baseline_play_circle_24)
-            playerState = STATE_PREPARED
-            viewModel.stopProgress()
-            viewModel.resetCounter()
+        if (playerState == STATE_DEFAULT) {
+            mediaPlayer.setDataSource(track.previewUrl)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                binding.playButton.isEnabled = true
+                playerState = STATE_PREPARED
+            }
+            mediaPlayer.setOnCompletionListener {
+                binding.playButton.setImageResource(R.drawable.ic_baseline_play_circle_24)
+                playerState = STATE_PREPARED
+                viewModel.stopProgress()
+                viewModel.resetCounter()
+            }
         }
     }
 

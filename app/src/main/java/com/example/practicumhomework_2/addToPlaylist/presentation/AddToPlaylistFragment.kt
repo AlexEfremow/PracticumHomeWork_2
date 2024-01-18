@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.FragmentAddToPlaylistBinding
 import com.example.practicumhomework_2.player.domain.entity.Track
@@ -58,6 +60,10 @@ class AddToPlaylistFragment : BottomSheetDialogFragment() {
         binding.playlistList.adapter = adapter
         viewModel.playlistsLiveData.observe(this) {
             adapter.updatePlaylists(it)
+        }
+        binding.newPlaylistButton.setOnClickListener {
+            findNavController().navigate(R.id.playlistCreateFragment)
+            dismiss()
         }
     }
 

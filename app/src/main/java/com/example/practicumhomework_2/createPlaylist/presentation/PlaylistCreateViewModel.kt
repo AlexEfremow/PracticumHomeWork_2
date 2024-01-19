@@ -1,5 +1,6 @@
 package com.example.practicumhomework_2.createPlaylist.presentation
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
@@ -12,4 +13,9 @@ class PlaylistCreateViewModel(private val interactor: PlaylistInteractor): ViewM
             interactor.addPlaylist(PlaylistEntity(cover = cover, name = name, description = description))
         }
     }
+    fun saveToInternal(uri: Uri, name: String): Uri {
+        return interactor.saveToInternal(uri, name)
+    }
+
+
 }

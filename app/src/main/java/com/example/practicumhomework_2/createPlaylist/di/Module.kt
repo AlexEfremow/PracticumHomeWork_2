@@ -18,7 +18,7 @@ val playlistCreateModule = module {
         ImageSaver(androidApplication())
     }
     factory {
-        PlaylistInteractor(get())
+        PlaylistInteractor(get(), get())
     }
     factory {
         PlaylistRepositoryImpl(get(),get())

@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,24 +20,21 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.practicumhomework_2.R
-import com.example.practicumhomework_2.createPlaylist.data.ImageSaver
 import com.example.practicumhomework_2.databinding.FragmentCreatePlaylistBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistCreateFragment : Fragment() {
     private val viewModel: PlaylistCreateViewModel by viewModel()
     private var _binding: FragmentCreatePlaylistBinding? = null
     private val binding get() = _binding!!
-    private val imageSaver: ImageSaver by inject()
     private var imageUri: Uri = Uri.EMPTY
     private var isImageChosen = false
     private val permissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) pickImages() else Toast.makeText(
                 requireContext(),
-                "The permission is needed",
+                getString(R.string.needed_permission),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -56,8 +51,6 @@ class PlaylistCreateFragment : Fragment() {
                         RoundedCorners(resources.getDimensionPixelSize(R.dimen.track_poster_corner_radius))
                     )
                     .into(binding.playlistCover)
-            } else {
-                Log.d("AAA", "No media selected")
             }
         }
 
@@ -80,10 +73,10 @@ class PlaylistCreateFragment : Fragment() {
                 findNavController().popBackStack()
             } else {
                 MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Завершить создание плейлиста?") // Заголовок диалога
-                    .setMessage("Все несохраненные данные будут потеряны") // Описание диалога
-                    .setNegativeButton("Отмена") { _, _ -> }
-                    .setPositiveButton("Завершить") { _, _ -> findNavController().popBackStack() }
+                    .setTitle(getString(R.string.fully_create_playlist)) // Заголовок диалога
+                    .setMessage(getString(R.string.unsaved_information_deleted)) // Описание диалога
+                    .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+                    .setPositiveButton(getString(R.string.complete)) { _, _ -> findNavController().popBackStack() }
                     .show()
             }
         }
@@ -94,7 +87,7 @@ class PlaylistCreateFragment : Fragment() {
         binding.createPlaylistButton.setOnClickListener {
             var cover = Uri.EMPTY
             if (imageUri != Uri.EMPTY)
-                cover = imageSaver.saveToInternal(imageUri, binding.editText.text.toString())
+                cover = viewModel.saveToInternal(imageUri, binding.editText.text.toString())
             viewModel.addPlaylist(
                 binding.editText.text.toString(),
                 binding.descriptionEditText.text.toString(),
@@ -102,7 +95,7 @@ class PlaylistCreateFragment : Fragment() {
             )
             Toast.makeText(
                 requireContext(),
-                "Плейлист ${binding.editText.text.toString()} создан",
+                getString(R.string.playlist_created, binding.editText.text.toString()),
                 Toast.LENGTH_LONG
             ).show()
             findNavController().popBackStack()

@@ -20,13 +20,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerFragment : Fragment() {
 
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-    }
-
     private var _binding: AudioPlayerBinding? = null
     private val binding get() = _binding!!
 
@@ -157,5 +150,11 @@ class PlayerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+    }
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
     }
 }

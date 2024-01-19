@@ -57,7 +57,6 @@ class SearchFragment : Fragment() {
                     binding.progressBarLayout.root.visibility = View.GONE
                     binding.searchHistory.root.visibility = View.GONE
                     binding.lostConnectionStub.root.visibility = View.VISIBLE
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
                 is SearchState.Success -> {
                     binding.lostConnectionStub.root.visibility = View.GONE

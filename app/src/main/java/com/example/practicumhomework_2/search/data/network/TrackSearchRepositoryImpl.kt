@@ -11,28 +11,38 @@ class TrackSearchRepositoryImpl(
 ) : TrackSearchRepository {
 
     override suspend fun searchTracks(value: String): SearchState {
-        val searchResponse = searchApi.searchTracks(value)
-        return if (searchResponse.isSuccessful) {
-            SearchState.Success(searchResponse.body()?.results ?: emptyList())
-        } else {
-            SearchState.Error(searchResponse.message())
+        return try {
+            val searchResponse = searchApi.searchTracks(value)
+            if (searchResponse.isSuccessful) {
+                SearchState.Success(searchResponse.body()?.results ?: emptyList())
+            } else {
+                SearchState.Error(searchResponse.message())
+            }
+        } catch (e: Exception) {
+            SearchState.Error(e.message ?: "")
         }
+
     }
 
     override suspend fun searchSingleTrack(trackId: String): PlayerState {
-        searchApi.searchTracks(trackId)
-        val searchResponse = searchApi.searchTracks(trackId)
-        return if (searchResponse.isSuccessful) {
-            val favoriteTracksIds = dataBase.favoriteTracksDao().getFavoriteTracksIds()
-            val track = searchResponse.body()?.results?.first()
+        try {
+            searchApi.searchTracks(trackId)
+            val searchResponse = searchApi.searchTracks(trackId)
+            return if (searchResponse.isSuccessful) {
+                val favoriteTracksIds = dataBase.favoriteTracksDao().getFavoriteTracksIds()
+                val track = searchResponse.body()?.results?.first()
 
-            if (favoriteTracksIds.contains(trackId)) {
-                track?.isFavorite = true
+                if (favoriteTracksIds.contains(trackId)) {
+                    track?.isFavorite = true
+                }
+                track?.let { PlayerState.TrackLoaded(it) }
+                    ?: PlayerState.Error(searchResponse.message())
+            } else {
+                PlayerState.Error(searchResponse.message())
             }
-            track?.let { PlayerState.TrackLoaded(it) }
-                ?: PlayerState.Error(searchResponse.message())
-        } else {
-            PlayerState.Error(searchResponse.message())
+        } catch (e: Exception) {
+            return PlayerState.Error(e.message ?: "")
         }
+
     }
 }

@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.search.domain.SearchInteractor
 import com.example.practicumhomework_2.search.domain.SearchState
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
@@ -20,9 +18,12 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
     fun loadTrackList(query: String) {
         if (query.isEmpty()) return
-        viewModelScope.launch {
-            _searchLiveData.value = SearchState.Loading()
-            _searchLiveData.value = interactor.searchTracks(query)
+        _searchLiveData.value = SearchState.Loading()
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = interactor.searchTracks(query)
+            withContext(Dispatchers.Main){
+                _searchLiveData.value = result
+            }
         }
     }
     fun searchDebounce(changedText: String) {

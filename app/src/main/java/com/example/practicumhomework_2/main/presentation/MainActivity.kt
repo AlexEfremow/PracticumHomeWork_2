@@ -18,10 +18,16 @@ class MainActivity : AppCompatActivity() {
 
     private val bottomNavigationView by lazy { findViewById<BottomNavigationView>(R.id.bottomNavigationView) }
     private val separator by lazy { findViewById<View>(R.id.separator) }
+    private val fragmentList = listOf(R.id.playerFragment, R.id.playlistCreateFragment)
 
     private val destinationListener = NavController.OnDestinationChangedListener { _, destination, _ ->
-        bottomNavigationView.isVisible = destination.id != R.id.playlistCreateFragment
-        separator.isVisible = destination.id != R.id.playlistCreateFragment
+        if(destination.id in fragmentList) {
+            bottomNavigationView.visibility = View.GONE
+            separator.visibility = View.GONE
+        } else {
+            bottomNavigationView.visibility = View.VISIBLE
+            separator.visibility = View.VISIBLE
+        }
     }
 
     private lateinit var navController: NavController

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -83,6 +84,23 @@ class PlaylistCreateFragment : Fragment() {
         binding.playlistCover.setOnClickListener {
             checkPermissions()
         }
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (binding.editText.text.isNullOrBlank() && binding.descriptionEditText.text.isNullOrBlank() && !isImageChosen) {
+                        findNavController().popBackStack()
+                    } else {
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(getString(R.string.fully_create_playlist)) // Заголовок диалога
+                            .setMessage(getString(R.string.unsaved_information_deleted)) // Описание диалога
+                            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+                            .setPositiveButton(getString(R.string.complete)) { _, _ -> findNavController().popBackStack() }
+                            .show()
+                    }
+                }
+            }
+        )
 
         binding.createPlaylistButton.setOnClickListener {
             var cover = Uri.EMPTY
@@ -106,6 +124,18 @@ class PlaylistCreateFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private fun onBackPressed() {
+        if (binding.editText.text.isNullOrBlank() && binding.descriptionEditText.text.isNullOrBlank() && !isImageChosen) {
+            findNavController().popBackStack()
+        } else {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.fully_create_playlist)) // Заголовок диалога
+                .setMessage(getString(R.string.unsaved_information_deleted)) // Описание диалога
+                .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+                .setPositiveButton(getString(R.string.complete)) { _, _ -> findNavController().popBackStack() }
+                .show()
+        }
     }
 
     private fun pickImages() {

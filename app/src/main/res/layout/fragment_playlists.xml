@@ -8,7 +8,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/refresh_button"
+        android:id="@+id/new_playlist_button"
         style="@style/refresh_button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,25 +17,23 @@
         android:text="Новый плейлист"
         android:textAllCaps="false"
         android:textSize="14sp"
-        app:cornerRadius="54dp"
-        android:layout_marginBottom="46dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        style="@style/no_results_stub_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/textview"
-        style="@style/stubs_text_style"
-        android:layout_width="wrap_content"
+        app:cornerRadius="54dp" />
+    <include layout="@layout/no_playlists_stub"
+        android:id="@+id/no_playlists_stub"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_text_medium"
-        android:gravity="center"
-        android:text="@string/dont_have_playlists"
-        android:textSize="19sp"
-        android:layout_marginTop="16dp" />
+        android:layout_width="wrap_content"
+        android:layout_marginTop="46dp"
+        android:visibility="gone"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/playlist_item"/>
 
 
 

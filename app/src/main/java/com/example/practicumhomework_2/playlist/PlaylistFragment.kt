@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.Fragment
 import com.example.practicumhomework_2.databinding.PlaylistBinding
+import com.example.practicumhomework_2.media.presentation.PlaylistsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class PlaylistFragment: Fragment() {
@@ -31,6 +32,7 @@ class PlaylistFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val playlistId = arguments?.getInt(PlaylistsFragment.PLAYLIST_ID_KEY)
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }

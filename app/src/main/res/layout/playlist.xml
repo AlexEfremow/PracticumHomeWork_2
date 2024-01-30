@@ -147,13 +147,13 @@
             android:layout_height="1000dp"
             android:background="@color/black_2" />
 
-        <!--        <androidx.recyclerview.widget.RecyclerView-->
-        <!--            android:id="@+id/playlist_list"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            tools:listitem="@layout/playlist_item_small"-->
-        <!--            android:layout_weight="1"-->
-        <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/playlist_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    tools:listitem="@layout/playlist_item_small"
+                    android:layout_weight="1"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

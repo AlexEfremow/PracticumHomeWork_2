@@ -8,7 +8,7 @@ import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.databinding.PlaylistItemBinding
 
-class PlaylistAdapter(private val onClick: () -> Unit) : RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(private val onClick: (Int) -> Unit) : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     private var playlists: List<PlaylistModel> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {

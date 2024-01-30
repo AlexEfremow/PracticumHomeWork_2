@@ -11,12 +11,12 @@ import com.example.practicumhomework_2.media.domain.PlaylistModel
 
 class PlaylistViewHolder(
     private val binding: PlaylistItemBinding,
-    private val onClick: ()-> Unit
+    private val onClick: (Int)-> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: PlaylistModel) {
         binding.root.setOnClickListener {
-            onClick.invoke()
+            onClick.invoke(item.id)
         }
         binding.playlistName.text = item.name
         binding.playlistTracksCount.text = itemView.resources.getQuantityString(R.plurals.tracks_count, item.count, item.count)

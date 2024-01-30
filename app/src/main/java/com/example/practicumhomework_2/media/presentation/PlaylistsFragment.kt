@@ -29,7 +29,9 @@ class PlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = PlaylistAdapter()
+        val adapter = PlaylistAdapter {
+            findNavController().navigate(R.id.action_playlistsFragment_to_playlistFragment)
+        }
         binding.playlistList.adapter = adapter
         viewModel.playlistsLiveData.observe(this) {
             binding.playlistList.isVisible = it.isNotEmpty()

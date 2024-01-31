@@ -1,6 +1,5 @@
 package com.example.practicumhomework_2.createPlaylist.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.practicumhomework_2.addToPlaylist.data.PlaylistTrackDao
@@ -8,45 +7,62 @@ import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistRepository
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.practicumhomework_2.playlist.DetailedPlaylistModel
 
-class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val playlistTrackDao: PlaylistTrackDao) : PlaylistRepository {
-
+class PlaylistRepositoryImpl(
+    private val playlistDao: PlaylistDao,
+    private val playlistTrackDao: PlaylistTrackDao
+) : PlaylistRepository {
 
     override suspend fun addPlaylist(playlist: PlaylistEntity) {
-        dao.addPlaylist(playlist)
+        playlistDao.addPlaylist(playlist)
     }
 
     override suspend fun deletePlaylist(playlist: PlaylistEntity) {
-        dao.deletePlaylist(playlist)
+        playlistDao.deletePlaylist(playlist)
     }
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
-        val json = dao.getTrackListForPlaylist(playlistId)
+        val json = playlistDao.getTrackListForPlaylist(playlistId)
         val list = json.split(SEPARATOR).filter { it.isNotBlank() }.toMutableList()
         list.add(trackId)
-        dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
     }
 
     override suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
-        val json = dao.getTrackListForPlaylist(playlistId)
+        val json = playlistDao.getTrackListForPlaylist(playlistId)
         val list = json.split(SEPARATOR).toMutableList()
         val index = list.indexOf(trackId)
-        list.removeAt(index-1)
+        list.removeAt(index - 1)
         list.remove(trackId)
-        dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
     }
 
     override fun getPlaylists(): LiveData<List<PlaylistModel>> {
-        return dao.getPlaylists().map { list -> list.map { it.mapToUi() } }
+        return playlistDao.getPlaylists().map { list -> list.map { it.mapToUi() } }
     }
 
     override suspend fun addTrack(track: Track) {
         playlistTrackDao.addTrack(track.toPlaylistDbModel())
     }
 
-    companion object{
+    override suspend fun getPlaylistById(id: Int): DetailedPlaylistModel {
+        val playlist = playlistDao.getPlaylistById(id)
+        val tracks = playlistTrackDao.getAllTracks().filter {
+            playlist.parsedTrackList.contains(it.trackId)
+        }
+        return DetailedPlaylistModel(
+            playlist.id,
+            playlist.cover,
+            playlist.name,
+            playlist.description,
+            playlist.parsedTrackList.size,
+            tracks.sumOf { it.trackTime }.toString(),
+            tracks.map { it.mapToTrack() }
+        )
+    }
+
+    companion object {
         private const val SEPARATOR = "|"
     }
 

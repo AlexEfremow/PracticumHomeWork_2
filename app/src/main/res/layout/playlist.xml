@@ -63,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="@+id/right_guideLine_16"
             app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
             app:layout_constraintTop_toBottomOf="@+id/playlist_cover"
-            android:text="NAME" />
+            tools:text="NAME" />
 
         <TextView
             android:id="@+id/playlist_description"
@@ -75,7 +75,7 @@
             app:layout_constraintEnd_toEndOf="@+id/right_guideLine_16"
             app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
             app:layout_constraintTop_toBottomOf="@+id/playlist_name"
-            android:text="DESCRIPTION" />
+            tools:text="DESCRIPTION" />
 
         <TextView
             android:id="@+id/tracks_time_minutes"
@@ -84,7 +84,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
             app:layout_constraintTop_toBottomOf="@+id/playlist_description"
-            android:text="MINUTES" />
+            tools:text="MINUTES" />
 
         <ImageView
             android:id="@+id/playlist_point"
@@ -103,7 +103,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tracks_time_minutes"
             app:layout_constraintStart_toEndOf="@+id/playlist_point"
             app:layout_constraintTop_toTopOf="@+id/tracks_time_minutes"
-            android:text="COUNT" />
+            tools:text="COUNT" />
 
         <ImageView
             android:id="@+id/playlist_share"

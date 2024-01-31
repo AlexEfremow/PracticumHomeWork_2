@@ -16,7 +16,7 @@ data class PlaylistEntity(
     val trackList: String = "",
 ) {
     @Ignore
-    private val parsedTrackList = trackList.split(SEPARATOR).filter { it.isNotBlank() }
+    val parsedTrackList = trackList.split(SEPARATOR).filter { it.isNotBlank() }
 
     fun mapToUi(): PlaylistModel {
         return PlaylistModel(

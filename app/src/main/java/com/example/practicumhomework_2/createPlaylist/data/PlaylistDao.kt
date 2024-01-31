@@ -19,4 +19,7 @@ interface PlaylistDao {
 
     @Query("SELECT * FROM PlaylistEntity")
     fun getPlaylists(): LiveData<List<PlaylistEntity>>
+
+    @Query("SELECT * FROM PlaylistEntity WHERE id = :id")
+    suspend fun getPlaylistById(id: Int): PlaylistEntity
 }

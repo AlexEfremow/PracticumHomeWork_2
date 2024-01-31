@@ -2,6 +2,7 @@ package com.example.practicumhomework_2.addToPlaylist.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.practicumhomework_2.player.domain.entity.Track
 
 @Entity
 data class PlaylistTrackDbEntity(
@@ -17,4 +18,19 @@ data class PlaylistTrackDbEntity(
     val collectionName: String,
     val previewUrl: String,
     var isFavorite: Boolean = false
-)
+) {
+    fun mapToTrack(): Track {
+        return Track(
+            trackName,
+            artistName,
+            trackTime,
+            artworkUrl,
+            trackId,
+            releaseDate,
+            country,
+            primaryGenreName,
+            collectionName,
+            previewUrl
+        )
+    }
+}

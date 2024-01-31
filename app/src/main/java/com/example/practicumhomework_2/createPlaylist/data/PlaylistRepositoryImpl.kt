@@ -57,7 +57,7 @@ class PlaylistRepositoryImpl(
             playlist.name,
             playlist.description,
             playlist.parsedTrackList.size,
-            tracks.sumOf { it.trackTime }.toString(),
+            (tracks.sumOf { it.trackTime } / 60000).toInt(),
             tracks.map { it.mapToTrack() }
         )
     }

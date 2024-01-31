@@ -47,11 +47,11 @@
         <ImageView
             android:id="@+id/playlist_cover"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:adjustViewBounds="true"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/placeholder" />
+            tools:src="@drawable/placeholder" />
 
         <TextView
             android:id="@+id/playlist_name"

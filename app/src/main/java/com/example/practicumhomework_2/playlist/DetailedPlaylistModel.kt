@@ -8,6 +8,6 @@ data class DetailedPlaylistModel(
     val name: String,
     val description: String,
     val count: Int,
-    val totalTime: String,
+    val totalTime: Int,
     val trackList: List<Track>
 )

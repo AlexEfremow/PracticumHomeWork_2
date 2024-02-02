@@ -3,6 +3,7 @@ package com.example.practicumhomework_2.createPlaylist.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaylistDao {
@@ -21,5 +22,5 @@ interface PlaylistDao {
     fun getPlaylists(): LiveData<List<PlaylistEntity>>
 
     @Query("SELECT * FROM PlaylistEntity WHERE id = :id")
-    suspend fun getPlaylistById(id: Int): PlaylistEntity
+    fun getPlaylistById(id: Int): Flow<PlaylistEntity>
 }

@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistInteractor
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel() {
-    private val _playlistLiveData = MutableLiveData<DetailedPlaylistModel>()
-    val playlistLiveData : LiveData<DetailedPlaylistModel> = _playlistLiveData
+
+    var playlistFlow: Flow<DetailedPlaylistModel>? = null
 
     fun getPlaylistById(id: Int) {
-        viewModelScope.launch {
-            _playlistLiveData.value = interactor.getPlaylistById(id)
-        }
+        playlistFlow = interactor.getPlaylistById(id)
     }
 }

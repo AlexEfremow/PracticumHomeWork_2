@@ -10,6 +10,7 @@ import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.DetailedPlaylistModel
+import kotlinx.coroutines.flow.Flow
 
 interface PlaylistRepository {
     suspend fun addPlaylist(playlist: PlaylistEntity)
@@ -18,5 +19,5 @@ interface PlaylistRepository {
     suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int)
     fun getPlaylists(): LiveData<List<PlaylistModel>>
     suspend fun addTrack(track: Track)
-    suspend fun getPlaylistById(id: Int): DetailedPlaylistModel
+    fun getPlaylistById(id: Int): Flow<DetailedPlaylistModel>
 }

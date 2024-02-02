@@ -8,6 +8,10 @@ import com.example.practicumhomework_2.createPlaylist.domain.PlaylistRepository
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.DetailedPlaylistModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 class PlaylistRepositoryImpl(
     private val playlistDao: PlaylistDao,
@@ -46,20 +50,20 @@ class PlaylistRepositoryImpl(
         playlistTrackDao.addTrack(track.toPlaylistDbModel())
     }
 
-    override suspend fun getPlaylistById(id: Int): DetailedPlaylistModel {
-        val playlist = playlistDao.getPlaylistById(id)
-        val tracks = playlistTrackDao.getAllTracks().filter {
-            playlist.parsedTrackList.contains(it.trackId)
+    override fun getPlaylistById(id: Int): Flow<DetailedPlaylistModel> {
+        val playlistFlow = playlistDao.getPlaylistById(id)
+        val tracksFlow = playlistTrackDao.getAllTracks()
+        return playlistFlow.combine(tracksFlow) { playlist, trackList ->
+            DetailedPlaylistModel(
+                playlist.id,
+                playlist.cover,
+                playlist.name,
+                playlist.description,
+                playlist.parsedTrackList.size,
+                (trackList.sumOf { it.trackTime } / 60000).toInt(),
+                trackList.map { it.mapToTrack() }
+            )
         }
-        return DetailedPlaylistModel(
-            playlist.id,
-            playlist.cover,
-            playlist.name,
-            playlist.description,
-            playlist.parsedTrackList.size,
-            (tracks.sumOf { it.trackTime } / 60000).toInt(),
-            tracks.map { it.mapToTrack() }
-        )
     }
 
     companion object {

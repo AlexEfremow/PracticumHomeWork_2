@@ -9,12 +9,17 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.PlaylistBinding
 import com.example.practicumhomework_2.media.presentation.PlaylistsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : Fragment() {
@@ -45,17 +50,29 @@ class PlaylistFragment : Fragment() {
             Toast.LENGTH_LONG
         ).show() else viewModel.getPlaylistById(playlistId)
 
-        viewModel.playlistLiveData.observe(this) {
-            binding.playlistName.text = it.name
-            binding.playlistDescription.text = it.description
-            Glide.with(this)
-                .load(it.cover)
-                .centerCrop()
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder)
-                .into(binding.playlistCover)
-            binding.tracksTimeMinutes.text = requireContext().resources.getQuantityString(R.plurals.minutes_count, it.totalTime, it.totalTime)
-            binding.playlistTracksCount.text = requireContext().resources.getQuantityString(R.plurals.tracks_count, it.count, it.count)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.playlistFlow?.collect() {
+                    binding.playlistName.text = it.name
+                    binding.playlistDescription.text = it.description
+                    Glide.with(this@PlaylistFragment)
+                        .load(it.cover)
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .into(binding.playlistCover)
+                    binding.tracksTimeMinutes.text = requireContext().resources.getQuantityString(
+                        R.plurals.minutes_count,
+                        it.totalTime,
+                        it.totalTime
+                    )
+                    binding.playlistTracksCount.text = requireContext().resources.getQuantityString(
+                        R.plurals.tracks_count,
+                        it.count,
+                        it.count
+                    )
+                }
+            }
         }
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)

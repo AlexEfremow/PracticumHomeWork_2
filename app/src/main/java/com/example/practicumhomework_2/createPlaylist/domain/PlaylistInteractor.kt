@@ -9,6 +9,7 @@ import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.DetailedPlaylistModel
+import kotlinx.coroutines.flow.Flow
 
 class PlaylistInteractor(
     private val repository: PlaylistRepository,
@@ -39,8 +40,7 @@ class PlaylistInteractor(
     fun saveToInternal(uri: Uri, name: String): Uri {
         return imageSaver.saveToInternal(uri, name)
     }
-    suspend fun getPlaylistById(id: Int): DetailedPlaylistModel {
+    fun getPlaylistById(id: Int): Flow<DetailedPlaylistModel> {
         return repository.getPlaylistById(id)
     }
-
 }

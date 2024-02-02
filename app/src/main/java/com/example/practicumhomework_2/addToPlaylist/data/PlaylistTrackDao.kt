@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.practicumhomework_2.addToPlaylist.data.entity.PlaylistTrackDbEntity
 import com.example.practicumhomework_2.player.domain.entity.Track
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaylistTrackDao {
@@ -13,5 +14,5 @@ interface PlaylistTrackDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addTrack(track: PlaylistTrackDbEntity)
     @Query("SELECT * FROM PlaylistTrackDbEntity")
-    suspend fun getAllTracks(): List<PlaylistTrackDbEntity>
+    fun getAllTracks(): Flow<List<PlaylistTrackDbEntity>>
 }

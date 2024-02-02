@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/topView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="24dp">
 
@@ -135,6 +135,7 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
         <View
             style="@style/BottomSheetSeparatorStyle"
             android:layout_width="50dp"
@@ -142,18 +143,14 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/bottom_sheet_bg_separator" />
 
-        <FrameLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlist_list"
             android:layout_width="match_parent"
-            android:layout_height="1000dp"
-            android:background="@color/black_2" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/playlist_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    tools:listitem="@layout/playlist_item_small"
-                    android:layout_weight="1"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/black_2"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/track_item_layout" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

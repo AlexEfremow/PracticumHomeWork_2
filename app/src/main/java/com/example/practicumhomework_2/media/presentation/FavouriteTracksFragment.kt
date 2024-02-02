@@ -23,7 +23,7 @@ class FavouriteTracksFragment : Fragment() {
     private val binding get() = _binding!!
     private var isClickAllowed = true
     private var jobDebounce: Job? = null
-    private val favoriteTracksAdapter = TrackAdapter { openPlayer(it.trackId) }
+    private val favoriteTracksAdapter = TrackAdapter(onClick = { openPlayer(it.trackId) })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

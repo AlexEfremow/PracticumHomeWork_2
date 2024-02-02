@@ -29,12 +29,12 @@ class SearchFragment : Fragment() {
     private var jobDebounce: Job? = null
 
 
-    private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
-    private val trackAdapter = TrackAdapter {
+    private val historyAdapter = TrackAdapter(onClick = { openPlayer(it.trackId) })
+    private val trackAdapter = TrackAdapter(onClick = {
         viewModel.saveTrackToHistory(it)
         historyAdapter.updateTrackList(viewModel.getTrackHistory())
         openPlayer(it.trackId)
-    }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,

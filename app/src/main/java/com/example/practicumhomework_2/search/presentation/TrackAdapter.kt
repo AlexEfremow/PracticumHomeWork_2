@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.player.domain.entity.Track
 
-class TrackAdapter(private val onClick: (Track) -> Unit) : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private val onClick: (Track) -> Unit, private val onLongClick: (Track) -> Unit = {}) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks: List<Track> = emptyList()
 
@@ -22,6 +22,10 @@ class TrackAdapter(private val onClick: (Track) -> Unit) : RecyclerView.Adapter<
         holder.bind(item)
         holder.itemView.setOnClickListener {
             onClick(item)
+        }
+        holder.itemView.setOnLongClickListener {
+            onLongClick(item)
+            true
         }
     }
 

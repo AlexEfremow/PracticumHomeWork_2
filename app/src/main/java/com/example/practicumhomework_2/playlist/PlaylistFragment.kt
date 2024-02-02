@@ -22,6 +22,8 @@ import com.example.practicumhomework_2.databinding.PlaylistBinding
 import com.example.practicumhomework_2.media.presentation.PlaylistsFragment
 import com.example.practicumhomework_2.search.presentation.TrackAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,9 +41,18 @@ class PlaylistFragment : Fragment() {
     }
     private val trackAdapter =
         TrackAdapter(
-            onClick = { findNavController().navigate(R.id.playerFragment, bundleOf("track_id" to it.trackId)) },
+            onClick = {
+                findNavController().navigate(
+                    R.id.playerFragment,
+                    bundleOf("track_id" to it.trackId)
+                )
+            },
             onLongClick = {
-                Toast.makeText(requireContext(), "LONG CLICK", Toast.LENGTH_LONG).show()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setMessage(R.string.delete_track_dialogue)
+                    .setPositiveButton(R.string.yes_dialogue) { _, _ -> showToast("YES 2") }
+                    .setNegativeButton(R.string.no_dialogue) { _, _ -> showToast("NO 2") }
+                    .show()
             })
 
     override fun onCreateView(
@@ -101,5 +112,9 @@ class PlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }

@@ -25,6 +25,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp" />
+        <ImageView
+            android:id="@+id/playlist_cover"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/placeholder" />
 
         <FrameLayout
             android:id="@+id/return_button"
@@ -43,15 +51,6 @@
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_arrow_back_16" />
         </FrameLayout>
-
-        <ImageView
-            android:id="@+id/playlist_cover"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/placeholder" />
 
         <TextView
             android:id="@+id/playlist_name"
@@ -129,11 +128,10 @@
     <LinearLayout
         android:id="@+id/bottomView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View

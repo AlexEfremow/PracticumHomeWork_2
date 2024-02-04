@@ -36,8 +36,6 @@ class PlaylistRepositoryImpl(
     override suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
         val json = playlistDao.getTrackListForPlaylist(playlistId)
         val list = json.split(SEPARATOR).toMutableList()
-        val index = list.indexOf(trackId)
-        list.removeAt(index - 1)
         list.remove(trackId)
         playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
     }
@@ -61,7 +59,7 @@ class PlaylistRepositoryImpl(
                 playlist.description,
                 playlist.parsedTrackList.size,
                 (trackList.sumOf { it.trackTime } / 60000).toInt(),
-                trackList.map { it.mapToTrack() }
+                trackList.map { it.mapToTrack() }.filter { playlist.parsedTrackList.contains(it.trackId) }
             )
         }
     }

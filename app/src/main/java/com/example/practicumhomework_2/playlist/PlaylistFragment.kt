@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -39,21 +41,6 @@ class PlaylistFragment : Fragment() {
         Log.d("AAA Screen Height", screenHeight.toString())
         Log.d("AAA bottom Height", binding.topView.height.toString())
     }
-    private val trackAdapter =
-        TrackAdapter(
-            onClick = {
-                findNavController().navigate(
-                    R.id.playerFragment,
-                    bundleOf("track_id" to it.trackId)
-                )
-            },
-            onLongClick = {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setMessage(R.string.delete_track_dialogue)
-                    .setPositiveButton(R.string.yes_dialogue) { _, _ -> showToast("YES 2") }
-                    .setNegativeButton(R.string.no_dialogue) { _, _ -> showToast("NO 2") }
-                    .show()
-            })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +60,23 @@ class PlaylistFragment : Fragment() {
             "Empty Playlist Id",
             Toast.LENGTH_LONG
         ).show() else viewModel.getPlaylistById(playlistId)
+        val trackAdapter = TrackAdapter(
+            onClick = {
+                findNavController().navigate(
+                    R.id.playerFragment,
+                    bundleOf("track_id" to it.trackId)
+                )
+            },
+            onLongClick = { track ->
+                MaterialAlertDialogBuilder(requireContext())
+                    .setMessage(R.string.delete_track_dialogue)
+                    .setPositiveButton(R.string.yes_dialogue) { dialogue, _ ->
+                        playlistId?.let { viewModel.deleteTrackFromPlaylist(track.trackId, it) }
+                            ?: dialogue.dismiss()
+                    }
+                    .setNegativeButton(R.string.no_dialogue) { dialogue, _ ->  dialogue.dismiss()}
+                    .show()
+            })
         binding.playlistList.adapter = trackAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -100,7 +104,9 @@ class PlaylistFragment : Fragment() {
                 }
             }
         }
-
+        binding.returnButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 

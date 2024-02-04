@@ -15,4 +15,9 @@ class PlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel()
     fun getPlaylistById(id: Int) {
         playlistFlow = interactor.getPlaylistById(id)
     }
+    fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
+        viewModelScope.launch {
+            interactor.deleteTrackFromPlaylist(trackId, playlistId)
+        }
+    }
 }

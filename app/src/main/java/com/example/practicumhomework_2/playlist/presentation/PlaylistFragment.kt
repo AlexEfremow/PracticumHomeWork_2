@@ -108,10 +108,11 @@ class PlaylistFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding.playlistMore.setOnClickListener {
+            if(currentPlaylist != null) {
             PlaylistDetailsFragment
-                .newInstance()
+                .newInstance(currentPlaylist!!)
                 .show(parentFragmentManager, null)
-        }
+        }}
         binding.playlistShare.setOnClickListener {
             if (currentPlaylist?.trackList.isNullOrEmpty()) {
                 showToast(R.string.playlist_is_empty)

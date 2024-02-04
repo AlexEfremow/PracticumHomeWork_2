@@ -19,8 +19,12 @@ interface PlaylistDao {
     suspend fun updateTrackList(playlistId: Int, trackList:String)
 
     @Query("SELECT * FROM PlaylistEntity")
-    fun getPlaylists(): LiveData<List<PlaylistEntity>>
+    fun getPlaylistsLiveData(): LiveData<List<PlaylistEntity>>
 
     @Query("SELECT * FROM PlaylistEntity WHERE id = :id")
     fun getPlaylistById(id: Int): Flow<PlaylistEntity>
+
+    @Query("SELECT * FROM PlaylistEntity")
+    suspend fun getPlaylists(): List<PlaylistEntity>
+
 }

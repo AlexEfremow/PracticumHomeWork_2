@@ -10,8 +10,6 @@ import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.DetailedPlaylistModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 
 class PlaylistRepositoryImpl(
     private val playlistDao: PlaylistDao,
@@ -38,10 +36,25 @@ class PlaylistRepositoryImpl(
         val list = json.split(SEPARATOR).toMutableList()
         list.remove(trackId)
         playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        val isUsed = checkTrackUsage(trackId)
+        if (!isUsed) {
+            playlistTrackDao.deleteTrack(trackId)
+        }
+    }
+    private suspend fun checkTrackUsage(trackId: String): Boolean {
+        val playlists = playlistDao.getPlaylists()
+        var isUsed = false
+        for (i in playlists) {
+            if(i.parsedTrackList.contains(trackId)) {
+                isUsed = true
+                break
+            }
+        }
+        return isUsed
     }
 
     override fun getPlaylists(): LiveData<List<PlaylistModel>> {
-        return playlistDao.getPlaylists().map { list -> list.map { it.mapToUi() } }
+        return playlistDao.getPlaylistsLiveData().map { list -> list.map { it.mapToUi() } }
     }
 
     override suspend fun addTrack(track: Track) {

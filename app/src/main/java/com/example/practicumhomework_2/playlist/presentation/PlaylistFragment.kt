@@ -18,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.practicumhomework_2.R
+import com.example.practicumhomework_2.addToPlaylist.presentation.AddToPlaylistFragment
 import com.example.practicumhomework_2.databinding.PlaylistBinding
 import com.example.practicumhomework_2.media.presentation.PlaylistsFragment
 import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
@@ -105,6 +106,11 @@ class PlaylistFragment : Fragment() {
         }
         binding.returnButton.setOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.playlistMore.setOnClickListener {
+            PlaylistDetailsFragment
+                .newInstance()
+                .show(parentFragmentManager, null)
         }
         binding.playlistShare.setOnClickListener {
             if (currentPlaylist?.trackList.isNullOrEmpty()) {

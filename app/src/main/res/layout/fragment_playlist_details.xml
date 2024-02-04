@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        style="@style/BottomSheetSeparatorStyle"
+        android:background="@drawable/bottom_sheet_bg_separator"/>
+    <include layout="@layout/playlist_item_small"
+        android:id="@+id/playlist_item_small"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Поделиться"
+        android:textSize="24sp"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Редактировать информацию"
+        android:textSize="24sp"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Удалить плейлист"
+        android:textSize="24sp"
+        android:padding="10dp"/>
+
+</LinearLayout>

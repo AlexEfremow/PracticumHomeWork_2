@@ -2,6 +2,7 @@ package com.example.practicumhomework_2.playlist.presentation
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,10 +35,19 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val playlist = BundleCompat.getParcelable(arguments ?: bundleOf(), ARGS_KEY, DetailedPlaylistModel::class.java)!!
+        val playlist = BundleCompat.getParcelable(
+            arguments ?: bundleOf(),
+            ARGS_KEY,
+            DetailedPlaylistModel::class.java
+        )!!
 
         binding.playlistItemSmall.playlistName.text = playlist.name
-        binding.playlistItemSmall.playlistTracksCount.text = requireContext().resources.getQuantityString(R.plurals.tracks_count, playlist.count, playlist.count)
+        binding.playlistItemSmall.playlistTracksCount.text =
+            requireContext().resources.getQuantityString(
+                R.plurals.tracks_count,
+                playlist.count,
+                playlist.count
+            )
         Glide.with(binding.playlistItemSmall.playlistCover)
             .load(playlist.cover)
             .transform(
@@ -47,6 +57,14 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
             .placeholder(R.drawable.placeholder)
             .error(R.drawable.placeholder)
             .into(binding.playlistItemSmall.playlistCover)
+
+        binding.shareButton.setOnClickListener {
+            val intent = viewModel.getShareIntent(
+                playlist.trackList,
+                getString(R.string.text_pattern)
+            )
+            startActivity(intent)
+        }
 
 
     }

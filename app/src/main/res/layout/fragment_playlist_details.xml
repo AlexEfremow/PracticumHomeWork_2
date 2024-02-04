@@ -13,6 +13,7 @@
     <include layout="@layout/playlist_item_small"
         android:id="@+id/playlist_item_small"/>
     <TextView
+        android:id="@+id/share_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Поделиться"

@@ -34,7 +34,6 @@ class PlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel()
                 append("\n")
             }
         }
-        Log.d("AAA", text)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, text)

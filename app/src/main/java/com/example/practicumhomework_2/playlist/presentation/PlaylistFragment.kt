@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.PlaylistBinding
 import com.example.practicumhomework_2.media.presentation.PlaylistsFragment
+import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
 import com.example.practicumhomework_2.search.presentation.TrackAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PlaylistFragment : Fragment() {
     private var _binding: PlaylistBinding? = null
     private val binding get() = _binding!!
+    private var currentPlaylist: DetailedPlaylistModel? = null
     private val viewModel by viewModel<PlaylistViewModel>()
     private var behavior: BottomSheetBehavior<LinearLayout>? = null
     private val screenHeight by lazy { Resources.getSystem().displayMetrics.heightPixels }
@@ -69,7 +72,7 @@ class PlaylistFragment : Fragment() {
                         playlistId?.let { viewModel.deleteTrackFromPlaylist(track.trackId, it) }
                             ?: dialogue.dismiss()
                     }
-                    .setNegativeButton(R.string.no_dialogue) { dialogue, _ ->  dialogue.dismiss()}
+                    .setNegativeButton(R.string.no_dialogue) { dialogue, _ -> dialogue.dismiss() }
                     .show()
             })
         binding.playlistList.adapter = trackAdapter
@@ -78,6 +81,7 @@ class PlaylistFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.playlistFlow?.collect {
                     trackAdapter.updateTrackList(it.trackList)
+                    currentPlaylist = it
                     binding.playlistName.text = it.name
                     binding.playlistDescription.text = it.description
                     Glide.with(this@PlaylistFragment)
@@ -102,6 +106,17 @@ class PlaylistFragment : Fragment() {
         binding.returnButton.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding.playlistShare.setOnClickListener {
+            if (currentPlaylist?.trackList.isNullOrEmpty()) {
+                showToast(R.string.playlist_is_empty)
+            } else {
+                val intent = viewModel.getShareIntent(
+                    currentPlaylist?.trackList ?: emptyList(),
+                    getString(R.string.text_pattern)
+                )
+                startActivity(intent)
+            }
+        }
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
@@ -115,7 +130,7 @@ class PlaylistFragment : Fragment() {
         _binding = null
     }
 
-    fun showToast(message: String) {
+    fun showToast(@StringRes message: Int) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }

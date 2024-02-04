@@ -53,4 +53,5 @@
     <string name="delete_track_dialogue">Хотите удалить трек?</string>
     <string name="yes_dialogue">ДА</string>
     <string name="no_dialogue">НЕТ</string>
+    <string name="playlist_is_empty">В этом плейлисте нет списка треков, которым можно поделиться</string>
 </resources>

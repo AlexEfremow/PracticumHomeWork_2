@@ -3,12 +3,10 @@ package com.example.practicumhomework_2.createPlaylist.domain
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.example.practicumhomework_2.createPlaylist.data.ImageSaver
-import com.example.practicumhomework_2.createPlaylist.data.PlaylistDao
-import com.example.practicumhomework_2.createPlaylist.data.PlaylistRepositoryImpl
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
-import com.example.practicumhomework_2.playlist.DetailedPlaylistModel
+import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
 import kotlinx.coroutines.flow.Flow
 
 class PlaylistInteractor(

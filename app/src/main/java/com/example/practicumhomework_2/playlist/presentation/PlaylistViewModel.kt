@@ -1,10 +1,9 @@
-package com.example.practicumhomework_2.playlist
+package com.example.practicumhomework_2.playlist.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistInteractor
+import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

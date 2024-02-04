@@ -1,4 +1,4 @@
-package com.example.practicumhomework_2.playlist
+package com.example.practicumhomework_2.playlist.presentation.model
 
 import com.example.practicumhomework_2.player.domain.entity.Track
 

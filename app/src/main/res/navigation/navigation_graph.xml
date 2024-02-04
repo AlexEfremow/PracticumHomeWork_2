@@ -35,6 +35,6 @@
         android:label="PlayerFragment" />
     <fragment
         android:id="@+id/playlistFragment"
-        android:name="com.example.practicumhomework_2.playlist.PlaylistFragment"
+        android:name="com.example.practicumhomework_2.playlist.presentation.PlaylistFragment"
         android:label="PlaylistFragment"/>
 </navigation>

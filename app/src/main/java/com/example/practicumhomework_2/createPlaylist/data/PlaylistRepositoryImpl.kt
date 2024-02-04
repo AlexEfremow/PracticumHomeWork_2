@@ -20,8 +20,11 @@ class PlaylistRepositoryImpl(
         playlistDao.addPlaylist(playlist)
     }
 
-    override suspend fun deletePlaylist(playlist: PlaylistEntity) {
-        playlistDao.deletePlaylist(playlist)
+    override suspend fun deletePlaylist(playlist: DetailedPlaylistModel) {
+        playlistDao.deletePlaylist(playlist.id)
+        playlist.trackList.forEach {
+            if(!checkTrackUsage(it.trackId)) playlistTrackDao.deleteTrack(it.trackId)
+        }
     }
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {

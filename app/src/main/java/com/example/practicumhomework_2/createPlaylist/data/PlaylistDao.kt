@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 interface PlaylistDao {
     @Insert
     suspend fun addPlaylist(playlist: PlaylistEntity)
-    @Delete
-    suspend fun deletePlaylist(playlist: PlaylistEntity)
+    @Query("DELETE FROM PlaylistEntity WHERE id = :id")
+    suspend fun deletePlaylist(id: Int)
 
     @Query("SELECT trackList FROM PlaylistEntity WHERE id = :playlistId")
     suspend fun getTrackListForPlaylist(playlistId: Int):String

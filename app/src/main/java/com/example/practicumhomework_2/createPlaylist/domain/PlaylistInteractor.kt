@@ -17,7 +17,7 @@ class PlaylistInteractor(
         repository.addPlaylist(playlist)
     }
 
-    suspend fun deletePlaylist(playlist: PlaylistEntity) {
+    suspend fun deletePlaylist(playlist: DetailedPlaylistModel) {
         repository.deletePlaylist(playlist)
     }
 

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistRepository {
     suspend fun addPlaylist(playlist: PlaylistEntity)
-    suspend fun deletePlaylist(playlist: PlaylistEntity)
+    suspend fun deletePlaylist(playlist: DetailedPlaylistModel)
     suspend fun addTrackToPlaylist(trackId: String, playlistId: Int)
     suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int)
     fun getPlaylists(): LiveData<List<PlaylistModel>>

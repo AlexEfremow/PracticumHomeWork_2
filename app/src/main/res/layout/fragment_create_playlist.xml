@@ -33,6 +33,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/toolbar_text"
             style="@style/toolbar_text_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

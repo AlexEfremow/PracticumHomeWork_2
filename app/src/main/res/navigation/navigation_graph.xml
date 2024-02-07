@@ -37,4 +37,8 @@
         android:id="@+id/playlistFragment"
         android:name="com.example.practicumhomework_2.playlist.presentation.PlaylistFragment"
         android:label="PlaylistFragment"/>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.practicumhomework_2.editPlaylist.presentation.EditPlaylistFragment"
+        android:label="EditPlaylistFragment"/>
 </navigation>

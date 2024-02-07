@@ -83,6 +83,10 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
             )
             startActivity(intent)
         }
+        binding.editPlaylistButton.setOnClickListener {
+            dismiss()
+            findNavController().navigate(R.id.editPlaylistFragment, bundleOf(ARGS_KEY to playlist))
+        }
         binding.deletePlaylistButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setMessage(
@@ -107,7 +111,7 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val ARGS_KEY = "args"
+        const val ARGS_KEY = "args"
 
         @JvmStatic
         fun newInstance(args: DetailedPlaylistModel): PlaylistDetailsFragment {

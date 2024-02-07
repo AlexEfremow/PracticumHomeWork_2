@@ -52,7 +52,6 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val playlistId = arguments?.getInt(PlaylistsFragment.PLAYLIST_ID_KEY)
-        if(binding.playlistDescription.text.isNullOrBlank()) binding.playlistDescription.visibility = View.GONE
         if (playlistId == null) Toast.makeText(
             requireContext(),
             "Empty Playlist Id",
@@ -82,6 +81,7 @@ class PlaylistFragment : Fragment() {
                 viewModel.playlistFlow?.collect {
                     trackAdapter.updateTrackList(it.trackList)
                     currentPlaylist = it
+                    if(currentPlaylist?.description.isNullOrBlank()) binding.playlistDescription.visibility = View.GONE
                     binding.playlistName.text = it.name
                     binding.playlistDescription.text = it.description
                     Glide.with(this@PlaylistFragment)

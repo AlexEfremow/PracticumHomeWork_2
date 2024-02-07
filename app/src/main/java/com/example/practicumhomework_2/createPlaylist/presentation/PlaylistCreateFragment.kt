@@ -25,11 +25,11 @@ import com.example.practicumhomework_2.databinding.FragmentCreatePlaylistBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlaylistCreateFragment : Fragment() {
-    private val viewModel: PlaylistCreateViewModel by viewModel()
+open class PlaylistCreateFragment : Fragment() {
+    protected open val viewModel: PlaylistCreateViewModel by viewModel()
     private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding get() = _binding!!
-    private var imageUri: Uri = Uri.EMPTY
+    protected val binding get() = _binding!!
+    protected var imageUri: Uri = Uri.EMPTY
     private var isImageChosen = false
     private val permissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -70,16 +70,7 @@ class PlaylistCreateFragment : Fragment() {
             binding.createPlaylistButton.isEnabled = !text.isNullOrBlank()
         }
         binding.returnButton.setOnClickListener {
-            if (binding.editText.text.isNullOrBlank() && binding.descriptionEditText.text.isNullOrBlank() && !isImageChosen) {
-                findNavController().popBackStack()
-            } else {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.fully_create_playlist)) // Заголовок диалога
-                    .setMessage(getString(R.string.unsaved_information_deleted)) // Описание диалога
-                    .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-                    .setPositiveButton(getString(R.string.complete)) { _, _ -> findNavController().popBackStack() }
-                    .show()
-            }
+            onBackPressed()
         }
         binding.playlistCover.setOnClickListener {
             checkPermissions()
@@ -88,35 +79,13 @@ class PlaylistCreateFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (binding.editText.text.isNullOrBlank() && binding.descriptionEditText.text.isNullOrBlank() && !isImageChosen) {
-                        findNavController().popBackStack()
-                    } else {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(getString(R.string.fully_create_playlist)) // Заголовок диалога
-                            .setMessage(getString(R.string.unsaved_information_deleted)) // Описание диалога
-                            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-                            .setPositiveButton(getString(R.string.complete)) { _, _ -> findNavController().popBackStack() }
-                            .show()
-                    }
+                    onBackPressed()
                 }
             }
         )
 
         binding.createPlaylistButton.setOnClickListener {
-            var cover = Uri.EMPTY
-            if (imageUri != Uri.EMPTY)
-                cover = viewModel.saveToInternal(imageUri, binding.editText.text.toString())
-            viewModel.addPlaylist(
-                binding.editText.text.toString(),
-                binding.descriptionEditText.text.toString(),
-                cover.toString()
-            )
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.playlist_created, binding.editText.text.toString()),
-                Toast.LENGTH_LONG
-            ).show()
-            findNavController().popBackStack()
+            onMainButtonPressed()
         }
 
     }
@@ -125,7 +94,25 @@ class PlaylistCreateFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private fun onBackPressed() {
+
+    protected open fun onMainButtonPressed() {
+        var cover = Uri.EMPTY
+        if (imageUri != Uri.EMPTY)
+            cover = viewModel.saveToInternal(imageUri, binding.editText.text.toString())
+        viewModel.addPlaylist(
+            binding.editText.text.toString(),
+            binding.descriptionEditText.text.toString(),
+            cover.toString()
+        )
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.playlist_created, binding.editText.text.toString()),
+            Toast.LENGTH_LONG
+        ).show()
+        findNavController().popBackStack()
+    }
+
+    protected open fun onBackPressed() {
         if (binding.editText.text.isNullOrBlank() && binding.descriptionEditText.text.isNullOrBlank() && !isImageChosen) {
             findNavController().popBackStack()
         } else {

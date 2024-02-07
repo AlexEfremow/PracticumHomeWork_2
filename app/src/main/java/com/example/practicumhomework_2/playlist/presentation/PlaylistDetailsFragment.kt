@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
@@ -77,11 +78,17 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
             .into(binding.playlistItemSmall.playlistCover)
 
         binding.shareButton.setOnClickListener {
-            val intent = viewModel.getShareIntent(
-                playlist.trackList,
-                getString(R.string.text_pattern)
-            )
-            startActivity(intent)
+            if (playlist.trackList.isEmpty()) {
+                Toast.makeText(requireContext(), R.string.playlist_is_empty, Toast.LENGTH_LONG).show()
+            } else {
+                val intent = viewModel.getShareIntent(
+                    playlist.trackList,
+                    getString(R.string.text_pattern),
+                    requireContext()
+                )
+                startActivity(intent)
+            }
+            dismiss()
         }
         binding.editPlaylistButton.setOnClickListener {
             dismiss()

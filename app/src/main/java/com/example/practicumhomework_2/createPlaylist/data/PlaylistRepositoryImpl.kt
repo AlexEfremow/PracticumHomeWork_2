@@ -2,6 +2,7 @@ package com.example.practicumhomework_2.createPlaylist.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.addToPlaylist.data.PlaylistTrackDao
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistRepository
@@ -11,6 +12,7 @@ import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlayl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.parcelize.parcelableCreator
 
 class PlaylistRepositoryImpl(
     private val playlistDao: PlaylistDao,
@@ -33,16 +35,16 @@ class PlaylistRepositoryImpl(
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
         val json = playlistDao.getTrackListForPlaylist(playlistId)
-        val list = json.split(SEPARATOR).filter { it.isNotBlank() }.toMutableList()
+        val list = json.split(Constants.TRACK_LIST_SEPARATOR).filter { it.isNotBlank() }.toMutableList()
         list.add(trackId)
-        playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        playlistDao.updateTrackList(playlistId, list.joinToString(Constants.TRACK_LIST_SEPARATOR))
     }
 
     override suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
         val json = playlistDao.getTrackListForPlaylist(playlistId)
-        val list = json.split(SEPARATOR).toMutableList()
+        val list = json.split(Constants.TRACK_LIST_SEPARATOR).toMutableList()
         list.remove(trackId)
-        playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        playlistDao.updateTrackList(playlistId, list.joinToString(Constants.TRACK_LIST_SEPARATOR))
         val playlists = playlistDao.getPlaylists()
         val isUsed = checkTrackUsage(trackId, playlists)
         if (!isUsed) {
@@ -85,10 +87,6 @@ class PlaylistRepositoryImpl(
                 filteredTrackList.reversed()
             )
         }
-    }
-
-    companion object {
-        private const val SEPARATOR = "|"
     }
 
 }

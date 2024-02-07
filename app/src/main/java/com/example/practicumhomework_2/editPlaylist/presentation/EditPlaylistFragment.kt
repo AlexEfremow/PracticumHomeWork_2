@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.createPlaylist.presentation.PlaylistCreateFragment
@@ -55,7 +56,7 @@ class EditPlaylistFragment : PlaylistCreateFragment() {
             name = binding.editText.text.toString(),
             description = binding.descriptionEditText.text.toString(),
             cover = cover.toString(),
-            trackList = playlist.trackList.joinToString("|") { it.trackId }
+            trackList = playlist.trackList.joinToString(Constants.TRACK_LIST_SEPARATOR) { it.trackId }
         ))
         findNavController().popBackStack()
     }

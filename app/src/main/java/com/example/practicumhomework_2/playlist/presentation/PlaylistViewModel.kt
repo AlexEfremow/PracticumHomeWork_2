@@ -1,9 +1,11 @@
 package com.example.practicumhomework_2.playlist.presentation
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistInteractor
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
@@ -31,9 +33,9 @@ class PlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel()
             _removingState.value = removingResult
         }
     }
-    fun getShareIntent(trackList: List<Track>, type: String): Intent {
+    fun getShareIntent(trackList: List<Track>, type: String, context: Context): Intent {
         val text =  buildString {
-            append("${trackList.size} треков")
+            append(context.resources.getQuantityString(R.plurals.tracks_count, trackList.size, trackList.size))
             append("\n")
             trackList.forEachIndexed { index, track ->
                 append("${index + 1}. ${track.artistName} - ${track.trackName} (${track.timeFormat()})")

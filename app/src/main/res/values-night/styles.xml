@@ -135,10 +135,11 @@
     <style name="AddToPlaylistTextViewStyle">
         <item name="android:textColor">@color/white</item>
     </style>
-    <style name="CreatePlaylistEditTextStyle">
-        <item name="android:background">@drawable/edittext_background_dark</item>
+    <style name="CreatePlaylistEditTextStyle"  parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
+        <item name="boxStrokeColor">@color/input_layout_colors_dark</item>
+        <item name="hintTextColor">@color/blue</item>
     </style>
     <style name="playlist_point_style">
         <item name="android:backgroundTint">@color/white</item>

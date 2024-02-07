@@ -75,6 +75,7 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:fontFamily="@font/ys_text_regular"
+            android:textColor="@color/black_2"
             android:textSize="18sp"
             android:maxLines="2"
             app:layout_constraintEnd_toEndOf="@+id/right_guideLine_16"

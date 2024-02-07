@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.FragmentFavouriteTracksBinding
 import com.example.practicumhomework_2.media.domain.FavoriteTracksState
@@ -60,7 +61,7 @@ class FavouriteTracksFragment : Fragment() {
 
     private fun openPlayer(trackId: String) {
         if (clickDebounce())
-            findNavController().navigate(R.id.playerFragment, bundleOf("track_id" to trackId))
+            findNavController().navigate(R.id.playerFragment, bundleOf(Constants.ARG_KEY to trackId))
 
     }
 

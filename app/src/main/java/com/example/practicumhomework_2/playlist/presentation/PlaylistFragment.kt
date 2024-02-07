@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.addToPlaylist.presentation.AddToPlaylistFragment
 import com.example.practicumhomework_2.databinding.PlaylistBinding
@@ -54,14 +55,14 @@ class PlaylistFragment : Fragment() {
         val playlistId = arguments?.getInt(PlaylistsFragment.PLAYLIST_ID_KEY)
         if (playlistId == null) Toast.makeText(
             requireContext(),
-            "Empty Playlist Id",
+            getString(R.string.empty_playlist_id),
             Toast.LENGTH_LONG
         ).show() else viewModel.getPlaylistById(playlistId)
         val trackAdapter = TrackAdapter(
             onClick = {
                 findNavController().navigate(
                     R.id.playerFragment,
-                    bundleOf("track_id" to it.trackId)
+                    bundleOf(Constants.ARG_KEY to it.trackId)
                 )
             },
             onLongClick = { track ->
@@ -118,7 +119,8 @@ class PlaylistFragment : Fragment() {
             } else {
                 val intent = viewModel.getShareIntent(
                     currentPlaylist?.trackList ?: emptyList(),
-                    getString(R.string.text_pattern)
+                    getString(R.string.text_pattern),
+                    requireContext()
                 )
                 startActivity(intent)
             }
@@ -136,7 +138,7 @@ class PlaylistFragment : Fragment() {
         _binding = null
     }
 
-    fun showToast(@StringRes message: Int) {
+    private fun showToast(@StringRes message: Int) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }

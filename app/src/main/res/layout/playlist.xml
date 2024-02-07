@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_2"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="24dp">
+        android:paddingBottom="48dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_guideLine_16"
@@ -43,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                style="@style/back_button"
+                app:tint="@color/black_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
@@ -59,6 +60,9 @@
             android:layout_marginTop="24dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:fontFamily="@font/ys_text_bold"
+            android:textSize="24sp"
+            android:textColor="@color/black_2"
             app:layout_constraintEnd_toEndOf="@+id/right_guideLine_16"
             app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
             app:layout_constraintTop_toBottomOf="@+id/playlist_cover"
@@ -70,6 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ellipsize="end"
+            android:fontFamily="@font/ys_text_regular"
+            android:textSize="18sp"
             android:maxLines="2"
             app:layout_constraintEnd_toEndOf="@+id/right_guideLine_16"
             app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
@@ -81,6 +87,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/ys_text_regular"
+            android:textSize="18sp"
+            android:textColor="@color/black_2"
             app:layout_constraintStart_toStartOf="@id/left_guideLine_16"
             app:layout_constraintTop_toBottomOf="@+id/playlist_description"
             tools:text="MINUTES" />
@@ -99,6 +108,9 @@
             android:id="@+id/playlist_tracks_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_regular"
+            android:textColor="@color/black_2"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/tracks_time_minutes"
             app:layout_constraintStart_toEndOf="@+id/playlist_point"
             app:layout_constraintTop_toTopOf="@+id/tracks_time_minutes"
@@ -130,24 +142,25 @@
         android:id="@+id/bottomView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:behavior_hideable="false"
+        style="@style/playlist_details_linear_layout_style"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
-            style="@style/BottomSheetSeparatorStyle"
             android:layout_width="50dp"
             android:layout_height="4dp"
+            style="@style/BottomSheetSeparatorStyle"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bottom_sheet_bg_separator" />
+            android:background="@drawable/bottom_sheet_bg_separator"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playlist_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/black_2"
+            android:layout_marginTop="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/track_item_layout" />
     </LinearLayout>

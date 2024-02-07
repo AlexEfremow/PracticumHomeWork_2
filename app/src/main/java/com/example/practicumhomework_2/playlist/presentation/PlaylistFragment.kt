@@ -37,8 +37,6 @@ class PlaylistFragment : Fragment() {
     private val screenHeight by lazy { Resources.getSystem().displayMetrics.heightPixels }
     private val layoutListener = OnGlobalLayoutListener {
         behavior?.peekHeight = screenHeight - binding.topView.height
-        Log.d("AAA Screen Height", screenHeight.toString())
-        Log.d("AAA bottom Height", binding.topView.height.toString())
     }
 
     override fun onCreateView(
@@ -54,6 +52,7 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val playlistId = arguments?.getInt(PlaylistsFragment.PLAYLIST_ID_KEY)
+        if(binding.playlistDescription.text.isNullOrBlank()) binding.playlistDescription.visibility = View.GONE
         if (playlistId == null) Toast.makeText(
             requireContext(),
             "Empty Playlist Id",

@@ -118,4 +118,18 @@
         <item name="android:textColor">@color/black_2</item>
         <item name="android:textColorHint">@color/black_2</item>
     </style>
+    <style name="playlist_point_style">
+        <item name="android:backgroundTint">@color/black_2</item>
+    </style>
+    <style name="playlist_details_linear_layout_style">
+        <item name="android:background">@drawable/bottom_sheet_bg_light</item>
+    </style>
+    <style name="playlist_details_style">
+        <item name="android:textColor">@color/black_2</item>
+        <item name="android:gravity">center|start</item>
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:paddingVertical">21dp</item>
+    </style>
 </resources>

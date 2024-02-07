@@ -25,6 +25,11 @@ class PlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel()
             interactor.deleteTrackFromPlaylist(trackId, playlistId)
         }
     }
+    fun deletePlaylist(playlist: DetailedPlaylistModel) {
+        viewModelScope.launch {
+            interactor.deletePlaylist(playlist)
+        }
+    }
     fun getShareIntent(trackList: List<Track>, type: String): Intent {
         val text =  buildString {
             append("${trackList.size} треков")

@@ -11,25 +11,28 @@
         style="@style/BottomSheetSeparatorStyle"
         android:background="@drawable/bottom_sheet_bg_separator"/>
     <include layout="@layout/playlist_item_small"
-        android:id="@+id/playlist_item_small"/>
+        android:id="@+id/playlist_item_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        />
     <TextView
         android:id="@+id/share_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Поделиться"
-        android:textSize="24sp"
-        android:padding="10dp"/>
+        android:text="@string/share"
+        android:layout_marginTop="8dp"
+        style="@style/playlist_details_style" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Редактировать информацию"
-        android:textSize="24sp"
-        android:padding="10dp"/>
+        android:text="@string/edit_details"
+        style="@style/playlist_details_style" />
     <TextView
+        android:id="@+id/delete_playlist_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Удалить плейлист"
-        android:textSize="24sp"
-        android:padding="10dp"/>
+        android:text="@string/delete_playlist"
+        style="@style/playlist_details_style"/>
 
 </LinearLayout>

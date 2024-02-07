@@ -17,8 +17,8 @@ class PlaylistInteractor(
         repository.addPlaylist(playlist)
     }
 
-    suspend fun deletePlaylist(playlist: DetailedPlaylistModel) {
-        repository.deletePlaylist(playlist)
+    suspend fun deletePlaylist(playlist: DetailedPlaylistModel): Boolean {
+        return repository.deletePlaylist(playlist)
     }
 
     suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {

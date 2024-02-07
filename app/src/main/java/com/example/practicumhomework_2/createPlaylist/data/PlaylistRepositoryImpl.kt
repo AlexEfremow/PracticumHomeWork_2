@@ -10,6 +10,7 @@ import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 
 class PlaylistRepositoryImpl(
     private val playlistDao: PlaylistDao,
@@ -20,11 +21,14 @@ class PlaylistRepositoryImpl(
         playlistDao.addPlaylist(playlist)
     }
 
-    override suspend fun deletePlaylist(playlist: DetailedPlaylistModel) {
+    override suspend fun deletePlaylist(playlist: DetailedPlaylistModel): Boolean {
         playlistDao.deletePlaylist(playlist.id)
+        val playlists = playlistDao.getPlaylists()
         playlist.trackList.forEach {
-            if(!checkTrackUsage(it.trackId)) playlistTrackDao.deleteTrack(it.trackId)
+            val isUsed = checkTrackUsage(it.trackId, playlists)
+            if(!isUsed) playlistTrackDao.deleteTrack(it.trackId)
         }
+        return true
     }
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
@@ -39,13 +43,13 @@ class PlaylistRepositoryImpl(
         val list = json.split(SEPARATOR).toMutableList()
         list.remove(trackId)
         playlistDao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
-        val isUsed = checkTrackUsage(trackId)
+        val playlists = playlistDao.getPlaylists()
+        val isUsed = checkTrackUsage(trackId, playlists)
         if (!isUsed) {
             playlistTrackDao.deleteTrack(trackId)
         }
     }
-    private suspend fun checkTrackUsage(trackId: String): Boolean {
-        val playlists = playlistDao.getPlaylists()
+    private fun checkTrackUsage(trackId: String, playlists: List<PlaylistEntity>): Boolean {
         var isUsed = false
         for (i in playlists) {
             if(i.parsedTrackList.contains(trackId)) {
@@ -67,7 +71,9 @@ class PlaylistRepositoryImpl(
     override fun getPlaylistById(id: Int): Flow<DetailedPlaylistModel> {
         val playlistFlow = playlistDao.getPlaylistById(id)
         val tracksFlow = playlistTrackDao.getAllTracks()
-        return playlistFlow.combine(tracksFlow) { playlist, trackList ->
+        return playlistFlow
+            .filterNotNull()
+            .combine(tracksFlow) { playlist, trackList ->
             DetailedPlaylistModel(
                 playlist.id,
                 playlist.cover,

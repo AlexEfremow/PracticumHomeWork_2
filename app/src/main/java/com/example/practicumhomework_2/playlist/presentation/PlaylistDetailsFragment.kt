@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,6 +22,8 @@ import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistDetailsFragment : BottomSheetDialogFragment() {
@@ -36,6 +41,17 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.removingState.collect {
+                    if (it) {
+                        dismiss()
+                        findNavController().popBackStack(R.id.mediaFragment, false)
+                    }
+                }
+            }
+        }
 
         val playlist = BundleCompat.getParcelable(
             arguments ?: bundleOf(),
@@ -69,12 +85,15 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
         }
         binding.deletePlaylistButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.want_to_delete_playlist, playlist.name)) // Описание диалога
+                .setMessage(
+                    getString(
+                        R.string.want_to_delete_playlist,
+                        playlist.name
+                    )
+                ) // Описание диалога
                 .setNegativeButton(getString(R.string.no_dialogue)) { _, _ -> }
                 .setPositiveButton(getString(R.string.yes_dialogue)) { _, _ ->
-                    dismiss()
-//                    viewModel.deletePlaylist(playlist)
-                    findNavController().popBackStack(R.id.mediaFragment, false)
+                    viewModel.deletePlaylist(playlist)
                 }
                 .show()
         }

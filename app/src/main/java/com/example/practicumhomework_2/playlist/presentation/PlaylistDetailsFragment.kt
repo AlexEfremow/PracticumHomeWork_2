@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -17,6 +18,7 @@ import com.example.practicumhomework_2.databinding.FragmentPlaylistDetailsBindin
 import com.example.practicumhomework_2.player.domain.entity.Track
 import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistDetailsFragment : BottomSheetDialogFragment() {
@@ -64,6 +66,17 @@ class PlaylistDetailsFragment : BottomSheetDialogFragment() {
                 getString(R.string.text_pattern)
             )
             startActivity(intent)
+        }
+        binding.deletePlaylistButton.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.want_to_delete_playlist, playlist.name)) // Описание диалога
+                .setNegativeButton(getString(R.string.no_dialogue)) { _, _ -> }
+                .setPositiveButton(getString(R.string.yes_dialogue)) { _, _ ->
+                    dismiss()
+//                    viewModel.deletePlaylist(playlist)
+                    findNavController().popBackStack(R.id.mediaFragment, false)
+                }
+                .show()
         }
 
 

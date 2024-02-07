@@ -32,6 +32,7 @@
         android:id="@+id/delete_playlist_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="107dp"
         android:text="@string/delete_playlist"
         style="@style/playlist_details_style"/>
 

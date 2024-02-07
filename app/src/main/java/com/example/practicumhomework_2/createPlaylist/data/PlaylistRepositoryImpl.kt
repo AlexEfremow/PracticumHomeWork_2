@@ -74,14 +74,15 @@ class PlaylistRepositoryImpl(
         return playlistFlow
             .filterNotNull()
             .combine(tracksFlow) { playlist, trackList ->
+                val filteredTrackList = trackList.filter { playlist.parsedTrackList.contains(it.trackId) }.map { it.mapToTrack() }
             DetailedPlaylistModel(
                 playlist.id,
                 playlist.cover,
                 playlist.name,
                 playlist.description,
                 playlist.parsedTrackList.size,
-                (trackList.sumOf { it.trackTime } / 60000).toInt(),
-                trackList.map { it.mapToTrack() }.filter { playlist.parsedTrackList.contains(it.trackId) }
+                (filteredTrackList.sumOf { it.trackTime } / 60000).toInt(),
+                filteredTrackList.reversed()
             )
         }
     }

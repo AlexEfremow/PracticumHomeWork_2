@@ -3,11 +3,11 @@ package com.example.practicumhomework_2.createPlaylist.domain
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.example.practicumhomework_2.createPlaylist.data.ImageSaver
-import com.example.practicumhomework_2.createPlaylist.data.PlaylistDao
-import com.example.practicumhomework_2.createPlaylist.data.PlaylistRepositoryImpl
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
+import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
+import kotlinx.coroutines.flow.Flow
 
 class PlaylistInteractor(
     private val repository: PlaylistRepository,
@@ -17,8 +17,8 @@ class PlaylistInteractor(
         repository.addPlaylist(playlist)
     }
 
-    suspend fun deletePlaylist(playlist: PlaylistEntity) {
-        repository.deletePlaylist(playlist)
+    suspend fun deletePlaylist(playlist: DetailedPlaylistModel): Boolean {
+        return repository.deletePlaylist(playlist)
     }
 
     suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
@@ -38,5 +38,7 @@ class PlaylistInteractor(
     fun saveToInternal(uri: Uri, name: String): Uri {
         return imageSaver.saveToInternal(uri, name)
     }
-
+    fun getPlaylistById(id: Int): Flow<DetailedPlaylistModel> {
+        return repository.getPlaylistById(id)
+    }
 }

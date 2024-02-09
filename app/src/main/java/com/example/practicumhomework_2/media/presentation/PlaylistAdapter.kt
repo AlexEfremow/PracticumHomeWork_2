@@ -8,12 +8,12 @@ import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.databinding.PlaylistItemBinding
 
-class PlaylistAdapter : RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(private val onClick: (Int) -> Unit) : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     private var playlists: List<PlaylistModel> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val binding = PlaylistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PlaylistViewHolder(binding)
+        return PlaylistViewHolder(binding, onClick)
     }
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {

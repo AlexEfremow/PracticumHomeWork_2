@@ -75,6 +75,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/button_more"
         style="@style/track_details_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

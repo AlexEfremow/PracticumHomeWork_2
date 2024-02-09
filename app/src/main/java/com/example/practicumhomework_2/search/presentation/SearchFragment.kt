@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.databinding.SearchBinding
 import com.example.practicumhomework_2.search.domain.SearchState
@@ -29,12 +30,12 @@ class SearchFragment : Fragment() {
     private var jobDebounce: Job? = null
 
 
-    private val historyAdapter = TrackAdapter { openPlayer(it.trackId) }
-    private val trackAdapter = TrackAdapter {
+    private val historyAdapter = TrackAdapter(onClick = { openPlayer(it.trackId) })
+    private val trackAdapter = TrackAdapter(onClick = {
         viewModel.saveTrackToHistory(it)
         historyAdapter.updateTrackList(viewModel.getTrackHistory())
         openPlayer(it.trackId)
-    }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -169,7 +170,7 @@ class SearchFragment : Fragment() {
 
     private fun openPlayer(trackId: String) {
         if (clickDebounce())
-            findNavController().navigate(R.id.playerFragment, bundleOf("track_id" to trackId))
+            findNavController().navigate(R.id.playerFragment, bundleOf(Constants.ARG_KEY to trackId))
 
     }
 

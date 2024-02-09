@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.R
 import com.example.practicumhomework_2.addToPlaylist.presentation.AddToPlaylistFragment
 import com.example.practicumhomework_2.databinding.AudioPlayerBinding
@@ -41,7 +42,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val trackId = arguments?.getString("track_id") ?: ""
+        val trackId = arguments?.getString(Constants.ARG_KEY) ?: ""
         viewModel.searchTrack(trackId)
         viewModel.trackLiveData.observe(this) {
             when (it) {

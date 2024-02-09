@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 
 @Entity
@@ -16,7 +17,7 @@ data class PlaylistEntity(
     val trackList: String = "",
 ) {
     @Ignore
-    private val parsedTrackList = trackList.split(SEPARATOR).filter { it.isNotBlank() }
+    val parsedTrackList = trackList.split(Constants.TRACK_LIST_SEPARATOR).filter { it.isNotBlank() }
 
     fun mapToUi(): PlaylistModel {
         return PlaylistModel(
@@ -26,9 +27,5 @@ data class PlaylistEntity(
             count = parsedTrackList.size,
             trackList = parsedTrackList
         )
-    }
-
-    companion object {
-        private const val SEPARATOR = "|"
     }
 }

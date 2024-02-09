@@ -7,7 +7,7 @@ import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistInteractor
 import kotlinx.coroutines.launch
 
-class PlaylistCreateViewModel(private val interactor: PlaylistInteractor): ViewModel() {
+open class PlaylistCreateViewModel(private val interactor: PlaylistInteractor): ViewModel() {
     fun addPlaylist(name: String, description: String, cover: String) {
         viewModelScope.launch {
             interactor.addPlaylist(PlaylistEntity(cover = cover, name = name, description = description))
@@ -16,6 +16,4 @@ class PlaylistCreateViewModel(private val interactor: PlaylistInteractor): ViewM
     fun saveToInternal(uri: Uri, name: String): Uri {
         return interactor.saveToInternal(uri, name)
     }
-
-
 }

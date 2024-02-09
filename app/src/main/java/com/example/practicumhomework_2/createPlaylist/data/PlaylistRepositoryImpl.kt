@@ -1,53 +1,92 @@
 package com.example.practicumhomework_2.createPlaylist.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.example.practicumhomework_2.Constants
 import com.example.practicumhomework_2.addToPlaylist.data.PlaylistTrackDao
 import com.example.practicumhomework_2.createPlaylist.data.entity.PlaylistEntity
 import com.example.practicumhomework_2.createPlaylist.domain.PlaylistRepository
 import com.example.practicumhomework_2.media.domain.PlaylistModel
 import com.example.practicumhomework_2.player.domain.entity.Track
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.practicumhomework_2.playlist.presentation.model.DetailedPlaylistModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.parcelize.parcelableCreator
 
-class PlaylistRepositoryImpl(private val dao: PlaylistDao, private val playlistTrackDao: PlaylistTrackDao) : PlaylistRepository {
-
+class PlaylistRepositoryImpl(
+    private val playlistDao: PlaylistDao,
+    private val playlistTrackDao: PlaylistTrackDao
+) : PlaylistRepository {
 
     override suspend fun addPlaylist(playlist: PlaylistEntity) {
-        dao.addPlaylist(playlist)
+        playlistDao.addPlaylist(playlist)
     }
 
-    override suspend fun deletePlaylist(playlist: PlaylistEntity) {
-        dao.deletePlaylist(playlist)
+    override suspend fun deletePlaylist(playlist: DetailedPlaylistModel): Boolean {
+        playlistDao.deletePlaylist(playlist.id)
+        val playlists = playlistDao.getPlaylists()
+        playlist.trackList.forEach {
+            val isUsed = checkTrackUsage(it.trackId, playlists)
+            if(!isUsed) playlistTrackDao.deleteTrack(it.trackId)
+        }
+        return true
     }
 
     override suspend fun addTrackToPlaylist(trackId: String, playlistId: Int) {
-        val json = dao.getTrackListForPlaylist(playlistId)
-        val list = json.split(SEPARATOR).filter { it.isNotBlank() }.toMutableList()
+        val json = playlistDao.getTrackListForPlaylist(playlistId)
+        val list = json.split(Constants.TRACK_LIST_SEPARATOR).filter { it.isNotBlank() }.toMutableList()
         list.add(trackId)
-        dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        playlistDao.updateTrackList(playlistId, list.joinToString(Constants.TRACK_LIST_SEPARATOR))
     }
 
     override suspend fun deleteTrackFromPlaylist(trackId: String, playlistId: Int) {
-        val json = dao.getTrackListForPlaylist(playlistId)
-        val list = json.split(SEPARATOR).toMutableList()
-        val index = list.indexOf(trackId)
-        list.removeAt(index-1)
+        val json = playlistDao.getTrackListForPlaylist(playlistId)
+        val list = json.split(Constants.TRACK_LIST_SEPARATOR).toMutableList()
         list.remove(trackId)
-        dao.updateTrackList(playlistId, list.joinToString(SEPARATOR))
+        playlistDao.updateTrackList(playlistId, list.joinToString(Constants.TRACK_LIST_SEPARATOR))
+        val playlists = playlistDao.getPlaylists()
+        val isUsed = checkTrackUsage(trackId, playlists)
+        if (!isUsed) {
+            playlistTrackDao.deleteTrack(trackId)
+        }
+    }
+    private fun checkTrackUsage(trackId: String, playlists: List<PlaylistEntity>): Boolean {
+        var isUsed = false
+        for (i in playlists) {
+            if(i.parsedTrackList.contains(trackId)) {
+                isUsed = true
+                break
+            }
+        }
+        return isUsed
     }
 
     override fun getPlaylists(): LiveData<List<PlaylistModel>> {
-        return dao.getPlaylists().map { list -> list.map { it.mapToUi() } }
+        return playlistDao.getPlaylistsLiveData().map { list -> list.map { it.mapToUi() } }
     }
 
     override suspend fun addTrack(track: Track) {
         playlistTrackDao.addTrack(track.toPlaylistDbModel())
     }
 
-    companion object{
-        private const val SEPARATOR = "|"
+    override fun getPlaylistById(id: Int): Flow<DetailedPlaylistModel> {
+        val playlistFlow = playlistDao.getPlaylistById(id)
+        val tracksFlow = playlistTrackDao.getAllTracks()
+        return playlistFlow
+            .filterNotNull()
+            .combine(tracksFlow) { playlist, trackList ->
+                val filteredTrackList = trackList.filter { playlist.parsedTrackList.contains(it.trackId) }.map { it.mapToTrack() }
+            DetailedPlaylistModel(
+                playlist.id,
+                playlist.cover,
+                playlist.name,
+                playlist.description,
+                playlist.parsedTrackList.size,
+                (filteredTrackList.sumOf { it.trackTime } / 60000).toInt(),
+                filteredTrackList.reversed()
+            )
+        }
     }
 
 }
